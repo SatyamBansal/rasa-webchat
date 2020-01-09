@@ -13,7 +13,7 @@ export default function (inputTextFieldHint, connectingText, storage, docViewer 
     isChatOpen: false,
     disabledInput: true,
     docViewer,
-    inputTextFieldHint,
+    inputTextFieldHint: 'Enter Message...',
     connectingText,
     unreadCount: 0,
     messageDelayed: false

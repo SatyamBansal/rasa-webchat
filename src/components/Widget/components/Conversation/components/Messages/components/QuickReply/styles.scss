@@ -1,6 +1,9 @@
 @import "variables.scss";
 @import "common.scss";
 
+input:disabled {
+  cursor: not-allowed;
+}
 .conversation-container {
 
   .replies {

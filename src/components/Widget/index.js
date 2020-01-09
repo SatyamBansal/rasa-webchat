@@ -13,6 +13,8 @@ import {
   addVideoSnippet,
   addImageSnippet,
   addQuickReply,
+  addPopup,
+  addPurchaseOrders,
   renderCustomComponent,
   initialize,
   connectServer,
@@ -144,6 +146,57 @@ class Widget extends Component {
       socket.createSocket();
 
       socket.on('bot_uttered', (botUttered) => {
+
+
+        // botUttered = {
+        //   type: 'popup',
+        //   text: 'This is a custom popup',
+        //   attachment: {
+        //     payload: [
+        //       {
+        //         'Buyer Name': 'Satyam',
+        //         Product: 'Product A',
+        //         Qty: 100
+
+        //       },
+        //       {
+        //         'Buyer Name': 'Buyer B',
+        //         Product: 'Product B',
+        //         Qty: 199
+
+        //       }
+        //     ]
+        //   }
+        // };
+
+        function createData(name, calories, fat, carbs, protein) {
+          return { name, calories, fat, carbs, protein };
+        }
+
+        const rows = [
+          createData('Cupcake', 305, 3.7, 67, 4.3),
+          createData('Donut', 452, 25.0, 51, 4.9),
+          createData('Eclair', 262, 16.0, 24, 6.0),
+          createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+          createData('Gingerbread', 356, 16.0, 49, 3.9),
+          createData('Honeycomb', 408, 3.2, 87, 6.5),
+          createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+          createData('Jelly Bean', 375, 0.0, 94, 0.0),
+          createData('KitKat', 518, 26.0, 65, 7.0),
+          createData('Lollipop', 392, 0.2, 98, 0.0),
+          createData('Marshmallow', 318, 0, 81, 2.0),
+          createData('Nougat', 360, 19.0, 9, 37.0),
+          createData('Oreo', 437, 18.0, 63, 4.0)
+        ];
+        botUttered = {
+          type: 'popup',
+          text: 'This is a custom popup',
+          attachment: {
+            payload: rows
+          }
+        };
+        console.log('Response from bot socket : ', botUttered);
+
         if (botUttered.metadata && botUttered.metadata.tooltip) {
           dispatch(setTooltipMessage(String(botUttered.text)));
           return;
@@ -317,6 +370,10 @@ class Widget extends Component {
           image: element.src
         })
       );
+    } else if (message.type == 'popup') {
+      console.log('Adding Orders : ', message.attachment.payload);
+      this.props.dispatch(addPurchaseOrders(message.attachment.payload));
+      this.props.dispatch(addPopup(message.text));
     } else {
       // some custom message
       const props = message;

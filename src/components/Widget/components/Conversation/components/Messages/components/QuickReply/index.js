@@ -28,6 +28,8 @@ class QuickReply extends PureComponent {
   }
 
   handleClick(reply) {
+    this.props.toggleInputDisabled();
+    this.props.changeInputFieldHint('Enter Message...');
     const {
       chooseReply,
       id
@@ -36,7 +38,8 @@ class QuickReply extends PureComponent {
     const payload = reply.payload;
     const title = reply.title;
     chooseReply(payload, title, id);
-    // this.props.changeInputFieldHint('Type a message...');
+    // this.props.toggleInputDisabled();
+    // this.props.changeInputFieldHint('Please Select a input');
   }
 
   render() {
@@ -48,7 +51,20 @@ class QuickReply extends PureComponent {
     } = this.props;
 
     const chosenReply = getChosenReply(id);
+
+    if (!chosenReply && (this.props.inputState == false)) {
+      console.log('I m here');
+      this.props.toggleInputDisabled();
+      this.props.changeInputFieldHint('Select one Above ...');
+    }
     if (chosenReply) {
+      // console.log('Option Selected');
+      // if (this.props.inputState) {
+      //   this.props.toggleInputDisabled();
+      //   console.log('Option Selected, Changing placeholder');
+      //   this.props.changeInputFieldHint('Enter afasdfasdf ...');
+      // }
+
       return <Message message={message} />;
     }
     return (

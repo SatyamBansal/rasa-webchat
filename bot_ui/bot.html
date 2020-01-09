@@ -10,12 +10,12 @@
 
 <div id="webchat"/>
 <!-- <script src="https://storage.googleapis.com/mrbot-cdn/webchat-latest.js"></script> -->
-<script src="index.js"></script>
+<script src="http://www.blueKaktus.ml/static/bot.js"></script>
 <script>
   sessionStorage.clear()
   WebChat.default.init({
     selector: "#webchat",
-    initPayload: '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://alblstaging.rdpl.com:8081", "ccid":"69", "cost_user":"arvind@bluekaktus.com"}',
+    initPayload: '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"645", "api_host": "http://alblstaging.rdpl.com:8081", "ccid":"69", "cost_user":"arvind@bluekaktus.com"}',
     interval: 100, // 1000 ms between each message
     customData: {}, // arbitrary custom data. Stay minimal as this will be added to the socket
     socketUrl: "http://localhost:5005",
@@ -26,9 +26,9 @@
     connectingText: "Bot is under training...",
     hideWhenNotConnected: false,
     fullScreenMode: false,
-    profileAvatar: "https://storage.googleapis.com/dev-media-store-botfront-cloud/logo_square_circle_white_bg256.jpg",
-    openLauncherImage: 'https://storage.googleapis.com/dev-media-store-botfront-cloud/logo_square_circle_white_bg256.jpg',
-    closeLauncherImage: 'https://storage.googleapis.com/dev-media-store-botfront-cloud/logo_square_circle_white_bg256.jpg',
+    profileAvatar: "alexa.jpg",
+    openLauncherImage: 'alexa.jpg',
+    closeLauncherImage: 'myCustomCloseImage.png',
     params: {
       images: {
         dims: {

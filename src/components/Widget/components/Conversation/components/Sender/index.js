@@ -6,12 +6,17 @@ import send from 'assets/send_button.svg';
 import './style.scss';
 
 const Sender = ({ sendMessage, inputTextFieldHint, disabledInput }) =>
-  <form className="sender" onSubmit={sendMessage}>
-    <input type="text" className="new-message" name="message" placeholder={inputTextFieldHint} disabled={disabledInput} autoFocus autoComplete="off" />
-    <button type="submit" className="send">
-      <img src={send} className="send-icon" alt="send" />
-    </button>
-  </form>;
+{
+  console.log('Disabled Input : ', disabledInput);
+  return (
+    <form className="sender" onSubmit={sendMessage}>
+      <input type="text" className="new-message" name="message" placeholder={inputTextFieldHint} disabled={disabledInput} autoFocus autoComplete="off" />
+      <button type="submit" className="send">
+        <img src={send} className="send-icon" alt="send" />
+      </button>
+    </form>
+  );
+};
 
 const mapStateToProps = state => ({
   inputTextFieldHint: state.behavior.get('inputTextFieldHint')

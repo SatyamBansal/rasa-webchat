@@ -100,6 +100,19 @@ export function addResponseMessage(text) {
   };
 }
 
+export function addPopup(text) {
+  return {
+    type: actions.ADD_POPUP,
+    text
+  };
+}
+
+export function addPurchaseOrders(orders) {
+  return {
+    type: actions.ADD_PURCHASE_ORDERS,
+    payload: orders
+  };
+}
 export function addLinkSnippet(link) {
   return {
     type: actions.ADD_NEW_LINK_SNIPPET,

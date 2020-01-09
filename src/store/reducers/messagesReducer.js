@@ -2,14 +2,15 @@ import { List } from 'immutable';
 import { MESSAGE_SENDER, SESSION_NAME } from 'constants';
 
 import {
-    createQuickReply,
-    createNewMessage,
-    createLinkSnippet,
-    createVideoSnippet,
-    createImageSnippet,
-    createComponentMessage,
-    storeMessageTo,
-    getLocalSession
+  createQuickReply,
+  createNewMessage,
+  createLinkSnippet,
+  createVideoSnippet,
+  createImageSnippet,
+  createComponentMessage,
+  storeMessageTo,
+  getLocalSession,
+  createPopup
 } from './helper';
 
 import * as actionTypes from '../actions/actionTypes';
@@ -27,6 +28,9 @@ export default function (storage) {
       }
       case actionTypes.ADD_NEW_RESPONSE_MESSAGE: {
         return storeMessage(state.push(createNewMessage(action.text, MESSAGE_SENDER.RESPONSE)));
+      }
+      case actionTypes.ADD_POPUP : {
+        return storeMessage(state.push(createPopup(action.text,MESSAGE_SENDER.RESPONSE)))
       }
       case actionTypes.ADD_NEW_LINK_SNIPPET: {
         return storeMessage(state.push(createLinkSnippet(action.link, MESSAGE_SENDER.RESPONSE)));
@@ -57,13 +61,13 @@ export default function (storage) {
         const localSession = getLocalSession(storage, SESSION_NAME);
         if (localSession) {
           return List(localSession.conversation);
-        } else {
+        } 
           return state
-        }
+        
       }
       default:
         return state;
     }
-  }
+  };
 }
 

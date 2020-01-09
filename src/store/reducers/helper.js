@@ -4,9 +4,19 @@ import { MESSAGES_TYPES, MESSAGE_SENDER, SESSION_NAME } from 'constants';
 import { Video, Image, Message, Snippet, QuickReply } from 'messagesComponents';
 
 export function createNewMessage(text, sender) {
+  console.log('Message component : ', Message);
   return Map({
     type: MESSAGES_TYPES.TEXT,
-    component: Message,
+    text,
+    sender,
+    showAvatar: sender === MESSAGE_SENDER.RESPONSE,
+    timestamp: new Date().getTime()
+  });
+}
+
+export function createPopup(text, sender) {
+  return Map({
+    type: MESSAGES_TYPES.POPUP,
     text,
     sender,
     showAvatar: sender === MESSAGE_SENDER.RESPONSE,

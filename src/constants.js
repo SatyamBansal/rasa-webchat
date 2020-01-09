@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-export const SESSION_NAME = "chat_session";
+export const SESSION_NAME = 'chat_session';
 
 export const MESSAGE_SENDER = {
   CLIENT: 'client',
@@ -20,7 +20,8 @@ export const MESSAGES_TYPES = {
     IMAGE: 'imgreply'
   },
   QUICK_REPLY: 'quickreply',
-  CUSTOM_COMPONENT: 'component'
+  CUSTOM_COMPONENT: 'component',
+  POPUP: 'popup'
 };
 
 export const NEXT_MESSAGE = 'mrbot_next_message';
@@ -95,10 +96,10 @@ export const PROP_TYPES = {
     text: PropTypes.string,
     hint: PropTypes.string,
     quick_replies: ImmutablePropTypes.listOf(
-        PropTypes.shape({
-          title: PropTypes.string,
-          payload: PropTypes.string
-        })),
+      PropTypes.shape({
+        title: PropTypes.string,
+        payload: PropTypes.string
+      })),
     sender: PropTypes.oneOf([
       MESSAGE_SENDER.CLIENT,
       MESSAGE_SENDER.RESPONSE
