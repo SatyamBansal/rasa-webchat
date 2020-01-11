@@ -93,6 +93,27 @@ export function emitUserMessage(text) {
   };
 }
 
+export function sendPOData(data) {
+  return {
+    type: actions.SEND_PO_DATA,
+    data: '/inform',
+    customData: data
+
+  };
+}
+
+export function cancelPO() {
+  return {
+    type: actions.CANCEL_PO
+  };
+}
+
+export function deletePopupMessage(data) {
+  return {
+    type: actions.DELETE_POPUP_MESSAGE
+  };
+}
+
 export function addResponseMessage(text) {
   return {
     type: actions.ADD_NEW_RESPONSE_MESSAGE,
@@ -111,6 +132,24 @@ export function addPurchaseOrders(orders) {
   return {
     type: actions.ADD_PURCHASE_ORDERS,
     payload: orders
+  };
+}
+
+export function selectPurchaseOrders(orders) {
+  return {
+    type: actions.SELECT_PURCHASE_ORDERS,
+    payload: orders
+  };
+}
+
+export function modifyPurchaseOrder(orderid, key, value) {
+  return {
+    type: actions.MODIFY_PUCHASE_ORDER,
+    payload: {
+      orderid,
+      key,
+      value
+    }
   };
 }
 export function addLinkSnippet(link) {
@@ -177,6 +216,7 @@ export function pullSession() {
     type: actions.PULL_SESSION
   };
 }
+
 
 export function newUnreadMessage() {
   return {

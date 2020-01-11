@@ -23,11 +23,37 @@ function initStore(
       : null;
     switch (action.type) {
       case actionTypes.EMIT_NEW_USER_MESSAGE: {
+
+        console.log('User Uttering ############################ : ', { message: action.text,
+          customData: socket.customData,
+          session_id });
+
+
         socket.emit('user_uttered', {
           message: action.text,
           customData: socket.customData,
           session_id
         });
+        return;
+      }
+      case actionTypes.SEND_PO_DATA: {
+        console.log('*************************sending po data to server ......', action.data);
+        console.log(action.type);
+        socket.emit('user_uttered', {
+          message: action.data,
+          customData: { payload: action.customData },
+          session_id
+        });
+        return;
+      }
+      case actionTypes.CANCEL_PO: {
+        console.log('!!!!!! Aborting PO Creation Process .......... ');
+        socket.emit('user_uttered', {
+          message: '/quit_po',
+          customData: socket.customData,
+          session_id
+        });
+        return;
       }
       case actionTypes.GET_OPEN_STATE: {
         return store.getState().behavior.get('isChatOpen');

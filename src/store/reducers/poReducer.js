@@ -14,8 +14,24 @@ export default function () {
       case actionTypes.ADD_PURCHASE_ORDERS: {
         return { ...state, orders: action.payload };
       }
-      case actionTypes.ADD_SELECTED_PURCHASE_ORDERS: {
+      case actionTypes.SELECT_PURCHASE_ORDERS: {
         return { ...state, selectedOrders: action.payload };
+      }
+      case actionTypes.MODIFY_PUCHASE_ORDER: {
+        console.log('INitial Quantity:', state.orders[0].QUANTITY);
+        // const modifiedState = { ...state };
+        const modifiedState = JSON.parse(JSON.stringify(state));
+        const prevOrders = modifiedState.orders;
+        for (let i = 0; i < prevOrders.length; ++i) {
+          if (prevOrders[i]._id == action.payload.orderid) {
+            prevOrders[i][action.payload.key] = action.payload.value;
+            break;
+          }
+        }
+
+        console.log('Previous State ====================  ', state === modifiedState, state.orders[0].QUANTITY);
+
+        return modifiedState;
       }
       default: {
         console.log('Returning Default State for po reducer : ', state);
