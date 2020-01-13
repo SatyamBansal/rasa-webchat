@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toggleInputDisabled, changeInputFieldHint, sendPOData, deletePopupMessage, cancelPO } from 'actions';
 
-import { sendPOData, deletePopupMessage, cancelPO } from 'actions';
+
 import { withStyles } from '@material-ui/core/styles';
 
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -143,7 +144,7 @@ class Popup extends Component {
   discardPO() {
     this.props.dispatch(deletePopupMessage());
     this.props.dispatch(cancelPO());
-
+    this.enableUserInput();
     this.setState({ isDialogOpen: false, showAlert: false });
   }
 
@@ -188,6 +189,14 @@ class Popup extends Component {
 
   }
 
+  enableUserInput() {
+    this.props.dispatch(toggleInputDisabled());
+    this.props.dispatch(changeInputFieldHint('Enter Message ...'));
+  }
+  disableUserInput() {
+    this.props.dispatch(toggleInputDisabled());
+    this.props.dispatch(changeInputFieldHint('Select Details Above ...'));
+  }
   saveChanges() {
 
 
@@ -197,10 +206,14 @@ class Popup extends Component {
     this.props.dispatch(sendPOData(data));
     this.props.dispatch(deletePopupMessage());
     console.log('Saving Changes in Dialog');
-
+    this.enableUserInput();
     this.closeDialog();
   }
   render() {
+    if (!this.state.isDialogOpen) {
+      this.disableUserInput();
+    }
+
     console.log('***********************', this.props.message.get('text'));
     const isopen = true;
     const isLast = true;

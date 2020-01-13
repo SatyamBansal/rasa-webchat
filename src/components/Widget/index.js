@@ -1535,9 +1535,9 @@ class Widget extends Component {
     } else if (message.type == 'popup') {
       console.log('Adding Orders : ', message.payload);
       const orders = message.payload;
-      // for (let i = 0; i < orders.length; ++i) {
-      //   orders[i]._id = i;
-      // }
+      for (let i = 0; i < orders.length; ++i) {
+        orders[i]._id = i;
+      }
       this.props.dispatch(addPurchaseOrders(orders));
       this.props.dispatch(addPopup(message.text));
     } else {
