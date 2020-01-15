@@ -117,7 +117,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
-
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
 import {
@@ -182,14 +183,12 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: 'ITEM_DESC', numeric: false, disablePadding: true, label: 'Item' },
-  { id: 'JOB', numeric: true, disablePadding: false, label: 'Job Description' },
-  { id: 'UOM_DESCRIPTION', numeric: true, disablePadding: false, label: 'UOM' },
-  { id: 'BALANCE_QUANTITY', numeric: true, disablePadding: false, label: 'Balance' },
-  { id: 'QUANTITY', numeric: true, disablePadding: false, label: 'Quantity' },
-  { id: 'RATE', numeric: true, disablePadding: false, label: 'Rate' },
-  { id: 'HSN_CODE__text', numeric: true, disablePadding: false, label: 'HSN' },
-  { id: 'date', numeric: true, disablePadding: false, label: 'Delivery Date' }
+  { id: 'ACCOUNT_DESC', numeric: false, disablePadding: true, label: 'Description' },
+  { id: 'Unit', numeric: true, disablePadding: false, label: 'Unit' },
+  { id: 'ACCOUNT_PERCENTAGE', numeric: true, disablePadding: false, label: 'Value' },
+  { id: 'AMOUNT', numeric: true, disablePadding: false, label: 'Amount' },
+  { id: 'OPERATION', numeric: true, disablePadding: false, label: 'Operation' },
+  { id: 'IS_TAXABLE', numeric: true, disablePadding: false, label: 'Taxable' }
 ];
 
 function EnhancedTableHead(props) {
@@ -325,14 +324,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function EnhancedTable() {
-  const rows = useSelector(state => state.purchaseOrders.orders);
+  const rows = useSelector(state => state.otherPOCharges.charges);
   const dispatch = useDispatch();
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState(
-    useSelector(state => state.purchaseOrders.selectedOrders)
-  );
+  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -345,7 +342,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.INDENT_DT_ID);
+      const newSelecteds = rows.map(n => n._id);
       dispatch(selectPurchaseOrders(newSelecteds));
       console.log('Selected Elements', newSelecteds);
       setSelected(newSelecteds);
@@ -437,7 +434,7 @@ export default function EnhancedTable() {
 
   const showQuantityError = (isSelected, balance, quantity, id) => {
     // console.log('Select Status for id ', id, ' ', isSelected);
-    // console.log('rowid : ', row.INDENT_DT_ID, ' : ', typeof (parseFloat(quantity)), ' : ', (parseFloat(row.RATE)));
+    // console.log('rowid : ', row._id, ' : ', typeof (parseFloat(quantity)), ' : ', (parseFloat(row.RATE)));
     if (isSelected) {
       if (parseFloat(balance) < parseFloat(quantity) || parseFloat(quantity) < 0) {
         return true;
@@ -447,7 +444,7 @@ export default function EnhancedTable() {
   };
 
   const showRateError = (isItemSelected, rate) => {
-    // console.log('rowid : ', row.INDENT_DT_ID, ' : ', typeof (parseFloat(row.RATE)), ' : ', (parseFloat(row.RATE)));
+    // console.log('rowid : ', row._id, ' : ', typeof (parseFloat(row.RATE)), ' : ', (parseFloat(row.RATE)));
     if (isItemSelected) {
       if (parseFloat(rate) <= 0) {
         return true;
@@ -455,15 +452,10 @@ export default function EnhancedTable() {
     }
     return false;
   };
-
-  const getSelectedLength = () => {
-    const recordIds = rows.map(record => record.INDENT_DT_ID);
-    return selected.filter(value => recordIds.includes(value)).length;
-  };
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={getSelectedLength()} />
+        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -484,7 +476,7 @@ export default function EnhancedTable() {
               {stableSort(rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.INDENT_DT_ID);
+                  const isItemSelected = isSelected(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -492,15 +484,15 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       aria-checked={isItemSelected}
-                      onClick={event => handleClick(event, row.INDENT_DT_ID)}
+                      onClick={event => handleClick(event, row._id)}
                       tabIndex={-1}
-                      key={row.INDENT_DT_ID}
+                      key={row._id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          // onClick={event => handleClick(event, row.INDENT_DT_ID, isItemSelected)}
+                          // onClick={event => handleClick(event, row._id, isItemSelected)}
 
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
@@ -511,18 +503,54 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.ITEM_DESC}
+                        {row.ACCOUNT_DESC}
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={row.unit == 'percentage' ? '%' : 'fix'}
+                          // onChange={handleChange}
+                          // labelWidth={labelWidth}
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={'percentage'}>%</MenuItem>
+                          <MenuItem value={'fixed'}>fix</MenuItem>
+                        </Select>
                       </TableCell>
                       <TableCell align="right">
+                        <TextField
+                          custom="valid"
+                          variant="outlined"
+                          type="number"
+                          disabled={row.unit != 'percentage'}
+                          defaultValue={row.QUANTITY}
+                          onChange={(e) => {
+                            inputChanged(e, row._id, 'QUANTITY');
+                          }}
+                          inputProps={{ 'aria-label': 'quantity' }}
+                        />
                         {row.JOB_DESCRIPTION}
                       </TableCell>
                       <TableCell align="right">
-                        {row.UOM_DESCRIPTION}
-                      </TableCell>
-                      <TableCell align="right">
-                        {row.BALANCE_QUANTITY}
+                        <TextField
+                          custom="valid"
+                          variant="outlined"
+                          type="number"
+                          disabled={row.unit == 'percentage'}
+                          defaultValue={row.QUANTITY}
+                          onChange={(e) => {
+                            inputChanged(e, row._id, 'QUANTITY');
+                          }}
+                          inputProps={{ 'aria-label': 'quantity' }}
+                        />
+                        {row.JOB_DESCRIPTION}
                       </TableCell>
 
+                      <TableCell align="right">{row.AMOUNT}</TableCell>
+                      {/*
                       <TableCell align="right">
                         <TextField
                           custom="valid"
@@ -532,7 +560,7 @@ export default function EnhancedTable() {
                               isItemSelected,
                               row.BALANCE_QUANTITY,
                               row.QUANTITY,
-                              row.INDENT_DT_ID
+                              row._id
                             ) &&
                                                         (row.QUANTITY < 0
                                                           ? 'cannot be negative'
@@ -542,16 +570,12 @@ export default function EnhancedTable() {
                             isItemSelected,
                             row.BALANCE_QUANTITY,
                             row.QUANTITY,
-                            row.INDENT_DT_ID
+                            row._id
                           )}
                           type="number"
                           defaultValue={row.QUANTITY}
                           onChange={(e) => {
-                            inputChanged(
-                              e,
-                              row.INDENT_DT_ID,
-                              'QUANTITY'
-                            );
+                            inputChanged(e, row._id, 'QUANTITY');
                           }}
                           inputProps={{ 'aria-label': 'quantity' }}
                         />
@@ -563,7 +587,7 @@ export default function EnhancedTable() {
                           type="number"
                           defaultValue={row.RATE}
                           onChange={(e) => {
-                            inputChanged(e, row.INDENT_DT_ID, 'RATE');
+                            inputChanged(e, row._id, 'RATE');
                           }}
                           error={showRateError(isItemSelected, row.RATE)}
                           label={
@@ -574,12 +598,10 @@ export default function EnhancedTable() {
                           }
                           inputProps={{ 'aria-label': 'rate' }}
                         />
-                      </TableCell>
-
-                      <TableCell align="right">
-                        {row.HSN_CODE__TEXT}
-                      </TableCell>
-                      <TableCell>
+                      </TableCell> */}
+                      <TableCell align="right">{row.OPERATION}</TableCell>
+                      <TableCell align="right">{row.IS_TAXABLE}</TableCell>
+                      {/* <TableCell>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <DatePicker
                             format="dd/MMM/yyyy"
@@ -591,11 +613,7 @@ export default function EnhancedTable() {
                             }
                             disablePast={isItemSelected}
                             onChange={(date) => {
-                              dateChanged(
-                                date,
-                                row.INDENT_DT_ID,
-                                'DEL_DATE'
-                              );
+                              dateChanged(date, row._id, 'DEL_DATE');
                             }}
                             value={
                               row.DEL_DATE == 'null'
@@ -604,7 +622,7 @@ export default function EnhancedTable() {
                             }
                           />
                         </MuiPickersUtilsProvider>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}

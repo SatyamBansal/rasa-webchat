@@ -24,6 +24,16 @@ export function createPopup(text, sender) {
   });
 }
 
+export function createOtherChargesPopup(text, sender) {
+  return Map({
+    type: MESSAGES_TYPES.OTHER_PO_CHARGES,
+    text,
+    sender,
+    showAvatar: sender === MESSAGE_SENDER.RESPONSE,
+    timestamp: new Date().getTime()
+  });
+}
+
 export function createLinkSnippet(link, sender) {
   return Map({
     type: MESSAGES_TYPES.SNIPPET.LINK,
@@ -99,9 +109,7 @@ export function getLocalSession(storage, key) {
       ? Object.values(parsedSession.conversation).map(item => Map(item))
       : [];
     // Check if params is undefined
-    const formattedParams = parsedSession.params
-      ? parsedSession.params
-      : {};
+    const formattedParams = parsedSession.params ? parsedSession.params : {};
     // Create a new session to return
     session = {
       ...parsedSession,

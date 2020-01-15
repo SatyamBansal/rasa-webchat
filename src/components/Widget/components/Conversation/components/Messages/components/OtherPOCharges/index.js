@@ -18,7 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import POTable from './Components/POTable';
+import ChargesTable from './Components/ChargesTable';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import './styles.scss';
 import { compareAsc, format } from 'date-fns';
@@ -108,7 +108,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class Popup extends Component {
+class OtherPOCharges extends Component {
     state = {
       isDialogOpen: false,
       isDirty: false,
@@ -152,50 +152,14 @@ class Popup extends Component {
       console.log('Dialog is Closed');
     }
 
-    filterOrdersData(orderids = [], orders) {
+    getOrdersData(orderids = [], orders) {
       console.log('IDS : ', orderids);
       console.log('Orders : ', orders);
-      return orders.filter(order => orderids.includes(order.INDENT_DT_ID));
-    }
-
-    getOrdersData(selectedOrderids = [], orders, savedOrders) {
-      console.log('DEbug', { selectedOrderids, orders, savedOrders });
-      // console.log('Filtered Selected Records', this.filterOrdersData(selectedOrderids, orders));
-      const exclusiveSavedIds = [];
-
-      const savedIds = savedOrders.map(order => order.INDENT_DT_ID);
-
-      const orderIds = orders.map(order => order.INDENT_DT_ID);
-      for (let i = 0; i < savedIds.length; ++i) {
-        if (!orderIds.includes(savedIds[i])) {
-          exclusiveSavedIds.push(savedIds[i]);
-        }
-        // else{
-        //   //add in exclusive
-        // }
-        // if (selectedOrderids.includes(savedIds[i]) || orderIds.includes(savedIds[i])) {
-        //   continue;
-        // } else {
-
-        // }
-      }
-      console.log('Exclusive ids :', exclusiveSavedIds);
-      console.log(
-        'saved exclusive data : ',
-        this.filterOrdersData(exclusiveSavedIds, savedOrders)
-      );
-      console.log('selected record data : ', this.filterOrdersData(selectedOrderids, orders));
-      const newSavedOrders = [];
-      newSavedOrders.concat(this.filterOrdersData(exclusiveSavedIds, savedOrders));
-      newSavedOrders.concat(this.filterOrdersData(selectedOrderids, orders));
-      return [
-        ...this.filterOrdersData(exclusiveSavedIds, savedOrders),
-        ...this.filterOrdersData(selectedOrderids, orders)
-      ];
+      return orders.filter(order => orderids.includes(order._id));
     }
 
     isDataValid(ids, orders) {
-      const selectedOrders = this.filterOrdersData(ids, orders);
+      const selectedOrders = this.getOrdersData(ids, orders);
       console.log('Checking DAta Valadity for orders : ', selectedOrders);
       // return selectedOrders.length > 2;
       for (let i = 0; i < selectedOrders.length; ++i) {
@@ -229,18 +193,8 @@ class Popup extends Component {
       this.props.dispatch(changeInputFieldHint('Select Details Above ...'));
     }
     saveChanges() {
-      console.log(
-        this.getOrdersData(
-          this.props.selectedOrdersId,
-          this.props.orders,
-          this.props.savedOrders
-        )
-      );
-      const data = this.getOrdersData(
-        this.props.selectedOrdersId,
-        this.props.orders,
-        this.props.savedOrders
-      );
+      console.log(this.getOrdersData(this.props.selectedOrdersId, this.props.orders));
+      const data = this.getOrdersData(this.props.selectedOrdersId, this.props.orders);
       console.log('SENDING DATA ........ : ', data);
       this.props.dispatch(sendPOData(data));
       this.props.dispatch(deletePopupMessage());
@@ -281,7 +235,7 @@ class Popup extends Component {
                                 Fill PO Details
                 </DialogTitle>
                 <DialogContent dividers>
-                  <POTable />
+                  <ChargesTable />
                 </DialogContent>
                 {/* <Button variant="contained" color="secondary" onClick={() => this.discardPO()}>
                 Cancel
@@ -315,9 +269,8 @@ class Popup extends Component {
 }
 
 const mapStateToProps = state => ({
-  orders: state.purchaseOrders.orders,
-  selectedOrdersId: state.purchaseOrders.selectedOrders,
-  savedOrders: state.purchaseOrders.savedOrders
+  orders: state.otherPOCharges.charges,
+  selectedOrdersId: state.otherPOCharges.selectedCharges
 });
 
-export default connect(mapStateToProps)(Popup);
+export default connect(mapStateToProps)(OtherPOCharges);

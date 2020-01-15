@@ -15,6 +15,8 @@ import {
   addQuickReply,
   addPopup,
   addPurchaseOrders,
+  addOtherCharges,
+  addOtherChargesPopup,
   renderCustomComponent,
   initialize,
   connectServer,
@@ -1540,6 +1542,17 @@ class Widget extends Component {
       }
       this.props.dispatch(addPurchaseOrders(orders));
       this.props.dispatch(addPopup(message.text));
+    } else if(message.type == 'otherpocharges'){
+      console.log('##############Other Charges Popup Triggered');
+      console.log('Adding Other Charges : ', message.payload);
+      const charges = message.payload;
+      for (let i = 0; i < charges.length; ++i) {
+        charges[i]._id = i;
+      }
+
+      this.props.dispatch(addOtherCharges(charges));
+      this.props.dispatch(addOtherChargesPopup(message.text));
+      
     } else {
       // some custom message
       const props = message;

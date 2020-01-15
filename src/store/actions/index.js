@@ -98,7 +98,6 @@ export function sendPOData(data) {
     type: actions.SEND_PO_DATA,
     data: '/inform',
     customData: data
-
   };
 }
 
@@ -132,6 +131,20 @@ export function addPurchaseOrders(orders) {
   return {
     type: actions.ADD_PURCHASE_ORDERS,
     payload: orders
+  };
+}
+
+export function addOtherCharges(charges) {
+  return {
+    type: actions.ADD_OTHER_CHARGES,
+    payload: charges
+  };
+}
+
+export function addOtherChargesPopup(text) {
+  return {
+    type: actions.ADD_OTHER_CHARGES_POPUP,
+    text
   };
 }
 
@@ -216,7 +229,6 @@ export function pullSession() {
     type: actions.PULL_SESSION
   };
 }
-
 
 export function newUnreadMessage() {
   return {

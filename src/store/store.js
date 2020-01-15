@@ -5,29 +5,25 @@ import { SESSION_NAME } from 'constants';
 import behavior from './reducers/behaviorReducer';
 import messages from './reducers/messagesReducer';
 import purchaseOrders from './reducers/poReducer';
+import otherPOCharges from './reducers/otherChargesReducer';
 import { getLocalSession } from './reducers/helper';
 import * as actionTypes from './actions/actionTypes';
+import otherChargesReducer from './reducers/otherChargesReducer';
 
 let store = 'call initStore first';
 
-function initStore(
-  hintText,
-  connectingText,
-  socket,
-  storage,
-  docViewer = false
-) {
+function initStore(hintText, connectingText, socket, storage, docViewer = false) {
   const customMiddleWare = store => next => (action) => {
     const session_id = getLocalSession(storage, SESSION_NAME)
       ? getLocalSession(storage, SESSION_NAME).session_id
       : null;
     switch (action.type) {
       case actionTypes.EMIT_NEW_USER_MESSAGE: {
-
-        console.log('User Uttering ############################ : ', { message: action.text,
+        console.log('User Uttering ############################ : ', {
+          message: action.text,
           customData: socket.customData,
-          session_id });
-
+          session_id
+        });
 
         socket.emit('user_uttered', {
           message: action.text,
@@ -37,13 +33,17 @@ function initStore(
         return;
       }
       case actionTypes.SEND_PO_DATA: {
-        console.log('*************************sending po data to server ......', action.data);
+        console.log(
+          '*************************sending po data to server ......',
+          action.data
+        );
         console.log(action.type);
         socket.emit('user_uttered', {
           message: action.data,
           customData: { payload: action.customData },
           session_id
         });
+        next(action);
         return;
       }
       case actionTypes.CANCEL_PO: {
@@ -64,6 +64,9 @@ function initStore(
       case actionTypes.GET_FULLSCREEN_STATE: {
         return store.getState().behavior.get('fullScreenMode');
       }
+      default: {
+        // Do something
+      }
     }
 
     // console.log('Middleware triggered:', action);
@@ -72,14 +75,14 @@ function initStore(
   const reducer = combineReducers({
     behavior: behavior(hintText, connectingText, storage, docViewer),
     messages: messages(storage),
-    purchaseOrders: purchaseOrders()
+    purchaseOrders: purchaseOrders(),
+    otherPOCharges: otherChargesReducer()
   });
 
-  /* eslint-disable no-underscore-dangle */
+    /* eslint-disable no-underscore-dangle */
   store = createStore(
     reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__(),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(customMiddleWare)
   );
   /* eslint-enable */
