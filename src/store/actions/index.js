@@ -148,6 +148,13 @@ export function addOtherChargesPopup(text) {
   };
 }
 
+export function selectOtherCharges(charges) {
+  return {
+    type: actions.SELECT_CHARGES,
+    payload: charges
+  };
+}
+
 export function selectPurchaseOrders(orders) {
   return {
     type: actions.SELECT_PURCHASE_ORDERS,
@@ -160,6 +167,17 @@ export function modifyPurchaseOrder(orderid, key, value) {
     type: actions.MODIFY_PUCHASE_ORDER,
     payload: {
       orderid,
+      key,
+      value
+    }
+  };
+}
+
+export function modifyOtherCharges(id, key, value) {
+  return {
+    type: actions.MODIFY_OTHER_CHARGES,
+    payload: {
+      id,
       key,
       value
     }

@@ -420,6 +420,7 @@ export default function EnhancedTable() {
 
   const inputChanged = (e, id, key) => {
     let value = e.target.value;
+
     if (e.target.value == '') {
       e.target.error = true;
       console.log('Empty field setting to zero');

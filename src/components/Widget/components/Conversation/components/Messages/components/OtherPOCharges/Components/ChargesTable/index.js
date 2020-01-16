@@ -92,7 +92,7 @@
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 
-import { modifyPurchaseOrder, selectPurchaseOrders } from 'actions';
+import { modifyPurchaseOrder, selectOtherCharges, modifyOtherCharges } from 'actions';
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -116,7 +116,7 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { useDispatch, useSelector } from 'react-redux';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -327,6 +327,7 @@ export default function EnhancedTable() {
   const rows = useSelector(state => state.otherPOCharges.charges);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [amount, setAmount] = React.useState(200);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -343,40 +344,40 @@ export default function EnhancedTable() {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows.map(n => n._id);
-      dispatch(selectPurchaseOrders(newSelecteds));
+      dispatch(selectOtherCharges(newSelecteds));
       console.log('Selected Elements', newSelecteds);
       setSelected(newSelecteds);
       return;
     }
-    dispatch(selectPurchaseOrders([]));
+    dispatch(selectOtherCharges([]));
     console.log('Selected Elements', []);
     setSelected([]);
   };
 
     // Todo : Dirty Patch for stopping event propogation , fix ASAP
   const handleClick = (event, name) => {
-    let isInputElement = false;
-    // console.log('Cusom filed : ', event.target.nodeName);
-    // console.log('Element Clicked', event.target.type, typeof (event.target.type));
-    console.log(event.target);
-    if (
-      event.target.type == 'text' ||
-            event.target.type == 'number' ||
-            event.target.type == 'checkbox'
-    ) {
-      isInputElement = true;
-      // console.log('An INput is clicked....');
-      // console.log(selected, '______', name);
-      if (selected.indexOf(name) >= 0 && event.target.type != 'checkbox') {
-        // console.log('Stopping from unselecting value .....');
-        return;
-      }
-    }
+    // let isInputElement = false;
+    // // console.log('Cusom filed : ', event.target.nodeName);
+    // // console.log('Element Clicked', event.target.type, typeof (event.target.type));
+    // console.log(event.target);
+    // if (
+    //   event.target.type == 'text' ||
+    //         event.target.type == 'number' ||
+    //         event.target.type == 'checkbox'
+    // ) {
+    //   isInputElement = true;
+    //   // console.log('An INput is clicked....');
+    //   // console.log(selected, '______', name);
+    //   if (selected.indexOf(name) >= 0 && event.target.type != 'checkbox') {
+    //     // console.log('Stopping from unselecting value .....');
+    //     return;
+    //   }
+    // }
 
-    if (!(event.target.nodeName == 'TD' || event.target.nodeName == 'TH' || isInputElement)) {
-      // console.log('NOt a table element');
-      return;
-    }
+    // if (!(event.target.nodeName == 'TD' || event.target.nodeName == 'TH' || isInputElement)) {
+    //   // console.log('NOt a table element');
+    //   return;
+    // }
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
@@ -394,7 +395,7 @@ export default function EnhancedTable() {
     }
 
     setSelected(newSelected);
-    dispatch(selectPurchaseOrders(newSelected));
+    dispatch(selectOtherCharges(newSelected));
     console.log('Selected Elements', newSelected);
   };
 
@@ -417,14 +418,18 @@ export default function EnhancedTable() {
 
   const inputChanged = (e, id, key) => {
     let value = e.target.value;
-    if (e.target.value == '') {
-      e.target.error = true;
-      console.log('Empty field setting to zero');
-      value = 0;
+    if (key == 'AMOUNT' || key == 'ACCOUNT_PERCENTAGE') {
+      value = parseFloat(value);
     }
-    dispatch(modifyPurchaseOrder(id, key, parseFloat(value)));
-    console.log('Row ID : ', id);
-    console.log('Input Changed : ', e.target.value);
+    console.log('Selector Value : ', { e, id, key, value, type: typeof value });
+    // if (e.target.value == '') {
+    //   e.target.error = true;
+    //   console.log('Empty field setting to zero');
+    //   value = 0;
+    // }
+    dispatch(modifyOtherCharges(id, key, value));
+    // console.log('Row ID : ', id);
+    // console.log('Input Changed : ', e.target.value);
   };
 
   const dateChanged = (value, id, key) => {
@@ -447,6 +452,24 @@ export default function EnhancedTable() {
     // console.log('rowid : ', row._id, ' : ', typeof (parseFloat(row.RATE)), ' : ', (parseFloat(row.RATE)));
     if (isItemSelected) {
       if (parseFloat(rate) <= 0) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handleSelectChange = (e) => {
+    console.log(e.target.value);
+  };
+
+  const showNegativError = (isSelected, value, isDisabled) => {
+    if (isSelected && value == 'null') {
+      return true;
+    }
+    // console.log('Select Status for id ', id, ' ', isSelected);
+    // console.log('rowid : ', row.INDENT_DT_ID, ' : ', typeof (parseFloat(quantity)), ' : ', (parseFloat(row.RATE)));
+    if (isSelected && !isDisabled) {
+      if (parseFloat(value) <= 0) {
         return true;
       }
     }
@@ -484,7 +507,7 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       aria-checked={isItemSelected}
-                      onClick={event => handleClick(event, row._id)}
+                      // onClick={event => handleClick(event, row._id)}
                       tabIndex={-1}
                       key={row._id}
                       selected={isItemSelected}
@@ -492,6 +515,7 @@ export default function EnhancedTable() {
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
+                          onClick={event => handleClick(event, row._id)}
                           // onClick={event => handleClick(event, row._id, isItemSelected)}
 
                           inputProps={{ 'aria-labelledby': labelId }}
@@ -509,13 +533,19 @@ export default function EnhancedTable() {
                         <Select
                           labelId="demo-simple-select-outlined-label"
                           id="demo-simple-select-outlined"
-                          value={row.unit == 'percentage' ? '%' : 'fix'}
-                          // onChange={handleChange}
+                          value={
+                            row.unit == 'percentage'
+                              ? 'percentage'
+                              : 'fixed'
+                          }
+                          onChange={(e) => {
+                            inputChanged(e, row._id, 'unit');
+                          }}
                           // labelWidth={labelWidth}
                         >
-                          <MenuItem value="">
+                          {/* <MenuItem value="">
                             <em>None</em>
-                          </MenuItem>
+                          </MenuItem> */}
                           <MenuItem value={'percentage'}>%</MenuItem>
                           <MenuItem value={'fixed'}>fix</MenuItem>
                         </Select>
@@ -526,13 +556,37 @@ export default function EnhancedTable() {
                           variant="outlined"
                           type="number"
                           disabled={row.unit != 'percentage'}
-                          defaultValue={row.QUANTITY}
+                          value={
+                            row.ACCOUNT_PERCENTAGE == 'null'
+                              ? 0
+                              : row.ACCOUNT_PERCENTAGE
+                          }
+                          label={
+                            showNegativError(
+                              isItemSelected,
+                              row.ACCOUNT_PERCENTAGE,
+                              row.unit != 'percentage'
+                            ) &&
+                                                        (row.ACCOUNT_PERCENTAGE < 0
+                                                          ? 'cannot be negative'
+                                                          : 'rate cannot be zero')
+                          }
+                          error={showNegativError(
+                            isItemSelected,
+                            row.ACCOUNT_PERCENTAGE,
+                            row.unit != 'percentage'
+                          )}
                           onChange={(e) => {
-                            inputChanged(e, row._id, 'QUANTITY');
+                            inputChanged(
+                              e,
+                              row._id,
+                              'ACCOUNT_PERCENTAGE'
+                            );
                           }}
-                          inputProps={{ 'aria-label': 'quantity' }}
+                          inputProps={{
+                            'aria-label': 'account percentage'
+                          }}
                         />
-                        {row.JOB_DESCRIPTION}
                       </TableCell>
                       <TableCell align="right">
                         <TextField
@@ -540,16 +594,30 @@ export default function EnhancedTable() {
                           variant="outlined"
                           type="number"
                           disabled={row.unit == 'percentage'}
-                          defaultValue={row.QUANTITY}
+                          value={row.AMOUNT}
+                          label={
+                            showNegativError(
+                              isItemSelected,
+                              row.AMOUNT,
+                              row.unit == 'percentage'
+                            ) &&
+                                                        (row.AMOUNT < 0
+                                                          ? 'cannot be negative'
+                                                          : 'rate cannot be zero')
+                          }
+                          error={showNegativError(
+                            isItemSelected,
+                            row.AMOUNT,
+                            row.unit == 'percentage'
+                          )}
                           onChange={(e) => {
-                            inputChanged(e, row._id, 'QUANTITY');
+                            inputChanged(e, row._id, 'AMOUNT');
                           }}
-                          inputProps={{ 'aria-label': 'quantity' }}
+                          inputProps={{ 'aria-label': 'amount' }}
                         />
-                        {row.JOB_DESCRIPTION}
                       </TableCell>
 
-                      <TableCell align="right">{row.AMOUNT}</TableCell>
+                      {/* <TableCell align="right">{row.AMOUNT}</TableCell> */}
                       {/*
                       <TableCell align="right">
                         <TextField
@@ -599,9 +667,44 @@ export default function EnhancedTable() {
                           inputProps={{ 'aria-label': 'rate' }}
                         />
                       </TableCell> */}
+
+                      <TableCell>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={row.OPERATION}
+                          onChange={(e) => {
+                            inputChanged(e, row._id, 'OPERATION');
+                          }}
+                          // labelWidth={labelWidth}
+                        >
+                          {/* <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem> */}
+                          <MenuItem value={'ADD'}>+</MenuItem>
+                          <MenuItem value={'SUBTRACT'}>-</MenuItem>
+                        </Select>
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={row.IS_TAXABLE}
+                          onChange={(e) => {
+                            inputChanged(e, row._id, 'IS_TAXABLE');
+                          }}
+                          // labelWidth={labelWidth}
+                        >
+                          {/* <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem> */}
+                          <MenuItem value={1}>Yes</MenuItem>
+                          <MenuItem value={0}>No</MenuItem>
+                        </Select>
+                        {/* </TableCell>
                       <TableCell align="right">{row.OPERATION}</TableCell>
-                      <TableCell align="right">{row.IS_TAXABLE}</TableCell>
-                      {/* <TableCell>
+                      <TableCell align="right">{row.IS_TAXABLE}</TableCell> */}
+                        {/* <TableCell>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <DatePicker
                             format="dd/MMM/yyyy"
@@ -623,6 +726,7 @@ export default function EnhancedTable() {
                           />
                         </MuiPickersUtilsProvider>
                       </TableCell> */}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

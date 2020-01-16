@@ -159,26 +159,31 @@ class OtherPOCharges extends Component {
     }
 
     isDataValid(ids, orders) {
+      console.log('DATA valididty', { ids, orders });
       const selectedOrders = this.getOrdersData(ids, orders);
       console.log('Checking DAta Valadity for orders : ', selectedOrders);
       // return selectedOrders.length > 2;
       for (let i = 0; i < selectedOrders.length; ++i) {
-        if (parseFloat(selectedOrders[i].RATE) <= 0) {
+        if (parseFloat(selectedOrders[i].AMOUNT) <= 0) {
           console.log('Validation Failed on rate');
           return false;
         }
-        if (
-          parseFloat(selectedOrders[i].BALANCE_QUANTITY) <
-                    parseFloat(selectedOrders[i].QUANTITY) ||
-                selectedOrders[i].QUANTITY < 0
-        ) {
-          console.log('Validation Failed on quantity');
+        if (parseFloat(selectedOrders[i].ACCOUNT_PERCENTAGE) <= 0) {
+          console.log('Validation Failed on rate');
           return false;
         }
-        if (compareAsc(selectedOrders[i].DEL_DATE, format(new Date(), 'dd/MMM/yyyy')) < -1) {
-          console.log('Validation Failed on date');
-          return false;
-        }
+        // if (
+        //   parseFloat(selectedOrders[i].BALANCE_QUANTITY) <
+        //             parseFloat(selectedOrders[i].QUANTITY) ||
+        //         selectedOrders[i].QUANTITY < 0
+        // ) {
+        //   console.log('Validation Failed on quantity');
+        //   return false;
+        // }
+        // if (compareAsc(selectedOrders[i].DEL_DATE, format(new Date(), 'dd/MMM/yyyy')) < -1) {
+        //   console.log('Validation Failed on date');
+        //   return false;
+        // }
       }
 
       return true;
