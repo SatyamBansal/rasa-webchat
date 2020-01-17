@@ -1,49 +1,86 @@
 @import "variables.scss";
 @import "common.scss";
-
-.conversation-container {
-  
-  .message {
-    margin: 10px;
-    display: flex;
-    font-size: 14px;
-    font-family: $roboto;
-    flex-wrap: wrap;
-  
-    .markdown {
-      p {
-        margin: 0;
-      }
-    }
-  }
-  
-  .client {
-    @include message-bubble($blue-1, $white);
-    margin-left: auto;
-    overflow-wrap: break-word;
-    
-    a {
-      color: $turqois-1;
-    }
-  }
-  
-  .response {
-    @include message-bubble($grey-2, #000, 0 15px 15px 15px);
-    overflow-wrap: break-word;
-  }
-  
-  /* For markdown elements created with default styles */
-  .message-text {
-    margin: 0;
-    .markdown{
-      p{
-        margin-bottom: 1em;
-        &:last-child{
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
-
+table {
+    border-spacing: 0px;
+}
+tr {
+    border: 1px solid #405164;
+    background: #fff;
 }
 
+th,
+td {
+    padding: 6px;
+    // border: 1px solid #000;
+}
+
+table tr:nth-child(2n) {
+    background: #f6f8fa;
+}
+
+// table {
+//     width: 100%;
+//     margin-bottom: 1rem;
+//     color: #212529;
+//     border: 1px solid #dee2e6;
+// }
+
+// table th,
+// table td {
+//     padding: 0.75rem;
+//     vertical-align: top;
+//     border-top: 1px solid #dee2e6;
+// }
+
+// table thead th {
+//     vertical-align: bottom;
+//     border-bottom: 2px solid #dee2e6;
+// }
+
+// table tbody + tbody {
+//     border-top: 2px solid #dee2e6;
+// }
+
+.conversation-container {
+    .message {
+        margin: 10px;
+        display: flex;
+        font-size: 14px;
+        font-family: $roboto;
+        flex-wrap: wrap;
+
+        .markdown {
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+    .client {
+        @include message-bubble($blue-1, $white);
+        margin-left: auto;
+        overflow-wrap: break-word;
+
+        a {
+            color: $turqois-1;
+        }
+    }
+
+    .response {
+        @include message-bubble($grey-2, #000, 0 15px 15px 15px);
+        overflow-wrap: break-word;
+    }
+
+    /* For markdown elements created with default styles */
+    .message-text {
+        margin: 0;
+        .markdown {
+            p {
+                margin-bottom: 1em;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

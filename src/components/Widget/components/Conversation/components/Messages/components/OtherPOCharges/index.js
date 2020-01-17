@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import log from 'logger';
 import {
   toggleInputDisabled,
   changeInputFieldHint,
@@ -149,7 +150,7 @@ class OtherPOCharges extends Component {
 
     handleClose() {
       this.setState({ showAlert: true });
-      console.log('Dialog is Closed');
+      log.error('Dialog is Closed');
     }
 
     getOrdersData(orderids = [], orders) {
