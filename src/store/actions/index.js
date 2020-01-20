@@ -173,6 +173,12 @@ export function modifyPurchaseOrder(orderid, key, value) {
   };
 }
 
+export function clearPOdata() {
+  return {
+    type: actions.CLEAR_PO_DATA
+  };
+}
+
 export function modifyOtherCharges(id, key, value) {
   return {
     type: actions.MODIFY_OTHER_CHARGES,

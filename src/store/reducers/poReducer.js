@@ -60,6 +60,14 @@ export default function () {
         console.log('Updating saved Records ...');
         return { ...state, savedOrders: action.customData };
       }
+      case actionTypes.CLEAR_PO_DATA: {
+        console.log('Deleting Old PO data');
+        return {
+          selectedOrders: [],
+          orders: [],
+          savedOrders: []
+        };
+      }
       default: {
         console.log('Returning Default State for po reducer : ', state);
         return state;
