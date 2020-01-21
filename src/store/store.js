@@ -58,7 +58,7 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
       case actionTypes.ABORT_PROCESS: {
         console.log('!!!!!!!!!!! Aborting Current Process ..........');
         socket.emit('user_uttered', {
-          message: '/abort',
+          message: '/abort_ywjvcnq',
           customData: socket.customData,
           session_id
         });

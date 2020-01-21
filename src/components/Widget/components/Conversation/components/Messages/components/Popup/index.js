@@ -22,6 +22,7 @@ import POTable from './Components/POTable';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import './styles.scss';
 import { compareAsc, format } from 'date-fns';
+import { UI_MESSAGES } from '../../../../../../../../constants';
 
 const styles = theme => ({
   root: {
@@ -223,7 +224,7 @@ class Popup extends Component {
 
     enableUserInput() {
       this.props.dispatch(toggleInputDisabled());
-      this.props.dispatch(changeInputFieldHint('Enter Message ...'));
+      this.props.dispatch(changeInputFieldHint(UI_MESSAGES.INPUT_HINT));
     }
     disableUserInput() {
       this.props.dispatch(toggleInputDisabled());

@@ -21,7 +21,13 @@
         }
     }
 
+    .MuiSvgIcon-root:hover {
+        font-size: 1.7rem;
+        cursor: pointer;
+    }
+
     .header.with-subtitle {
+        font-size: 14px;
         height: 70px;
         .avatar {
             top: 20px;
@@ -41,7 +47,7 @@
     }
 
     .title {
-        font-size: 20px;
+        font-size: 18px;
         margin: 0;
         font-family: $roboto;
         position: absolute;
@@ -75,7 +81,7 @@
         text-align: center;
         padding: 5px 0 5px;
         font-family: $roboto;
-        font-size: 14px;
+        font-size: $font-size;
     }
 }
 

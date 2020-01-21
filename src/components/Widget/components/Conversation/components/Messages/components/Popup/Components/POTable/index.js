@@ -506,12 +506,7 @@ export default function EnhancedTable() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
+                      <TableCell id={labelId} scope="row" padding="none">
                         {row.ITEM_DESC}
                       </TableCell>
                       <TableCell align="right">

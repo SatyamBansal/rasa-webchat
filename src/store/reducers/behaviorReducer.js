@@ -2,6 +2,7 @@ import { Map } from 'immutable';
 import { SESSION_NAME } from 'constants';
 import * as actionTypes from '../actions/actionTypes';
 import { getLocalSession, storeParamsTo } from './helper';
+import { UI_MESSAGES } from '../../constants';
 
 export default function (inputTextFieldHint, connectingText, storage, docViewer = false) {
   const initialState = Map({
@@ -13,7 +14,7 @@ export default function (inputTextFieldHint, connectingText, storage, docViewer 
     isChatOpen: false,
     disabledInput: true,
     docViewer,
-    inputTextFieldHint: 'Enter Message...',
+    inputTextFieldHint: UI_MESSAGES.INPUT_HINT,
     connectingText,
     unreadCount: 0,
     messageDelayed: false
@@ -78,7 +79,9 @@ export default function (inputTextFieldHint, connectingText, storage, docViewer 
         console.log('Aborting process in behavior reducer ..........');
 
         return storeParams(
-          state.set('disabledInput', false).set('inputTextFieldHint', 'ABORT SUCCESS')
+          state
+            .set('disabledInput', false)
+            .set('inputTextFieldHint', UI_MESSAGES.INPUT_HINT)
         );
       }
       // Pull params from storage to redux store

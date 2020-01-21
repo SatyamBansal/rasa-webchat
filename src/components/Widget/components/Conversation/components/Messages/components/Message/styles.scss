@@ -27,6 +27,7 @@ table {
 table {
     // font-size: 12px;
     width: 100%;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     color: #212529;
 }
@@ -100,7 +101,7 @@ table th {
     .message {
         margin: 10px;
         display: flex;
-        font-size: 14px;
+        font-size: $font-size !important;
         font-family: $roboto;
         flex-wrap: wrap;
 

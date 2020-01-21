@@ -6,6 +6,8 @@ import { abortProcess } from 'actions';
 import close from 'assets/clear-button.svg';
 import fullscreen from 'assets/fullscreen_button.svg';
 import fullscreenExit from 'assets/fullscreen_exit_button.svg';
+import { Icon } from '@material-ui/core';
+import ReplayIcon from '@material-ui/icons/Replay';
 import './style.scss';
 
 class Header extends React.Component {
@@ -35,6 +37,7 @@ class Header extends React.Component {
               <img src={profileAvatar} className="avatar" alt="chat avatar" />
             )}
             <div className="header-buttons">
+              <ReplayIcon onClick={this.abortCurrentProcess} />
               {showFullScreenButton && (
                 <button className="toggle-fullscreen-button" onClick={toggleFullScreen}>
                   <img
@@ -46,7 +49,7 @@ class Header extends React.Component {
                   />
                 </button>
               )}
-              {
+              {showCloseButton && (
                 <button className="close-button" onClick={toggleChat}>
                   <img
                     className={`close ${closeImage ? '' : 'default'}`}
@@ -54,11 +57,10 @@ class Header extends React.Component {
                     alt="close"
                   />
                 </button>
-              }
+              )}
             </div>
             <h4 className={`title ${profileAvatar && 'with-avatar'}`}>{title}</h4>
             {subtitle && <span className={profileAvatar && 'with-avatar'}>{subtitle}</span>}
-            <button onClick={this.abortCurrentProcess}>Abort</button>
           </div>
           {!connected && <span className="loading">{connectingText}</span>}
         </div>
