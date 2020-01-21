@@ -1,22 +1,77 @@
 @import "variables.scss";
 @import "common.scss";
+// table {
+//     border-spacing: 0px;
+// }
+// tr {
+//     border: 1px solid #405164;
+//     background: #fff;
+// }
+
+// th,
+// td {
+//     padding: 6px;
+//     // border: 1px solid #000;
+// }
+
+// table tr:nth-child(2n) {
+//     background: #f6f8fa;
+// }
+
+//  /// /////////////////////////////
 table {
-    border-spacing: 0px;
-}
-tr {
-    border: 1px solid #405164;
-    background: #fff;
+    border-collapse: collapse;
+    border: 1px solid #dee2e6;
 }
 
-th,
-td {
-    padding: 6px;
-    // border: 1px solid #000;
+table {
+    // font-size: 12px;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
 }
 
-table tr:nth-child(2n) {
-    background: #f6f8fa;
+table th,
+table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
 }
+
+table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+tbody {
+    font-size: 12px;
+    background-color: #fff;
+}
+table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+}
+
+table th {
+    font-weight: normal;
+    font-size: 14px;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+    border-bottom-width: 2px;
+}
+////////////////////////////////////////
 
 // table {
 //     width: 100%;

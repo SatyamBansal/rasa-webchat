@@ -8,7 +8,7 @@ export default function () {
   };
 
   return function reducer(state = INITIAL_STATE, action) {
-    console.log('PO reducer INITIALIZED', action);
+    console.log('PO reducer called with actioin : ', action);
     switch (action.type) {
       case actionTypes.ADD_PURCHASE_ORDERS: {
         console.log('Recieved new records', action.payload);

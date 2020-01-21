@@ -87,6 +87,23 @@ export default function (storage) {
           })
         );
       }
+
+      case actionTypes.ABORT_PROCESS: {
+        let modifiedMessages = state.update(
+          state.findIndex((item) => {
+                        return item.get("chosenReply") === null;
+                    }),
+          (item) => {
+                        return item.set("chosenReply", "invalid");
+                    }
+        );
+        return storeMessage(
+          modifiedMessages.filter((value) => {
+            console.log('Value :', value.get('type'));
+            return value.get('type') != 'popup';
+          })
+        );
+      }
       // Pull conversation from storage, parsing as immutable List
       case actionTypes.PULL_SESSION: {
         const localSession = getLocalSession(storage, SESSION_NAME);

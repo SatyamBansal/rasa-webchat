@@ -30,16 +30,22 @@ export default function (inputTextFieldHint, connectingText, storage, docViewer 
         return storeParams(state.update('isChatVisible', isChatVisible => false));
       }
       case actionTypes.TOGGLE_CHAT: {
-        return storeParams(state.update('isChatOpen', isChatOpen => !isChatOpen).set('unreadCount', 0));
+        return storeParams(
+          state.update('isChatOpen', isChatOpen => !isChatOpen).set('unreadCount', 0)
+        );
       }
       case actionTypes.OPEN_CHAT: {
-        return storeParams(state.update('isChatOpen', isChatOpen => true).set('unreadCount', 0));
+        return storeParams(
+          state.update('isChatOpen', isChatOpen => true).set('unreadCount', 0)
+        );
       }
       case actionTypes.CLOSE_CHAT: {
         return storeParams(state.update('isChatOpen', isChatOpen => false));
       }
       case actionTypes.TOGGLE_FULLSCREEN: {
-        return storeParams(state.update('fullScreenMode', fullScreenMode => !fullScreenMode));
+        return storeParams(
+          state.update('fullScreenMode', fullScreenMode => !fullScreenMode)
+        );
       }
       case actionTypes.TOGGLE_INPUT_DISABLED: {
         return storeParams(state.update('disabledInput', disabledInput => !disabledInput));
@@ -67,6 +73,13 @@ export default function (inputTextFieldHint, connectingText, storage, docViewer 
       }
       case actionTypes.SET_TOOLTIP_MESSAGE: {
         return storeParams(state.set('tooltipMessage', action.tooltipMessage));
+      }
+      case actionTypes.ABORT_PROCESS: {
+        console.log('Aborting process in behavior reducer ..........');
+
+        return storeParams(
+          state.set('disabledInput', false).set('inputTextFieldHint', 'ABORT SUCCESS')
+        );
       }
       // Pull params from storage to redux store
       case actionTypes.PULL_SESSION: {

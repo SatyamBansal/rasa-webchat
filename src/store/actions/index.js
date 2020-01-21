@@ -173,6 +173,12 @@ export function modifyPurchaseOrder(orderid, key, value) {
   };
 }
 
+export function abortProcess() {
+  return {
+    type: actions.ABORT_PROCESS
+  };
+}
+
 export function clearPOdata() {
   return {
     type: actions.CLEAR_PO_DATA
