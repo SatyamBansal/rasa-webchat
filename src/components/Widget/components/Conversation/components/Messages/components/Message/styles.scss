@@ -19,58 +19,60 @@
 // }
 
 //  /// /////////////////////////////
-table {
-    border-collapse: collapse;
-    border: 1px solid #dee2e6;
-}
+.markdown {
+    table {
+        border-collapse: collapse;
+        border: 1px solid #dee2e6;
+    }
 
-table {
-    // font-size: 12px;
-    width: 100%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    color: #212529;
-}
+    table {
+        // font-size: 12px;
+        width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        color: #212529;
+    }
 
-table th,
-table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
-}
+    table th,
+    table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
 
-table thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6;
-}
-tbody {
-    font-size: 12px;
-    background-color: #fff;
-}
-table tbody + tbody {
-    border-top: 2px solid #dee2e6;
-}
+    table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+    tbody {
+        font-size: 12px;
+        background-color: #fff;
+    }
+    table tbody + tbody {
+        border-top: 2px solid #dee2e6;
+    }
 
-table th {
-    font-weight: normal;
-    font-size: 14px;
-    color: #fff;
-    background-color: #343a40;
-    border-color: #454d55;
-}
+    table th {
+        font-weight: normal;
+        font-size: 14px;
+        color: #fff;
+        background-color: #343a40;
+        border-color: #454d55;
+    }
 
-.table-bordered {
-    border: 1px solid #dee2e6;
-}
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
 
-.table-bordered th,
-.table-bordered td {
-    border: 1px solid #dee2e6;
-}
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #dee2e6;
+    }
 
-.table-bordered thead th,
-.table-bordered thead td {
-    border-bottom-width: 2px;
+    .table-bordered thead th,
+    .table-bordered thead td {
+        border-bottom-width: 2px;
+    }
 }
 ////////////////////////////////////////
 

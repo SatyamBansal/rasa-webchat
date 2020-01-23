@@ -22,7 +22,7 @@
     }
 
     .MuiSvgIcon-root:hover {
-        font-size: 1.7rem;
+        font-size: 30px;
         cursor: pointer;
     }
 
@@ -47,7 +47,7 @@
     }
 
     .title {
-        font-size: 18px;
+        font-size: 20px;
         margin: 0;
         font-family: $roboto;
         position: absolute;
@@ -142,4 +142,11 @@
             @include loading-fs;
         }
     }
+}
+
+//////////////////  for Material ui
+
+.header-buttons .MuiSvgIcon-root {
+    font-size: 24px;
+    background-color: transparent !important;
 }
