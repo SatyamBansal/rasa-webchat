@@ -474,7 +474,7 @@ export default function EnhancedTable() {
           >
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
+              numSelected={getSelectedLength()}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
