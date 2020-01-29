@@ -4,7 +4,7 @@ import log from 'logger';
 import {
   toggleInputDisabled,
   changeInputFieldHint,
-  sendPOData,
+  sendChargesData,
   deletePopupMessage,
   cancelPO
 } from 'actions';
@@ -203,7 +203,7 @@ class OtherPOCharges extends Component {
       console.log(this.getOrdersData(this.props.selectedOrdersId, this.props.orders));
       const data = this.getOrdersData(this.props.selectedOrdersId, this.props.orders);
       console.log('SENDING DATA ........ : ', data);
-      this.props.dispatch(sendPOData(data));
+      this.props.dispatch(sendChargesData(data));
       this.props.dispatch(deletePopupMessage());
       console.log('Saving Changes in Dialog');
       this.enableUserInput();

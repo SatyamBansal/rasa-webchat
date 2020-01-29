@@ -86,10 +86,25 @@ export function addUserMessage(text) {
   };
 }
 
+export function updatePOAmount(value) {
+  return {
+    type: actions.UPDATE_PO_TOTAL_AMOUNT,
+    value
+  };
+}
+
 export function emitUserMessage(text) {
   return {
     type: actions.EMIT_NEW_USER_MESSAGE,
     text
+  };
+}
+
+export function sendChargesData(data) {
+  return {
+    type: actions.SEND_PO_DATA,
+    data: '/inform{"is_other_charges":"yes"}',
+    customData: data
   };
 }
 

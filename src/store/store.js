@@ -14,6 +14,7 @@ let store = 'call initStore first';
 
 function initStore(hintText, connectingText, socket, storage, docViewer = false) {
   const customMiddleWare = store => next => (action) => {
+    console.log('STORE....', store);
     const session_id = getLocalSession(storage, SESSION_NAME)
       ? getLocalSession(storage, SESSION_NAME).session_id
       : null;
@@ -24,7 +25,7 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
           customData: socket.customData,
           session_id
         });
-
+        console.log('CURRENT STORE STATE : ', store.getState());
         socket.emit('user_uttered', {
           message: action.text,
           customData: socket.customData,

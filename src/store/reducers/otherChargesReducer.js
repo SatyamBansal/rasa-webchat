@@ -4,7 +4,7 @@ export default function () {
   const INITIAL_STATE = {
     selectedCharges: [],
     charges: [],
-    amount: 200
+    poAmount: 0
   };
 
   return function reducer(state = INITIAL_STATE, action) {
@@ -27,6 +27,13 @@ export default function () {
         console.log('Updating selected charges...');
         return { ...state, selectedCharges: action.payload };
       }
+      case actionTypes.UPDATE_PO_TOTAL_AMOUNT: {
+        return {
+          ...state,
+          poAmount: action.value
+        };
+      }
+
       case actionTypes.MODIFY_OTHER_CHARGES: {
         // console.log('INitial Quantity:', state.orders[0].QUANTITY);
         // const modifiedState = { ...state };
@@ -42,17 +49,17 @@ export default function () {
             // ) {
             //   if (prevCharges[i].unit == 'percentage') {
             //     prevCharges[i].AMOUNT =
-            //                         (modifiedState.amount * prevCharges[i].ACCOUNT_PERCENTAGE) /
+            //                         (modifiedState.poAmount * prevCharges[i].ACCOUNT_PERCENTAGE) /
             //                         100;
             //   }
             // }
             if (action.payload.key == 'ACCOUNT_PERCENTAGE') {
               prevCharges[i].AMOUNT =
-                                (modifiedState.amount * prevCharges[i].ACCOUNT_PERCENTAGE) / 100;
+                                (modifiedState.poAmount * prevCharges[i].ACCOUNT_PERCENTAGE) / 100;
             }
             if (action.payload.key == 'AMOUNT') {
               prevCharges[i].ACCOUNT_PERCENTAGE =
-                                (prevCharges[i].AMOUNT * 100) / modifiedState.amount;
+                                (prevCharges[i].AMOUNT * 100) / modifiedState.poAmount;
             }
             break;
           }

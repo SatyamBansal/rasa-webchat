@@ -149,6 +149,14 @@ class Widget extends Component {
       socket.createSocket();
 
       socket.on('bot_uttered', (botUttered) => {
+        if (botUttered.subComponent == 'otherpocharges') {
+          botUttered = {
+            type: 'otherpocharges',
+            text: botUttered.payload.text,
+            payload: botUttered.payload.data
+          };
+        }
+
         // botUttered = {
         //   type: 'popup',
         //   text: 'This is a custom popup',

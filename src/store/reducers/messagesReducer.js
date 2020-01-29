@@ -83,19 +83,17 @@ export default function (storage) {
         return storeMessage(
           state.filter((value) => {
             console.log('Value :', value.get('type'));
-            return value.get('type') != 'popup';
+            return (
+              value.get('type') != 'popup' && value.get('type') != 'otherpocharges'
+            );
           })
         );
       }
 
       case actionTypes.ABORT_PROCESS: {
-        let modifiedMessages = state.update(
-          state.findIndex((item) => {
-                        return item.get("chosenReply") === null;
-                    }),
-          (item) => {
-                        return item.set("chosenReply", "invalid");
-                    }
+        const modifiedMessages = state.update(
+          state.findIndex(item => item.get('chosenReply') === null),
+          item => item.set('chosenReply', 'invalid')
         );
         return storeMessage(
           modifiedMessages.filter((value) => {
