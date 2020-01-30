@@ -47,6 +47,20 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
         next(action);
         return;
       }
+      case actionTypes.SEND_CHARGES_DATA: {
+        console.log(
+          '*************************sending charges data to server ......',
+          action.data
+        );
+        console.log(action.type);
+        socket.emit('user_uttered', {
+          message: action.data,
+          customData: { payload: action.customData },
+          session_id
+        });
+        next(action);
+        return;
+      }
       case actionTypes.CANCEL_PO: {
         console.log('!!!!!! Aborting PO Creation Process .......... ');
         socket.emit('user_uttered', {

@@ -463,12 +463,15 @@ export default function EnhancedTable() {
   };
 
   const showNegativError = (isSelected, value, isDisabled) => {
+    if (isDisabled) {
+      return false;
+    }
     if (isSelected && value == 'null') {
       return true;
     }
     // console.log('Select Status for id ', id, ' ', isSelected);
     // console.log('rowid : ', row.INDENT_DT_ID, ' : ', typeof (parseFloat(quantity)), ' : ', (parseFloat(row.RATE)));
-    if (isSelected && !isDisabled) {
+    if (isSelected) {
       if (parseFloat(value) <= 0) {
         return true;
       }
@@ -569,7 +572,7 @@ export default function EnhancedTable() {
                             ) &&
                                                         (row.ACCOUNT_PERCENTAGE < 0
                                                           ? 'cannot be negative'
-                                                          : 'rate cannot be zero')
+                                                          : 'cannot be zero')
                           }
                           error={showNegativError(
                             isItemSelected,
@@ -603,7 +606,7 @@ export default function EnhancedTable() {
                             ) &&
                                                         (row.AMOUNT < 0
                                                           ? 'cannot be negative'
-                                                          : 'rate cannot be zero')
+                                                          : 'cannot be zero')
                           }
                           error={showNegativError(
                             isItemSelected,
@@ -662,7 +665,7 @@ export default function EnhancedTable() {
                             showRateError(isItemSelected, row.RATE) &&
                                                         (row.RATE < 0
                                                           ? 'cannot be negative'
-                                                          : 'rate cannot be zero')
+                                                          : 'cannot be zero')
                           }
                           inputProps={{ 'aria-label': 'rate' }}
                         />

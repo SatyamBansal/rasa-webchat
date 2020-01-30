@@ -102,7 +102,7 @@ export function emitUserMessage(text) {
 
 export function sendChargesData(data) {
   return {
-    type: actions.SEND_PO_DATA,
+    type: actions.SEND_CHARGES_DATA,
     data: '/inform{"is_other_charges":"yes"}',
     customData: data
   };

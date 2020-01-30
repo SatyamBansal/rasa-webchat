@@ -8,7 +8,7 @@ import {
     cancelPO,
     updatePOAmount
 } from "actions";
-
+import moment from "moment";
 import { withStyles } from "@material-ui/core/styles";
 
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -214,7 +214,18 @@ class Popup extends Component {
                 console.log("Validation Failed on quantity");
                 return false;
             }
-            if (compareAsc(Date.parse(selectedOrders[i].DEL_DATE), new Date()) < -1) {
+            console.log(
+                "Checking Date Validation : ",
+                moment(selectedOrders[i].DEL_DATE, "DD/MM/YYYY").isBefore(
+                    moment().subtract(1, "day")
+                )
+            );
+
+            if (
+                moment(selectedOrders[i].DEL_DATE, "DD/MM/YYYY").isBefore(
+                    moment().subtract(1, "day")
+                )
+            ) {
                 console.log("Validation Failed on date");
                 return false;
             }

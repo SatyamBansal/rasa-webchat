@@ -4,7 +4,7 @@ export default function () {
   const INITIAL_STATE = {
     selectedCharges: [],
     charges: [],
-    poAmount: 0
+    poAmount: 200
   };
 
   return function reducer(state = INITIAL_STATE, action) {
@@ -13,8 +13,10 @@ export default function () {
       case actionTypes.ADD_OTHER_CHARGES: {
         const pocharges = action.payload;
         for (let i = 0; i < pocharges.length; ++i) {
-          if (pocharges[i].ACCOUNT_PERCENTAGE == 'null') {
+          if (pocharges[i].ACCOUNT_PERCENTAGE != 'null') {
             pocharges[i].unit = 'percentage';
+            pocharges[i].AMOUNT =
+                            (state.poAmount * pocharges[i].ACCOUNT_PERCENTAGE) / 100;
           } else {
             pocharges[i].unit = 'fixed';
           }
