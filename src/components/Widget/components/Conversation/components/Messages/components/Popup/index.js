@@ -216,13 +216,13 @@ class Popup extends Component {
             }
             console.log(
                 "Checking Date Validation : ",
-                moment(selectedOrders[i].DEL_DATE, "DD/MM/YYYY").isBefore(
+                moment(selectedOrders[i].DEL_DATE, "DD/MMM/YYYY").isBefore(
                     moment().subtract(1, "day")
                 )
             );
 
             if (
-                moment(selectedOrders[i].DEL_DATE, "DD/MM/YYYY").isBefore(
+                moment(selectedOrders[i].DEL_DATE, "DD/MMM/YYYY").isBefore(
                     moment().subtract(1, "day")
                 )
             ) {
