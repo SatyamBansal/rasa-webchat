@@ -11,7 +11,8 @@ import {
   storeMessageTo,
   getLocalSession,
   createPopup,
-  createOtherChargesPopup
+  createOtherChargesPopup,
+  createIndentPopup
 } from './helper';
 
 import * as actionTypes from '../actions/actionTypes';
@@ -39,6 +40,11 @@ export default function (storage) {
       case actionTypes.ADD_OTHER_CHARGES_POPUP: {
         return storeMessage(
           state.push(createOtherChargesPopup(action.text, MESSAGE_SENDER.RESPONSE))
+        );
+      }
+      case actionTypes.ADD_INDENT_POPUP: {
+        return storeMessage(
+          state.push(createIndentPopup(action.text, MESSAGE_SENDER.RESPONSE))
         );
       }
       case actionTypes.ADD_NEW_LINK_SNIPPET: {

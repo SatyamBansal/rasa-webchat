@@ -23,28 +23,32 @@ module.exports = {
   mode: 'development',
   devtool: 'eval-source-map',
   module: {
-    rules: [{
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader'
-    }, {
-      test: /\.scss$/,
-      use: [
-        { loader: 'style-loader' },
-        { loader: 'css-loader' },
-        {
-          loader: 'sass-loader',
-          options: {
-            includePaths: [path.resolve(__dirname, 'src/scss/')]
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: [path.resolve(__dirname, 'src/scss/')]
+            }
           }
+        ]
+      },
+      {
+        test: /\.(jpg|png|gif|svg)$/,
+        use: {
+          loader: 'url-loader'
         }
-      ]
-    }, {
-      test: /\.(jpg|png|gif|svg)$/,
-      use: {
-        loader: 'url-loader'
       }
-    }]
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({

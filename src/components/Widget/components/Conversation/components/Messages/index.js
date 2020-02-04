@@ -13,10 +13,13 @@ import {
   Popup,
   OtherPOCharges
 } from 'messagesComponents';
+
+import IndentPopup from './components/IndentPopup';
 // import Popup from './components/Popup';
 import Dialog from '@material-ui/core/Dialog';
 
 import './styles.scss';
+// import { IndentPopup } from './components/IndentPopup';
 
 const isToday = (date) => {
   const today = new Date();
@@ -27,6 +30,7 @@ const isToday = (date) => {
   );
 };
 
+// const Indent = () => <div>Indent Popup here</div>;
 const formatDate = (date) => {
   const dateToFormat = new Date(date);
   const showDate = isToday(dateToFormat) ? '' : `${dateToFormat.toLocaleDateString()} `;
@@ -76,13 +80,19 @@ class Messages extends Component {
             console.log('Displaying Other Charges Popup Component');
             return OtherPOCharges;
           }
+          case MESSAGES_TYPES.INDENT_POPUP: {
+            console.log('Dispalying Indent Popup');
+            return IndentPopup;
+          }
           case MESSAGES_TYPES.CUSTOM_COMPONENT:
             return connect(
               store => ({ store }),
               dispatch => ({ dispatch })
             )(this.props.customComponent);
-          default:
+          default: {
+            console.log('No component found to display');
             return null;
+          }
         }
       })();
       if (message.get('type') === 'component') {

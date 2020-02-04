@@ -34,6 +34,16 @@ export function createOtherChargesPopup(text, sender) {
   });
 }
 
+export function createIndentPopup(text, sender) {
+  return Map({
+    type: MESSAGES_TYPES.INDENT_POPUP,
+    text,
+    sender,
+    showAvatar: sender === MESSAGE_SENDER.RESPONSE,
+    timestamp: new Date().getTime()
+  });
+}
+
 export function createLinkSnippet(link, sender) {
   return Map({
     type: MESSAGES_TYPES.SNIPPET.LINK,

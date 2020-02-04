@@ -33,6 +33,7 @@ import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
 import { isSnippet, isVideo, isImage, isQR, isText } from './msgProcessor';
 import WidgetLayout from './layout';
 import { storeLocalSession, getLocalSession } from '../../store/reducers/helper';
+import { addIndentPopup } from '../../store/actions';
 
 class Widget extends Component {
   constructor(props) {
@@ -370,6 +371,8 @@ class Widget extends Component {
           image: element.src
         })
       );
+    } else if (message.component == 'popup' && message.subComponent == 'indentPopup') {
+      this.props.dispatch(addIndentPopup(message.payload.text));
     } else if (message.type == 'popup') {
       console.log('Adding Orders : ', message.payload);
       const orders = message.payload;

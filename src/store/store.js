@@ -9,6 +9,7 @@ import otherPOCharges from './reducers/otherChargesReducer';
 import { getLocalSession } from './reducers/helper';
 import * as actionTypes from './actions/actionTypes';
 import otherChargesReducer from './reducers/otherChargesReducer';
+import indentReducer from './reducers/indentReducer';
 
 let store = 'call initStore first';
 
@@ -101,7 +102,8 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
     behavior: behavior(hintText, connectingText, storage, docViewer),
     messages: messages(storage),
     purchaseOrders: purchaseOrders(),
-    otherPOCharges: otherChargesReducer()
+    otherPOCharges: otherChargesReducer(),
+    indents: indentReducer()
   });
 
     /* eslint-disable no-underscore-dangle */
