@@ -49,32 +49,31 @@ class Selector extends React.Component {
     };
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-    getData = (itemID) => 
-       true
-      // const response = await axios.post('http://bluekaktus.ml/proxy/getItemList', {
-      //   BASICPARAMS: {
-      //     CLIENT_CODE: 'demo',
-      //     APP_VERSION: '1.0'
-      //   },
-      //   ITEM_ID: itemID
-      // });
+    getData = async (itemID) => {
+      const response = await axios.post('http://bluekaktus.ml/proxy/getItemList', {
+        BASICPARAMS: {
+          CLIENT_CODE: 'demo',
+          APP_VERSION: '1.0'
+        },
+        ITEM_ID: itemID
+      });
 
-      //   // await this.sleep(2000)
+        // await this.sleep(2000)
 
-      // const items = response.data.data;
-      // const options = [];
-      // for (let i = 0; i < items.length; ++i) {
-      //   options.push({
-      //     value: items[i].ITEM_ID,
-      //     label: items[i].ITEM_NAME.toLowerCase(),
-      //     quantity: items[i].QUANTITY,
-      //     rate: items[i].RATE,
-      //     isParent: items[i].ITEM_TYPE === 'S'
-      //   });
-      // }
+      const items = response.data.data;
+      const options = [];
+      for (let i = 0; i < items.length; ++i) {
+        options.push({
+          value: items[i].ITEM_ID,
+          label: items[i].ITEM_NAME.toLowerCase(),
+          quantity: items[i].QUANTITY,
+          rate: items[i].RATE,
+          isParent: items[i].ITEM_TYPE === 'S'
+        });
+      }
 
-      // this.setState({ selectOptions: options, loading: false });
-    ;
+      this.setState({ selectOptions: options, loading: false });
+    };
     componentDidMount() {
       this.getData(0);
       console.log('REf element ', this.selectRef);

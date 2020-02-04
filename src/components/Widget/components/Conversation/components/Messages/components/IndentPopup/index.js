@@ -261,8 +261,8 @@ class IndentPopup extends Component {
       // this.props.dispatch(changeInputFieldHint(UI_MESSAGES.INPUT_HINT))
     }
     disableUserInput() {
-      // this.props.dispatch(toggleInputDisabled())
-      // this.props.dispatch(changeInputFieldHint('Select Details Above ...'))
+      this.props.dispatch(toggleInputDisabled());
+      this.props.dispatch(changeInputFieldHint('Select Details Above ...'));
     }
     saveChanges() {
       //   console.log(
@@ -293,56 +293,54 @@ class IndentPopup extends Component {
       this.props.dispatch(changeRate(event.target.value));
     };
 
-    getActivityData = () => 
-         true
-        // const response = await axios.post('http://bluekaktus.ml/proxy/getActivityList', {
-        //   BASICPARAMS: {
-        //     CLIENT_CODE: 'demo',
-        //     APP_VERSION: '1.0'
-        //   }
-        // });
+    getActivityData = async () => {
+      const response = await axios.post('http://bluekaktus.ml/proxy/getActivityList', {
+        BASICPARAMS: {
+          CLIENT_CODE: 'demo',
+          APP_VERSION: '1.0'
+        }
+      });
 
-        // await this.sleep(2000);
+      await this.sleep(2000);
 
-        // const items = response.data.data;
-        // console.log(response);
-        // const options = [];
-        // for (let i = 0; i < items.length; ++i) {
-        //   options.push({
-        //     value: items[i].ACTIVITY_ID,
-        //     label: items[i].ACTIVITY
-        //   });
-        // }
+      const items = response.data.data;
+      console.log(response);
+      const options = [];
+      for (let i = 0; i < items.length; ++i) {
+        options.push({
+          value: items[i].ACTIVITY_ID,
+          label: items[i].ACTIVITY
+        });
+      }
 
-        // console.log(options);
+      console.log(options);
 
-        // this.setState({ activitySelector: { loading: false, options } });
-    ;
+      this.setState({ activitySelector: { loading: false, options } });
+    };
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-    getSupplierData = () => 
-         true
-        // await this.sleep(2000);
-        // const response = await axios.post('http://bluekaktus.ml/proxy/getSupplierList', {
-        //   BASICPARAMS: {
-        //     CLIENT_CODE: 'demo',
-        //     APP_VERSION: '1.0'
-        //   }
-        // });
+    getSupplierData = async () => {
+      await this.sleep(2000);
+      const response = await axios.post('http://bluekaktus.ml/proxy/getSupplierList', {
+        BASICPARAMS: {
+          CLIENT_CODE: 'demo',
+          APP_VERSION: '1.0'
+        }
+      });
 
-        //   // await this.sleep(2000)
+        // await this.sleep(2000)
 
-        // const items = response.data.data;
-        // const options = [];
-        // for (let i = 0; i < items.length; ++i) {
-        //   options.push({
-        //     value: items[i].SUPPLIER_ID,
-        //     label: items[i].SUPPLIER
-        //   });
-        // }
+      const items = response.data.data;
+      const options = [];
+      for (let i = 0; i < items.length; ++i) {
+        options.push({
+          value: items[i].SUPPLIER_ID,
+          label: items[i].SUPPLIER
+        });
+      }
 
-        // this.setState({ supplierSelector: { loading: false, options } });
-    ;
+      this.setState({ supplierSelector: { loading: false, options } });
+    };
 
     componentDidMount() {
       this.getActivityData();
@@ -402,21 +400,9 @@ class IndentPopup extends Component {
                   id="customized-dialog-title"
                   onClose={() => this.handleClose()}
                 >
-                                Fill PO Details
+                                Item Detail
                 </DialogTitle>
                 <DialogContent dividers>
-                  <p>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry. Lorem Ipsum has been the industry's standard dummy
-                                    text ever since the 1500s, when an unknown printer took a galley
-                                    of type and scrambled it to make a type specimen book. It has
-                                    survived not only five centuries, but also the leap into
-                                    electronic typesetting, remaining essentially unchanged. It was
-                                    popularised in the 1960s with the release of Letraset sheets
-                                    containing Lorem Ipsum passages, and more recently with desktop
-                                    publishing software like Aldus PageMaker including versions of
-                                    Lorem Ipsum
-                  </p>
                   <Selector
                     isDisabled={this.disableItemSelect(this.props.deliveryData)}
                   />

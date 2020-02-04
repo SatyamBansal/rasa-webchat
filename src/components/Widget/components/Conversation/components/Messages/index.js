@@ -11,10 +11,11 @@ import {
   Snippet,
   QuickReply,
   Popup,
+  IndentPopup,
   OtherPOCharges
 } from 'messagesComponents';
 
-import IndentPopup from './components/IndentPopup';
+// import IndentPopup from './components/IndentPopup';
 // import Popup from './components/Popup';
 import Dialog from '@material-ui/core/Dialog';
 
