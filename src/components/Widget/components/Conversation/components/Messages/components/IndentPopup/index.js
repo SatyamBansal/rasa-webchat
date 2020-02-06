@@ -4,7 +4,8 @@ import axios from 'axios';
 import {
   toggleInputDisabled,
   changeInputFieldHint,
-  sendPOData,
+  sendIndentData,
+  addIndentData,
   deletePopupMessage,
   cancelPO,
   changeQuantity,
@@ -35,7 +36,7 @@ import { Table } from '@material-ui/core';
 
 // import './styles.scss';
 // import { compareAsc, format } from 'date-fns';
-// import { UI_MESSAGES } from '../../../../../../../../constants';
+import { UI_MESSAGES } from 'constants';
 
 const colourOptions = [
   { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
@@ -172,9 +173,9 @@ class IndentPopup extends Component {
     }
 
     discardPO() {
-      // this.props.dispatch(deletePopupMessage())
-      // this.props.dispatch(cancelPO())
-      // this.enableUserInput()
+      this.props.dispatch(deletePopupMessage());
+      this.props.dispatch(cancelPO());
+      this.enableUserInput();
       this.setState({ isDialogOpen: false, showAlert: false });
     }
 
@@ -257,8 +258,8 @@ class IndentPopup extends Component {
     // }
 
     enableUserInput() {
-      // this.props.dispatch(toggleInputDisabled())
-      // this.props.dispatch(changeInputFieldHint(UI_MESSAGES.INPUT_HINT))
+      this.props.dispatch(toggleInputDisabled());
+      this.props.dispatch(changeInputFieldHint(UI_MESSAGES.INPUT_HINT));
     }
     disableUserInput() {
       this.props.dispatch(toggleInputDisabled());
@@ -280,8 +281,11 @@ class IndentPopup extends Component {
       //   console.log('SENDING DATA ........ : ', data);
       //   this.props.dispatch(sendPOData(data));
       //   this.props.dispatch(deletePopupMessage());
+      this.props.dispatch(addIndentData());
+      this.props.dispatch(sendIndentData());
+
       console.log('Saving Changes in Dialog');
-      // this.enableUserInput()
+      this.enableUserInput();
       this.closeDialog();
     }
 
@@ -386,8 +390,7 @@ class IndentPopup extends Component {
                 color="primary"
                 onClick={() => this.openDialog()}
               >
-                {/* {this.props.message.get('text', 'Fill PO')} */}
-                            Popup
+                {this.props.message.get('text', 'Popup')}
               </Button>
 
               <Dialog open={this.state.isDialogOpen} style={{ maxWidth: '1500px' }}>

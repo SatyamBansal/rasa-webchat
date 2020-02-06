@@ -11,6 +11,8 @@ import * as actionTypes from './actions/actionTypes';
 import otherChargesReducer from './reducers/otherChargesReducer';
 import indentReducer from './reducers/indentReducer';
 
+import _ from 'lodash';
+
 let store = 'call initStore first';
 
 function initStore(hintText, connectingText, socket, storage, docViewer = false) {
@@ -30,6 +32,20 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
         socket.emit('user_uttered', {
           message: action.text,
           customData: socket.customData,
+          session_id
+        });
+        return;
+      }
+
+      case actionTypes.SEND_INDENT_DATA: {
+        console.log(
+          '*************************sending indent data to server ......',
+          store.getState().indents.indentData
+        );
+        console.log(action.type);
+        socket.emit('user_uttered', {
+          message: action.data,
+          customData: { payload: store.getState().indents.indentData },
           session_id
         });
         return;

@@ -116,6 +116,19 @@ export function sendPOData(data) {
   };
 }
 
+export function sendIndentData() {
+  return {
+    type: actions.SEND_INDENT_DATA,
+    data: '/inform'
+  };
+}
+
+export function addIndentData() {
+  return {
+    type: actions.ADD_INDENT_DATA
+  };
+}
+
 export function cancelPO() {
   return {
     type: actions.CANCEL_PO
@@ -308,39 +321,39 @@ export function triggerTooltipSent() {
   };
 }
 
-export const addItem = (item) => ({
-        type: actions.ADD_ITEM,
-        data: item
-    });
+export const addItem = item => ({
+  type: actions.ADD_ITEM,
+  data: item
+});
 
-export const changeQuantity = (value) => ({
-        type: actions.CHANGE_QUANTITY,
-        data: value
-    });
-export const changeActivity = (value) => ({
-        type: actions.CHANGE_ACTIVITY,
-        data: value
-    });
+export const changeQuantity = value => ({
+  type: actions.CHANGE_QUANTITY,
+  data: value
+});
+export const changeActivity = value => ({
+  type: actions.CHANGE_ACTIVITY,
+  data: value
+});
 
 export const addDeliveryData = (id, date, qty, location) => ({
-        type: actions.ADD_DELIVERY_DATA,
-        data: {
-            id,
-            date,
-            qty,
-            location
-        }
-    });
-export const deleteDeliveryData = (ids) => ({
-        type: actions.DELTE_DELIVERY_DATA,
-        payload: ids
-    });
-export const changeSupplier = (value) => ({
-        type: actions.CHANGE_SUPPLIER,
-        data: value
-    });
+  type: actions.ADD_DELIVERY_DATA,
+  data: {
+    id,
+    date,
+    qty,
+    location
+  }
+});
+export const deleteDeliveryData = ids => ({
+  type: actions.DELTE_DELIVERY_DATA,
+  payload: ids
+});
+export const changeSupplier = value => ({
+  type: actions.CHANGE_SUPPLIER,
+  data: value
+});
 
-export const changeRate = (value) => ({
-        type: actions.CHANGE_RATE,
-        data: value
-    });
+export const changeRate = value => ({
+  type: actions.CHANGE_RATE,
+  data: value
+});

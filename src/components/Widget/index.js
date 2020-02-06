@@ -74,6 +74,7 @@ class Widget extends Component {
       if (!initialized) {
         this.initializeWidget();
       }
+      console.log('Trying to send init payload');
       this.trySendInitPayload();
     }
 
@@ -203,7 +204,9 @@ class Widget extends Component {
       // Request a session from server
       const localId = this.getSessionId();
       socket.on('connect', () => {
-        socket.emit('session_request', { session_id: localId });
+        console.log('Creating session connect request with id : ', this.getSessionId());
+        console.log('Current Session Id ', this.getSessionId());
+        socket.emit('session_request', { session_id: this.getSessionId() });
       });
 
       // When session_confirm is received from the server:
@@ -219,9 +222,10 @@ class Widget extends Component {
         If the localId is null or different from the remote_id,
         start a new session.
         */
-        if (localId !== remoteId) {
+        if (this.getSessionId() !== remoteId) {
           // storage.clear();
           // Store the received session_id to storage
+          console.log('Storing new user id');
 
           storeLocalSession(storage, SESSION_NAME, remoteId);
           dispatch(pullSession());
@@ -250,7 +254,7 @@ class Widget extends Component {
 
       socket.on('disconnect', (reason) => {
         // eslint-disable-next-line no-console
-        console.log(reason);
+        console.log('I am from widget component on disconnect reason ', reason);
         if (reason !== 'io client disconnect') {
           dispatch(disconnectServer());
         }

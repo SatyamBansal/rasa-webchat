@@ -75,7 +75,8 @@ export default function () {
     qtyAlloted: 0,
     supplier: {},
     activity: {},
-    deliveryData: []
+    deliveryData: [],
+    indentData: []
   };
 
   return function reducer(state = INITIAL_STATE, action) {
@@ -124,6 +125,25 @@ export default function () {
           deliveryData: prevState.deliveryData.filter(
             data => !action.payload.includes(data.id)
           )
+        };
+      }
+      case actionTypes.ADD_INDENT_DATA: {
+        // called after sending data in middleware , so append data
+
+        const prevState = JSON.parse(JSON.stringify(state));
+
+        const indentItemData = {
+          item: prevState.item,
+          uom: prevState.selecteduom,
+          rate: prevState.Rate,
+          supplier: prevState.supplier,
+          activity: prevState.activity,
+          deliveryData: prevState.deliveryData
+        };
+
+        return {
+          ...state,
+          indentData: _.concat(prevState.indentData, indentItemData)
         };
       }
       default:

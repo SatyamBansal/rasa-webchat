@@ -1,47 +1,45 @@
 <!DOCTYPE html>
 <html>
-<body>
+    <body>
+        <div style="display: flex; justify-content: center;">
+            <img src="blueKaktus.png" style="width: 400px; height: 500px;" />
+        </div>
 
-
-<div style="display: flex; justify-content: center;">
-  <img src="blueKaktus.png" style="width: 400px; height: 500px;" />
-</div>
-
-
-<div id="webchat"/>
-<!-- <script src="https://storage.googleapis.com/mrbot-cdn/webchat-latest.js"></script> -->
-<script src="http://www.blueKaktus.ml/static/bot.js"></script>
-<script>
-  sessionStorage.clear()
-  WebChat.default.init({
-    selector: "#webchat",
-    initPayload: '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"645", "api_host": "http://alblstaging.rdpl.com:8081", "ccid":"69", "cost_user":"arvind@bluekaktus.com"}',
-    interval: 100, // 1000 ms between each message
-    customData: {"test":"=========================================================================="}, // arbitrary custom data. Stay minimal as this will be added to the socket
-    socketUrl: "http://localhost:5005",
-    socketPath: "/socket.io/",
-    title: "Mili",
-    subtitle: "Hi! I'm a technical support chatbot.",
-    inputTextFieldHint: "Type a message...",
-    connectingText: "Bot is under training...",
-    hideWhenNotConnected: false,
-    fullScreenMode: false,
-    profileAvatar: "alexa.jpg",
-    openLauncherImage: 'alexa.jpg',
-    closeLauncherImage: 'myCustomCloseImage.png',
-    params: {
-      images: {
-        dims: {
-          width: 300,
-          height: 200,
-        }
-      },
-      storage: "session"
-    },
-  })
-</script>
-
-</body>
+        <div id="webchat" />
+        <!-- <script src="https://storage.googleapis.com/mrbot-cdn/webchat-latest.js"></script> -->
+        <script src="http://www.blueKaktus.ml/static/bot.js"></script>
+        <script>
+            sessionStorage.clear();
+            WebChat.default.init({
+                selector: "#webchat",
+                initPayload:
+                    '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"645", "api_host": "http://alblstaging.rdpl.com:8081", "ccid":"69", "cost_user":"arvind@bluekaktus.com"}',
+                interval: 100, // 1000 ms between each message
+                customData: {
+                    test:
+                        "=========================================================================="
+                }, // arbitrary custom data. Stay minimal as this will be added to the socket
+                socketUrl: "http://13.67.41.38:5007",
+                socketPath: "/socket.io/",
+                title: "Mili",
+                subtitle: "Hi! I'm a technical support chatbot.",
+                inputTextFieldHint: "Type a message...",
+                connectingText: "Bot is under training...",
+                hideWhenNotConnected: false,
+                fullScreenMode: false,
+                profileAvatar: "alexa.jpg",
+                openLauncherImage: "alexa.jpg",
+                closeLauncherImage: "myCustomCloseImage.png",
+                params: {
+                    images: {
+                        dims: {
+                            width: 300,
+                            height: 200
+                        }
+                    },
+                    storage: "session"
+                }
+            });
+        </script>
+    </body>
 </html>
-
-
