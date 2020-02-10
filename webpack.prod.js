@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -18,6 +18,7 @@ module.exports = {
   mode: 'production',
   module: {
     rules: [
+      { parser: { amd: false } },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,

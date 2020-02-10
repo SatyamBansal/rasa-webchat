@@ -24,6 +24,7 @@ module.exports = {
   devtool: 'eval-source-map',
   module: {
     rules: [
+      { parser: { amd: false } },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,

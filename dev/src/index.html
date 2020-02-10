@@ -6,17 +6,16 @@
         </div>
 
         <div id="webchat" />
-        <!-- <script src="https://storage.googleapis.com/mrbot-cdn/webchat-latest.js"></script> -->
         <script src="index.js"></script>
         <script>
-            // sessionStorage.clear();
+            sessionStorage.clear();
             WebChat.default.init({
                 selector: "#webchat",
                 initPayload:
-                    '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://alblstaging.rdpl.com:8081", "ccid":"69", "cost_user":"arvind@bluekaktus.com"}',
-                interval: 100, // 1000 ms between each message
+                    '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://192.168.1.33:81", "ccid":"69", "cost_user":"arvind@bluekaktus.com", "company_id": "4", "location_id": "6", "client_code": "akri48"}',
+                interval: 1000, // 1000 ms between each message
                 customData: {}, // arbitrary custom data. Stay minimal as this will be added to the socket
-                socketUrl: "http://192.168.1.48:5005",
+                socketUrl: "http://13.67.41.38:5007/",
                 socketPath: "/socket.io/",
                 title: "Mili",
                 subtitle: "Hi! I'm a technical support chatbot.",
@@ -24,12 +23,9 @@
                 connectingText: "Bot is under training...",
                 hideWhenNotConnected: false,
                 fullScreenMode: false,
-                profileAvatar:
-                    "https://storage.googleapis.com/dev-media-store-botfront-cloud/logo_square_circle_white_bg256.jpg",
-                openLauncherImage:
-                    "https://storage.googleapis.com/dev-media-store-botfront-cloud/logo_square_circle_white_bg256.jpg",
-                closeLauncherImage:
-                    "https://storage.googleapis.com/dev-media-store-botfront-cloud/logo_square_circle_white_bg256.jpg",
+                profileAvatar: "mili2.png",
+                openLauncherImage: "mili2.png",
+                closeLauncherImage: "myCustomCloseImage.png",
                 params: {
                     images: {
                         dims: {
