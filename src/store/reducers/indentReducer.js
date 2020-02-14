@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import _ from 'lodash';
+import moment from 'moment';
 
 // const INIT_STATE = {
 //   item: {},
@@ -67,8 +68,13 @@ import _ from 'lodash';
 
 export default function () {
   const INITIAL_STATE = {
-    item: {},
-    selecteduom: null,
+    item: null,
+    selecteduom: {
+      value: 123,
+      label: 'kg'
+    },
+    uom: null,
+    // selecteduom: null,
     uomlist: [],
     rate: '',
     qty: '',
@@ -86,7 +92,7 @@ export default function () {
           ...state,
           qty: action.data.quantity,
           rate: action.data.rate.toString(),
-          item: action.data.toString()
+          item: { value: action.data.value, label: action.data.label }
         };
       case actionTypes.CHANGE_QUANTITY:
         return {
@@ -110,7 +116,11 @@ export default function () {
           ...state,
           supplier: action.data
         };
-
+      case actionTypes.CHANGE_UOM:
+        return {
+          ...state,
+          uom: action.data
+        };
       case actionTypes.ADD_DELIVERY_DATA:
         return {
           ...state,
@@ -131,6 +141,23 @@ export default function () {
         // called after sending data in middleware , so append data
 
         const prevState = JSON.parse(JSON.stringify(state));
+        const id = moment().unix();
+        const newIndent = {
+          dt_id: id,
+          item_id: prevState.item.value,
+          uom_id: prevState.uom.value,
+          quantity_req: prevState.qtyAlloted,
+          rate: prevState.rate,
+          party_id: prevState.supplier.value,
+          activity_id: prevState.activity.value,
+
+          indent_delsch_dt: prevState.deliveryData.map(data => ({
+            dt_id: id,
+            del_date: data.date,
+            quantity: data.qty,
+            del_location_id: data.location.value
+          }))
+        };
 
         const indentItemData = {
           item: prevState.item,
@@ -143,7 +170,7 @@ export default function () {
 
         return {
           ...state,
-          indentData: _.concat(prevState.indentData, indentItemData)
+          indentData: _.concat(prevState.indentData, newIndent)
         };
       }
       default:

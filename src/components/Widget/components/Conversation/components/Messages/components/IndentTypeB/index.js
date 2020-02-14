@@ -110,7 +110,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class Popup extends Component {
+class IndentTypeB extends Component {
     state = {
       isDialogOpen: false,
       isDirty: false,
@@ -349,9 +349,9 @@ class Popup extends Component {
 }
 
 const mapStateToProps = state => ({
-  orders: state.purchaseOrders.orders,
-  selectedOrdersId: state.purchaseOrders.selectedOrders,
-  savedOrders: state.purchaseOrders.savedOrders
+  indents: state.indentTypeB.orders,
+  selectedIndentsId: state.indentTypeB.selectedOrders,
+  savedIndents: state.indentTypeB.savedOrders
 });
 
-export default connect(mapStateToProps)(Popup);
+export default connect(mapStateToProps)(IndentTypeB);

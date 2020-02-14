@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 // pick a date util library
 import MomentUtils from '@date-io/moment';
 import { addDeliveryData } from 'actions';
+import DeliveryForm from './DeliveryForm';
 
 class IndentDetails extends React.Component {
     state = {
@@ -100,7 +101,7 @@ class IndentDetails extends React.Component {
     render() {
       return (
         <div>
-          <hr />
+          {/* <hr />
           <hr />
 
           <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -140,8 +141,9 @@ class IndentDetails extends React.Component {
                     ADD
           </Button>
 
-          <hr />
-          <hr />
+          <hr /> */}
+          <DeliveryForm />
+
           <DeliveryTable />
         </div>
       );

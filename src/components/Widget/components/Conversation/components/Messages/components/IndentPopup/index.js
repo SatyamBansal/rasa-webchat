@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import UomSelector from './Components/UomSelector';
 import {
   toggleInputDisabled,
   changeInputFieldHint,
@@ -149,6 +151,11 @@ class IndentPopup extends Component {
       supplierSelector: {
         options: [],
         loading: true
+      },
+      uomSelector: {
+        options: [],
+        disabled: true,
+        loading: false
       }
     };
 
@@ -298,11 +305,14 @@ class IndentPopup extends Component {
     };
 
     getActivityData = async () => {
-      const response = await axios.post('http://bluekaktus.ml/proxy/getActivityList', {
-        BASICPARAMS: {
-          CLIENT_CODE: 'demo',
-          APP_VERSION: '1.0'
-        }
+      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
+        basic_Info: {
+          client_code: 'akri48',
+          company_Id: 4,
+          location_Id: 6,
+          user_Id: 1
+        },
+        info_Type: 'ACTIVITY_LIST'
       });
 
       await this.sleep(2000);
@@ -312,8 +322,8 @@ class IndentPopup extends Component {
       const options = [];
       for (let i = 0; i < items.length; ++i) {
         options.push({
-          value: items[i].ACTIVITY_ID,
-          label: items[i].ACTIVITY
+          value: items[i].Code,
+          label: items[i].Value
         });
       }
 
@@ -325,10 +335,43 @@ class IndentPopup extends Component {
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     getSupplierData = async () => {
       await this.sleep(2000);
-      const response = await axios.post('http://bluekaktus.ml/proxy/getSupplierList', {
-        BASICPARAMS: {
-          CLIENT_CODE: 'demo',
-          APP_VERSION: '1.0'
+      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
+        basic_Info: {
+          client_code: 'akri48',
+          company_Id: 4,
+          location_Id: 6,
+          user_Id: 1
+        },
+        info_Type: 'MERCHANT_LIST'
+      });
+
+        // await this.sleep(2000)
+
+      const items = response.data.data;
+      const options = [];
+      for (let i = 0; i < items.length; ++i) {
+        options.push({
+          value: items[i].Code,
+          label: items[i].Value
+        });
+      }
+
+      this.setState({ supplierSelector: { loading: false, options } });
+    };
+
+    getUomData = async (itemId) => {
+      // this.setState({ uomSelector: { disabled: false, loading: true, options: [] } });
+      await this.sleep(2000);
+      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
+        basic_info: {
+          client_code: 'akri48',
+          company_id: 4,
+          location_id: 6,
+          user_id: 1
+        },
+        info_type: 'UOM_LIST',
+        raw_data: {
+          input_type_code: itemId // item_id
         }
       });
 
@@ -338,12 +381,12 @@ class IndentPopup extends Component {
       const options = [];
       for (let i = 0; i < items.length; ++i) {
         options.push({
-          value: items[i].SUPPLIER_ID,
-          label: items[i].SUPPLIER
+          value: items[i].Code,
+          label: items[i].Value
         });
       }
 
-      this.setState({ supplierSelector: { loading: false, options } });
+      this.setState({ uomSelector: { disabled: false, loading: false, options } });
     };
 
     componentDidMount() {
@@ -367,12 +410,28 @@ class IndentPopup extends Component {
       }
     };
 
+    handleUomSelect = (item, action) => {
+      // console.log({ item, action });
+      // if (action.action == "select-option") {
+      //     console.log("Changing supplier");
+      //     this.props.dispatch(changeSupplier({ id: item.value, name: item.label }));
+      // }
+    };
+
     disableItemSelect = (deliveryData) => {
       if (deliveryData.length > 0) return true;
       else return false;
     };
 
+    enableUomSelector = (item) => {
+      console.log(`checking uom selector with item : ${item}`);
+      if (item) {
+        this.getUomData(item.value);
+      }
+    };
+
     render() {
+      this.enableUomSelector(this.props.selectedItem);
       console.log('***********************', 'in Indent render ');
 
       if (!this.state.isDialogOpen) {
@@ -406,46 +465,84 @@ class IndentPopup extends Component {
                                 Item Detail
                 </DialogTitle>
                 <DialogContent dividers>
-                  <Selector
-                    isDisabled={this.disableItemSelect(this.props.deliveryData)}
-                  />
-                  <TextField
-                    type="number"
-                    value={this.props.qty}
-                    id="outlined-basic"
-                    label="Quantity"
-                    error={this.props.qty < this.props.qtyAlloted}
-                    onChange={this.handleQantityChange}
-                    variant="outlined"
-                  />
-                  <TextField
-                    type="number"
-                    value={this.props.rate}
-                    id="outlined-basic"
-                    label="Rate"
-                    onChange={this.handleRateChange}
-                    variant="outlined"
-                  />
-                  <Select
-                    className="basic-single"
-                    classNamePrefix="select"
-                    isSearchable
-                    isLoading={this.state.activitySelector.loading}
-                    name="color"
-                    onChange={this.handleActivitySelect}
-                    placeholder="Select Activity ... "
-                    options={this.state.activitySelector.options}
-                  />
-                  <Select
-                    className="basic-single"
-                    classNamePrefix="select"
-                    isSearchable
-                    onChange={this.handleSupplierSelect}
-                    isLoading={this.state.supplierSelector.loading}
-                    placeholder="Select Supplier ... "
-                    name="color2"
-                    options={this.state.supplierSelector.options}
-                  />
+                  <Grid container spacing={2} mb={2}>
+                    <Grid item xs={12}>
+                      <Selector
+                        isDisabled={this.disableItemSelect(
+                          this.props.deliveryData
+                        )}
+                      />
+                    </Grid>
+                    <Grid item container spacing={2} mb={2}>
+                      <Grid item xs={6}>
+                        {/* <Select
+                          isDisabled={this.state.uomSelector.disabled}
+                          className="basic-single"
+                          classNamePrefix="select"
+                          isSearchable
+                          onChange={this.handleUomSelect}
+                          isLoading={this.state.uomSelector.loading}
+                          placeholder="UOM"
+                          name="color2"
+                          options={this.state.uomSelector.options}
+                        /> */}
+                        <UomSelector />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <TextField
+                          disabled={this.disableItemSelect(
+                            this.props.deliveryData
+                          )}
+                          size="small"
+                          type="number"
+                          value={this.props.qty}
+                          id="outlined-basic"
+                          label="Quantity"
+                          error={this.props.qty < this.props.qtyAlloted}
+                          onChange={this.handleQantityChange}
+                          variant="outlined"
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <TextField
+                          size="small"
+                          type="number"
+                          value={this.props.rate}
+                          id="outlined-basic"
+                          label="Rate"
+                          onChange={this.handleRateChange}
+                          variant="outlined"
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item container spacing={2} m={2}>
+                      <Grid item xs={6}>
+                        <Select
+                          style={{ border: '1px solid red' }}
+                          className="basic-single"
+                          classNamePrefix="select"
+                          isSearchable
+                          isLoading={this.state.activitySelector.loading}
+                          name="color"
+                          onChange={this.handleActivitySelect}
+                          placeholder="Activity"
+                          options={this.state.activitySelector.options}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Select
+                          className="basic-single"
+                          classNamePrefix="select"
+                          isSearchable
+                          onChange={this.handleSupplierSelect}
+                          isLoading={this.state.supplierSelector.loading}
+                          placeholder="Supplier"
+                          name="color2"
+                          options={this.state.supplierSelector.options}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
                   <IndentDetails />
 
@@ -507,7 +604,8 @@ const mapStateToProps = state => ({
   qty: state.indents.qty,
   qtyAlloted: state.indents.qtyAlloted,
   rate: state.indents.rate,
-  deliveryData: state.indents.deliveryData
+  deliveryData: state.indents.deliveryData,
+  selectedItem: state.indents.item
 });
 
 export default connect(mapStateToProps)(IndentPopup);

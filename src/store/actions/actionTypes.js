@@ -56,3 +56,9 @@ export const DELTE_DELIVERY_DATA = 'DELETE_DELIVERY_DATA';
 export const ADD_INDENT_POPUP = 'ADD_INDENT_POPUP';
 export const SEND_INDENT_DATA = 'SEND_INDENT_DATA';
 export const ADD_INDENT_DATA = 'ADD_INDENT_DATA';
+
+// For Storing User Data
+
+export const ADD_USER_DATA = 'ADD_USER_DATA';
+
+export const CHANGE_UOM = 'CHANGE_UOM';

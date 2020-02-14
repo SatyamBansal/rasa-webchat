@@ -353,7 +353,35 @@ export const changeSupplier = value => ({
   data: value
 });
 
+export const changeUom = value => ({
+  type: actions.CHANGE_UOM,
+  data: value
+});
+
 export const changeRate = value => ({
   type: actions.CHANGE_RATE,
   data: value
 });
+
+// "company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://192.168.1.33:81", "ccid":"69", "cost_user":"arvind@bluekaktus.com", "company_id": "4", "location_id": "6", "client_code": "akri48"
+// Manage User data
+
+export const addUserData = (info) => {
+  console.log({ info });
+  return {
+    type: actions.ADD_USER_DATA,
+    data: {
+      companyName: info.client_code,
+      projectName: info.project_name,
+      userName: info.user_name,
+      userEmail: info.user_email,
+      userId: info.user_id,
+      apiHost: info.api_host,
+      ccid: info.ccid,
+      costUser: info.cost_user,
+      companyId: info.company_id,
+      locationId: info.location_id,
+      clientCode: info.client_code
+    }
+  };
+};

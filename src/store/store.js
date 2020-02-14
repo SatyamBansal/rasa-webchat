@@ -10,6 +10,7 @@ import { getLocalSession } from './reducers/helper';
 import * as actionTypes from './actions/actionTypes';
 import otherChargesReducer from './reducers/otherChargesReducer';
 import indentReducer from './reducers/indentReducer';
+import userReducer from './reducers/userReducer';
 
 import _ from 'lodash';
 
@@ -42,6 +43,8 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
           '*************************sending indent data to server ......',
           store.getState().indents.indentData
         );
+        const { userData } = store.getState();
+
         console.log(action.type);
         socket.emit('user_uttered', {
           message: action.data,
@@ -119,7 +122,8 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
     messages: messages(storage),
     purchaseOrders: purchaseOrders(),
     otherPOCharges: otherChargesReducer(),
-    indents: indentReducer()
+    indents: indentReducer(),
+    userData: userReducer()
   });
 
     /* eslint-disable no-underscore-dangle */

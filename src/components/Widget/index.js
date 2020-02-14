@@ -26,7 +26,8 @@ import {
   triggerMessageDelayed,
   triggerTooltipSent,
   setTooltipMessage,
-  clearPOdata
+  clearPOdata,
+  addUserData
 } from 'actions';
 
 import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
@@ -34,6 +35,9 @@ import { isSnippet, isVideo, isImage, isQR, isText } from './msgProcessor';
 import WidgetLayout from './layout';
 import { storeLocalSession, getLocalSession } from '../../store/reducers/helper';
 import { addIndentPopup } from '../../store/actions';
+
+// Naive Implementaion
+const extractJSON = str => JSON.parse(str.substr(str.indexOf('{'), str.lastIndexOf('}') + 1));
 
 class Widget extends Component {
   constructor(props) {
@@ -301,6 +305,7 @@ class Widget extends Component {
         session_id: sessionId
       });
       dispatch(initialize());
+      dispatch(addUserData(extractJSON(initPayload)));
     }
   }
 

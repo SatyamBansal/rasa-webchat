@@ -24,6 +24,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { deleteDeliveryData } from 'actions';
 
+import DeliveryForm from './DeliveryForm';
+
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
@@ -221,7 +223,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2)
   },
   table: {
-    minWidth: 750
+    // minWidth: 750
   },
   visuallyHidden: {
     border: 0,
@@ -233,6 +235,9 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 20,
     width: 1
+  },
+  container: {
+    maxHeight: 200
   }
 }));
 
@@ -312,20 +317,21 @@ export default function EnhancedTable() {
           numSelected={selected.length}
           handleDeleteClick={deleteItems}
         />
-        <TableContainer>
+        <TableContainer className={classes.container}>
           <Table
+            stickyHeader
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={'small'}
             aria-label="enhanced table"
           >
             <TableHead>
               <TableRow>
                 <StyledTableCell />
+                <StyledTableCell align="center">Location</StyledTableCell>
+                <StyledTableCell align="center">Date</StyledTableCell>
 
-                <StyledTableCell align="right">Date</StyledTableCell>
-                <StyledTableCell align="right">Location</StyledTableCell>
-                <StyledTableCell align="right">Quantity</StyledTableCell>
+                <StyledTableCell align="center">Quantity</StyledTableCell>
               </TableRow>
             </TableHead>
             {/* <EnhancedTableHead
@@ -352,7 +358,7 @@ export default function EnhancedTable() {
                     key={row.id}
                     selected={isItemSelected}
                   >
-                    <TableCell padding="checkbox">
+                    <TableCell padding="checkbox" style={{ width: '5%' }}>
                       <Checkbox
                         checked={isItemSelected}
                         inputProps={{
@@ -360,10 +366,16 @@ export default function EnhancedTable() {
                         }}
                       />
                     </TableCell>
+                    <TableCell align="center" style={{ width: '45%' }}>
+                      {row.location.label}
+                    </TableCell>
+                    <TableCell align="center" style={{ width: '25%' }}>
+                      {row.date}
+                    </TableCell>
 
-                    <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">{row.location.label}</TableCell>
-                    <TableCell align="right">{row.qty}</TableCell>
+                    <TableCell align="center" style={{ width: '25%' }}>
+                      {row.qty}
+                    </TableCell>
                   </TableRow>
                 );
               })}

@@ -50,15 +50,21 @@ class Selector extends React.Component {
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     getData = async (itemID) => {
-      const response = await axios.post('http://bluekaktus.ml/proxy/getItemList', {
-        BASICPARAMS: {
-          CLIENT_CODE: 'demo',
-          APP_VERSION: '1.0'
+      console.log('Gettting Item List ');
+      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetItemList', {
+        basic_Info: {
+          client_code: 'akri48',
+          company_Id: 4,
+          location_Id: 6,
+          user_Id: 1
         },
-        ITEM_ID: itemID
+        raw_data: {
+          item_id: itemID
+        }
       });
 
-        // await this.sleep(2000)
+      console.log('Response from Item list api', response);
+      // await this.sleep(2000)
 
       const items = response.data.data;
       const options = [];
@@ -173,6 +179,7 @@ class Selector extends React.Component {
         });
         this.getData(item.value);
       } else {
+        console.log('ITEM SELECTED : ', item);
         this.props.dispatch(addItem(item));
         this.setState(
           {
@@ -251,7 +258,7 @@ class Selector extends React.Component {
               onFocus={this.handleFocus}
             />
           </div>
-          <div style={{ marginTop: '200px' }} />
+
           {/* <button
                     onClick={() => {
                         this.handleButtonClick()
