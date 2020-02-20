@@ -8,7 +8,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "webpack-dev-server --config webpack.dev.js",
-        "build": "webpack --config ./webpack.prod.js -p --env.NODE_ENV='production'",
+        "build": "webpack --config ./webpack.prod.js -p",
         "test": "jest --coverage",
         "prepare": "npm run build",
         "release": "standard-version"
@@ -23,6 +23,7 @@
         "@date-io/date-fns": "^1.3.13",
         "@material-ui/core": "^4.8.3",
         "@material-ui/icons": "^4.5.1",
+        "@material-ui/lab": "^4.0.0-alpha.43",
         "@material-ui/pickers": "^3.2.8",
         "@stomp/stompjs": "^5.4.2",
         "chalk": "^3.0.0",
@@ -79,7 +80,7 @@
         "enzyme-adapter-react-16": "^1.15.1",
         "eslint": "^4.18.2",
         "eslint-config-airbnb": "^14.1.0",
-        "eslint-config-prettier": "^1.6.0",
+        "eslint-config-prettier": "^1.7.0",
         "eslint-import-resolver-babel-module": "^3.0.0",
         "eslint-plugin-flowtype": "^2.50.3",
         "eslint-plugin-import": "^2.18.2",

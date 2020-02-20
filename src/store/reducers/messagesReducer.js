@@ -12,7 +12,8 @@ import {
   getLocalSession,
   createPopup,
   createOtherChargesPopup,
-  createIndentPopup
+  createIndentPopup,
+  createAgainstSampleIndentPopup
 } from './helper';
 
 import * as actionTypes from '../actions/actionTypes';
@@ -45,6 +46,11 @@ export default function (storage) {
       case actionTypes.ADD_INDENT_POPUP: {
         return storeMessage(
           state.push(createIndentPopup(action.text, MESSAGE_SENDER.RESPONSE))
+        );
+      }
+      case actionTypes.ADD_AGAINST_SAMPLE_INDENT_POPUP: {
+        return storeMessage(
+          state.push(createAgainstSampleIndentPopup(action.text, MESSAGE_SENDER.RESPONSE))
         );
       }
       case actionTypes.ADD_NEW_LINK_SNIPPET: {
@@ -90,7 +96,7 @@ export default function (storage) {
           state.filter((value) => {
             console.log('Value :', value.get('type'));
             return (
-              value.get('type') != 'popup' && value.get('type') != 'otherpocharges'
+              value.get('type') != 'popup' && value.get('type') != 'otherpocharges' && value.get('type') != 'indentPopup'
             );
           })
         );

@@ -1,6 +1,6 @@
-import * as actionTypes from '../actions/actionTypes';
-import _ from 'lodash';
-import moment from 'moment';
+import * as actionTypes from "../actions/actionTypes";
+import _ from "lodash";
+import moment from "moment";
 
 // const INIT_STATE = {
 //   item: {},
@@ -69,15 +69,12 @@ import moment from 'moment';
 export default function () {
   const INITIAL_STATE = {
     item: null,
-    selecteduom: {
-      value: 123,
-      label: 'kg'
-    },
+    selecteduom: null,
     uom: null,
     // selecteduom: null,
     uomlist: [],
-    rate: '',
-    qty: '',
+    rate: "",
+    qty: "",
     qtyAlloted: 0,
     supplier: {},
     activity: {},
@@ -90,17 +87,24 @@ export default function () {
       case actionTypes.ADD_ITEM:
         return {
           ...state,
-          qty: action.data.quantity,
+          qty: "0",
+          qtyAlloted: 0,
           rate: action.data.rate.toString(),
           item: { value: action.data.value, label: action.data.label }
         };
       case actionTypes.CHANGE_QUANTITY:
+        if (parseFloat(action.data) < 0) {
+          action.data = "0";
+        }
         return {
           ...state,
           qty: action.data
         };
 
       case actionTypes.CHANGE_RATE:
+        if (parseFloat(action.data) < 0) {
+          action.data = "0";
+        }
         return {
           ...state,
           rate: action.data
@@ -129,9 +133,19 @@ export default function () {
         };
       case actionTypes.DELTE_DELIVERY_DATA: {
         const prevState = JSON.parse(JSON.stringify(state));
-        console.log('Ids to be deleted : ', action.payload);
+
+        let qtyDeducted = 0;
+
+        prevState.deliveryData.forEach(element => {
+          if (action.payload.includes(element.id)) {
+            qtyDeducted += parseFloat(element.qty);
+          }
+        });
+
+        console.log("Ids to be deleted : ", action.payload);
         return {
           ...prevState,
+          qtyAlloted: prevState.qtyAlloted - qtyDeducted,
           deliveryData: prevState.deliveryData.filter(
             data => !action.payload.includes(data.id)
           )
@@ -146,10 +160,10 @@ export default function () {
           dt_id: id,
           item_id: prevState.item.value,
           uom_id: prevState.uom.value,
-          quantity_req: prevState.qtyAlloted,
+          quantity_req: prevState.qty,
           rate: prevState.rate,
-          party_id: prevState.supplier.value,
-          activity_id: prevState.activity.value,
+          party_id: prevState.supplier.id,
+          activity_id: prevState.activity.id,
 
           indent_delsch_dt: prevState.deliveryData.map(data => ({
             dt_id: id,
@@ -159,17 +173,28 @@ export default function () {
           }))
         };
 
-        const indentItemData = {
-          item: prevState.item,
-          uom: prevState.selecteduom,
-          rate: prevState.Rate,
-          supplier: prevState.supplier,
-          activity: prevState.activity,
-          deliveryData: prevState.deliveryData
-        };
+        // const indentItemData = {
+        //     item: prevState.item,
+        //     uom: prevState.selecteduom,
+        //     rate: prevState.rate,
+        //     supplier: prevState.supplier,
+        //     activity: prevState.activity,
+        //     deliveryData: prevState.deliveryData
+        // };
 
         return {
           ...state,
+          item: null,
+          selecteduom: null,
+          uom: null,
+          // selecteduom: null,
+          uomlist: [],
+          rate: "",
+          qty: "",
+          qtyAlloted: 0,
+          supplier: {},
+          activity: {},
+          deliveryData: [],
           indentData: _.concat(prevState.indentData, newIndent)
         };
       }

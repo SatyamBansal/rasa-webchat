@@ -44,6 +44,16 @@ export function createIndentPopup(text, sender) {
   });
 }
 
+export function createAgainstSampleIndentPopup(text, sender) {
+  return Map({
+    type: MESSAGES_TYPES.AGAINST_SAMPLE_INDENT_POPUP,
+    text,
+    sender,
+    showAvatar: sender === MESSAGE_SENDER.RESPONSE,
+    timestamp: new Date().getTime()
+  });
+}
+
 export function createLinkSnippet(link, sender) {
   return Map({
     type: MESSAGES_TYPES.SNIPPET.LINK,

@@ -240,7 +240,7 @@ class OtherPOCharges extends Component {
                             {this.props.message.get("text", "Fill PO")}
                         </Button>
 
-                        <Dialog open={this.state.isDialogOpen} style={{ maxWidth: "1500px" }}>
+                        <Dialog open={this.state.isDialogOpen} maxWidth="lg">
                             <AlertDialog
                                 closeAlert={() => this.closeAlert()}
                                 showAlert={this.state.showAlert}

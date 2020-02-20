@@ -12,7 +12,8 @@ import {
   QuickReply,
   Popup,
   IndentPopup,
-  OtherPOCharges
+  OtherPOCharges,
+  IndentTypeB
 } from 'messagesComponents';
 
 // import IndentPopup from './components/IndentPopup';
@@ -84,6 +85,9 @@ class Messages extends Component {
           case MESSAGES_TYPES.INDENT_POPUP: {
             console.log('Dispalying Indent Popup');
             return IndentPopup;
+          }
+          case MESSAGES_TYPES.AGAINST_SAMPLE_INDENT_POPUP: {
+            return IndentTypeB;
           }
           case MESSAGES_TYPES.CUSTOM_COMPONENT:
             return connect(

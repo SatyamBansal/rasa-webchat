@@ -1,200 +1,211 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import UomSelector from './Components/UomSelector';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Grid from "@material-ui/core/Grid";
+import axios from "axios";
+import UomSelector from "./Components/UomSelector";
 import {
-  toggleInputDisabled,
-  changeInputFieldHint,
-  sendIndentData,
-  addIndentData,
-  deletePopupMessage,
-  cancelPO,
-  changeQuantity,
-  changeRate,
-  changeSupplier,
-  changeActivity
-} from 'actions';
+    toggleInputDisabled,
+    changeInputFieldHint,
+    sendIndentData,
+    addIndentData,
+    deletePopupMessage,
+    cancelPO,
+    changeQuantity,
+    changeRate,
+    changeSupplier,
+    changeActivity
+} from "actions";
 
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
 
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
-import Select from 'react-select';
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import Dialog from "@material-ui/core/Dialog";
+import Button from "@material-ui/core/Button";
+import Select from "react-select";
 // import POTable from './Components/POTable';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
-import Selector from './Components/Selector';
-import IndentDetails from './Components/IndentDetails';
+import Selector from "./Components/Selector";
+import IndentDetails from "./Components/IndentDetails";
 
-import { Table } from '@material-ui/core';
+import { Table } from "@material-ui/core";
 
 // import './styles.scss';
 // import { compareAsc, format } from 'date-fns';
-import { UI_MESSAGES } from 'constants';
+import { UI_MESSAGES } from "constants";
 
 const colourOptions = [
-  { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-  { value: 'blue', label: 'Blue', color: '#0052CC' },
-  { value: 'purple', label: 'Purple', color: '#5243AA' },
-  { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-  { value: 'orange', label: 'Orange', color: '#FF8B00' },
-  { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-  { value: 'green', label: 'Green', color: '#36B37E' },
-  { value: 'forest', label: 'Forest', color: '#00875A' },
-  { value: 'slate', label: 'Slate', color: '#253858' },
-  { value: 'silver', label: 'Silver', color: '#666666' }
+    { value: "ocean", label: "Ocean", color: "#00B8D9", isFixed: true },
+    { value: "blue", label: "Blue", color: "#0052CC" },
+    { value: "purple", label: "Purple", color: "#5243AA" },
+    { value: "red", label: "Red", color: "#FF5630", isFixed: true },
+    { value: "orange", label: "Orange", color: "#FF8B00" },
+    { value: "yellow", label: "Yellow", color: "#FFC400" },
+    { value: "green", label: "Green", color: "#36B37E" },
+    { value: "forest", label: "Forest", color: "#00875A" },
+    { value: "slate", label: "Slate", color: "#253858" },
+    { value: "silver", label: "Silver", color: "#666666" }
 ];
 
 const styles = theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2)
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500]
-  }
+    root: {
+        margin: 0,
+        padding: theme.spacing(2)
+    },
+    closeButton: {
+        position: "absolute",
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500]
+    },
+    dialogStyles: {
+        width: "90%",
+        maxWidth: 720
+    }
 });
 
-const AlertDialog = (props) => {
-  const [open, setOpen] = React.useState(false);
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-  const handleClickOpen = () => {
-    // setOpen(true);
-  };
+const AlertDialog = props => {
+    const [open, setOpen] = React.useState(false);
 
-  const handlePositive = () => {
-    // setOpen(false);
+    const handleClickOpen = () => {
+        // setOpen(true);
+    };
 
-    props.discardPO();
-  };
+    const handlePositive = () => {
+        // setOpen(false);
 
-  const handleNegative = () => {
-    console.log('Closing Alert Dialog ');
+        props.discardPO();
+    };
 
-    props.closeAlert();
-  };
+    const handleNegative = () => {
+        console.log("Closing Alert Dialog ");
 
-  return (
-    <div>
-      <Dialog
-        open={props.showAlert}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        {/* <DialogTitle id="alert-dialog-title">{"Discard Changes ?"}</DialogTitle> */}
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+        props.closeAlert();
+    };
+
+    return (
+        <div>
+            <Dialog
+                open={props.showAlert}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                {/* <DialogTitle id="alert-dialog-title">{"Discard Changes ?"}</DialogTitle> */}
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
                         Discard Changes ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleNegative} color="primary">
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleNegative} color="primary">
                         Disagree
-          </Button>
-          <Button onClick={handlePositive} color="primary" autoFocus>
+                    </Button>
+                    <Button onClick={handlePositive} color="primary" autoFocus>
                         Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
 };
 
-const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+const DialogTitle = withStyles(styles)(props => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+        <MuiDialogTitle disableTypography className={classes.root} {...other}>
+            <Typography variant="h6">{children}</Typography>
 
-      <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-        <CloseIcon />
-      </IconButton>
-    </MuiDialogTitle>
-  );
+            <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+                <CloseIcon />
+            </IconButton>
+        </MuiDialogTitle>
+    );
 });
 
 const DialogContent = withStyles(theme => ({
-  root: {
-    padding: theme.spacing(2)
-  }
+    root: {
+        padding: theme.spacing(2)
+    }
 }))(MuiDialogContent);
 
 const DialogActions = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1)
-  }
+    root: {
+        margin: 0,
+        padding: theme.spacing(1)
+    }
 }))(MuiDialogActions);
 
 class IndentPopup extends Component {
     state = {
-      isDialogOpen: false,
-      isDirty: false,
-      showAlert: false,
-      isDataValid: false,
-      disableItemInput: false,
-      activitySelector: {
-        options: [],
-        loading: true
-      },
-      supplierSelector: {
-        options: [],
-        loading: true
-      },
-      uomSelector: {
-        options: [],
-        disabled: true,
-        loading: false
-      }
+        isDialogOpen: false,
+        isDirty: false,
+        showAlert: false,
+        isDataValid: false,
+        disableItemInput: false,
+        activitySelector: {
+            options: [],
+            loading: true
+        },
+        supplierSelector: {
+            options: [],
+            loading: true
+        },
+        uomSelector: {
+            options: [],
+            disabled: true,
+            loading: false
+        },
+        error: false,
+        errorMessage: "Error"
     };
 
     openDialog() {
-      this.setState({
-        isDialogOpen: true
-      });
+        this.setState({
+            isDialogOpen: true
+        });
     }
 
     closeDialog() {
-      this.setState({ isDialogOpen: false });
+        this.setState({ isDialogOpen: false });
     }
 
     closeAlert() {
-      this.setState({ showAlert: false });
+        this.setState({ showAlert: false });
     }
 
     dataChanged() {
-      this.setState(state => ({
-        isDirty: !state.isDirty
-      }));
+        this.setState(state => ({
+            isDirty: !state.isDirty
+        }));
     }
 
     discardPO() {
-      this.props.dispatch(deletePopupMessage());
-      this.props.dispatch(cancelPO());
-      this.enableUserInput();
-      this.setState({ isDialogOpen: false, showAlert: false });
+        this.props.dispatch(deletePopupMessage());
+        this.props.dispatch(cancelPO());
+        this.enableUserInput();
+        this.setState({ isDialogOpen: false, showAlert: false });
     }
 
     savePO() {
-      this.closeDialog();
+        this.closeDialog();
     }
 
     handleClose() {
-      this.setState({ showAlert: true });
-      console.log('Dialog is Closed');
+        this.setState({ showAlert: true });
+        console.log("Dialog is Closed");
     }
-
     // filterOrdersData(orderids = [], orders) {
     //   console.log('IDS : ', orderids);
     //   console.log('Orders : ', orders);
@@ -238,244 +249,281 @@ class IndentPopup extends Component {
     //   ];
     // }
 
-    // isDataValid(ids, orders) {
-    //   const selectedOrders = this.filterOrdersData(ids, orders);
-    //   console.log('Checking DAta Valadity for orders : ', selectedOrders);
-    //   // return selectedOrders.length > 2;
-    //   for (let i = 0; i < selectedOrders.length; ++i) {
-    //     if (parseFloat(selectedOrders[i].RATE) <= 0) {
-    //       console.log('Validation Failed on rate');
-    //       return false;
-    //     }
-    //     if (
-    //       parseFloat(selectedOrders[i].BALANCE_QUANTITY) <
-    //                 parseFloat(selectedOrders[i].QUANTITY) ||
-    //             selectedOrders[i].QUANTITY < 0
-    //     ) {
-    //       console.log('Validation Failed on quantity');
-    //       return false;
-    //     }
-    //     if (compareAsc(selectedOrders[i].DEL_DATE, format(new Date(), 'dd/MMM/yyyy')) < -1) {
-    //       console.log('Validation Failed on date');
-    //       return false;
-    //     }
-    //   }
+    isDataValid(qty, rate) {
+        if (qty <= 0 && qty != "") {
+            return false;
+        }
 
-    //   return true;
-    // }
+        if (rate <= 0 && rate != "") {
+            return false;
+        }
+
+        return true;
+    }
 
     enableUserInput() {
-      this.props.dispatch(toggleInputDisabled());
-      this.props.dispatch(changeInputFieldHint(UI_MESSAGES.INPUT_HINT));
+        this.props.dispatch(toggleInputDisabled());
+        this.props.dispatch(changeInputFieldHint(UI_MESSAGES.INPUT_HINT));
     }
     disableUserInput() {
-      this.props.dispatch(toggleInputDisabled());
-      this.props.dispatch(changeInputFieldHint('Select Details Above ...'));
+        this.props.dispatch(toggleInputDisabled());
+        this.props.dispatch(changeInputFieldHint("Select Details Above ..."));
     }
     saveChanges() {
-      //   console.log(
-      //     this.getOrdersData(
-      //       this.props.selectedOrdersId,
-      //       this.props.orders,
-      //       this.props.savedOrders
-      //     )
-      //   );
-      //   const data = this.getOrdersData(
-      //     this.props.selectedOrdersId,
-      //     this.props.orders,
-      //     this.props.savedOrders
-      //   );
-      //   console.log('SENDING DATA ........ : ', data);
-      //   this.props.dispatch(sendPOData(data));
-      //   this.props.dispatch(deletePopupMessage());
-      this.props.dispatch(addIndentData());
-      this.props.dispatch(sendIndentData());
+        //   console.log(
+        //     this.getOrdersData(
+        //       this.props.selectedOrdersId,
+        //       this.props.orders,
+        //       this.props.savedOrders
+        //     )
+        //   );
+        //   const data = this.getOrdersData(
+        //     this.props.selectedOrdersId,
+        //     this.props.orders,
+        //     this.props.savedOrders
+        //   );
+        //   console.log('SENDING DATA ........ : ', data);
+        //   this.props.dispatch(sendPOData(data));
+        //   this.props.dispatch(deletePopupMessage());
 
-      console.log('Saving Changes in Dialog');
-      this.enableUserInput();
-      this.closeDialog();
+        if (this.props.selectedItem == null) {
+            this.setState({ error: true, errorMessage: "Please Select Item" });
+            return;
+        }
+
+        if (this.props.uom == null) {
+            this.setState({ error: true, errorMessage: "Please Select UOM" });
+            return;
+        }
+
+        if (this.props.qty == "") {
+            this.setState({ error: true, errorMessage: "Please Enter Quantity" });
+            return;
+        }
+
+        if (this.props.rate == "") {
+            this.setState({ error: true, errorMessage: "Please Enter Rate" });
+            return;
+        }
+
+        this.props.dispatch(addIndentData());
+        this.props.dispatch(sendIndentData());
+        console.log('Deleting Indent ')
+        this.props.dispatch(deletePopupMessage());
+
+        console.log("Saving Changes in Dialog");
+        this.enableUserInput();
+        this.closeDialog();
     }
 
-    handleQantityChange = (event) => {
-      this.props.dispatch(changeQuantity(event.target.value));
+    handleQantityChange = event => {
+        this.props.dispatch(changeQuantity(event.target.value));
     };
 
-    handleRateChange = (event) => {
-      this.props.dispatch(changeRate(event.target.value));
+    handleRateChange = event => {
+        this.props.dispatch(changeRate(event.target.value));
     };
 
     getActivityData = async () => {
-      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
-        basic_Info: {
-          client_code: 'akri48',
-          company_Id: 4,
-          location_Id: 6,
-          user_Id: 1
-        },
-        info_Type: 'ACTIVITY_LIST'
-      });
-
-      await this.sleep(2000);
-
-      const items = response.data.data;
-      console.log(response);
-      const options = [];
-      for (let i = 0; i < items.length; ++i) {
-        options.push({
-          value: items[i].Code,
-          label: items[i].Value
+        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+            basic_Info: {
+                client_code: "akri48",
+                company_Id: 4,
+                location_Id: 6,
+                user_Id: 1
+            },
+            info_Type: "ACTIVITY_LIST"
         });
-      }
 
-      console.log(options);
+        await this.sleep(2000);
 
-      this.setState({ activitySelector: { loading: false, options } });
+        const items = response.data.data;
+        console.log(response);
+        const options = [];
+        for (let i = 0; i < items.length; ++i) {
+            options.push({
+                value: items[i].Code,
+                label: items[i].Value
+            });
+        }
+
+        console.log(options);
+
+        this.setState({ activitySelector: { loading: false, options } });
     };
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     getSupplierData = async () => {
-      await this.sleep(2000);
-      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
-        basic_Info: {
-          client_code: 'akri48',
-          company_Id: 4,
-          location_Id: 6,
-          user_Id: 1
-        },
-        info_Type: 'MERCHANT_LIST'
-      });
+        await this.sleep(2000);
+        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+            basic_Info: {
+                client_code: "akri48",
+                company_Id: 4,
+                location_Id: 6,
+                user_Id: 1
+            },
+            info_Type: "MERCHANT_LIST"
+        });
 
         // await this.sleep(2000)
 
-      const items = response.data.data;
-      const options = [];
-      for (let i = 0; i < items.length; ++i) {
-        options.push({
-          value: items[i].Code,
-          label: items[i].Value
-        });
-      }
+        const items = response.data.data;
+        const options = [];
+        for (let i = 0; i < items.length; ++i) {
+            options.push({
+                value: items[i].Code,
+                label: items[i].Value
+            });
+        }
 
-      this.setState({ supplierSelector: { loading: false, options } });
+        this.setState({ supplierSelector: { loading: false, options } });
     };
 
-    getUomData = async (itemId) => {
-      // this.setState({ uomSelector: { disabled: false, loading: true, options: [] } });
-      await this.sleep(2000);
-      const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
-        basic_info: {
-          client_code: 'akri48',
-          company_id: 4,
-          location_id: 6,
-          user_id: 1
-        },
-        info_type: 'UOM_LIST',
-        raw_data: {
-          input_type_code: itemId // item_id
-        }
-      });
+    getUomData = async itemId => {
+        // this.setState({ uomSelector: { disabled: false, loading: true, options: [] } });
+        await this.sleep(2000);
+        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+            basic_info: {
+                client_code: "akri48",
+                company_id: 4,
+                location_id: 6,
+                user_id: 1
+            },
+            info_type: "UOM_LIST",
+            raw_data: {
+                input_type_code: itemId // item_id
+            }
+        });
 
         // await this.sleep(2000)
 
-      const items = response.data.data;
-      const options = [];
-      for (let i = 0; i < items.length; ++i) {
-        options.push({
-          value: items[i].Code,
-          label: items[i].Value
-        });
-      }
+        const items = response.data.data;
+        const options = [];
+        for (let i = 0; i < items.length; ++i) {
+            options.push({
+                value: items[i].Code,
+                label: items[i].Value
+            });
+        }
 
-      this.setState({ uomSelector: { disabled: false, loading: false, options } });
+        this.setState({ uomSelector: { disabled: false, loading: false, options } });
     };
 
     componentDidMount() {
-      this.getActivityData();
-      this.getSupplierData();
+        this.getActivityData();
+        this.getSupplierData();
     }
 
     handleActivitySelect = (item, action) => {
-      console.log({ item, action });
-      if (action.action == 'select-option') {
-        console.log('Changing Activity');
-        this.props.dispatch(changeActivity({ id: item.value, name: item.label }));
-      }
+        console.log({ item, action });
+        if (action.action == "select-option") {
+            console.log("Changing Activity");
+            this.props.dispatch(changeActivity({ id: item.value, name: item.label }));
+        }
     };
 
     handleSupplierSelect = (item, action) => {
-      console.log({ item, action });
-      if (action.action == 'select-option') {
-        console.log('Changing supplier');
-        this.props.dispatch(changeSupplier({ id: item.value, name: item.label }));
-      }
+        console.log({ item, action });
+        if (action.action == "select-option") {
+            console.log("Changing supplier");
+            this.props.dispatch(changeSupplier({ id: item.value, name: item.label }));
+        }
     };
 
     handleUomSelect = (item, action) => {
-      // console.log({ item, action });
-      // if (action.action == "select-option") {
-      //     console.log("Changing supplier");
-      //     this.props.dispatch(changeSupplier({ id: item.value, name: item.label }));
-      // }
+        // console.log({ item, action });
+        // if (action.action == "select-option") {
+        //     console.log("Changing supplier");
+        //     this.props.dispatch(changeSupplier({ id: item.value, name: item.label }));
+        // }
     };
 
-    disableItemSelect = (deliveryData) => {
-      if (deliveryData.length > 0) return true;
-      else return false;
+    disableItemSelect = deliveryData => {
+        if (deliveryData.length > 0) return true;
+        return false;
     };
 
-    enableUomSelector = (item) => {
-      console.log(`checking uom selector with item : ${item}`);
-      if (item) {
-        this.getUomData(item.value);
-      }
+    enableUomSelector = item => {
+        console.log(`checking uom selector with item : ${item}`);
+        if (item) {
+            this.getUomData(item.value);
+        }
+    };
+
+    showQuantityError = qty => {
+        if (qty == "") {
+            return false;
+        }
+
+        if (parseFloat(qty) <= 0) {
+            return true;
+        }
+
+        return false;
+    };
+
+    handleSnackBarClose = (event, reason) => {
+        // if (reason === "clickaway") {
+        //     return;
+        // }
+
+        this.setState({ error: false });
     };
 
     render() {
-      this.enableUomSelector(this.props.selectedItem);
-      console.log('***********************', 'in Indent render ');
+        // this.enableUomSelector(this.props.selectedItem);
+        console.log("***********************", "in Indent render ", this.props.classes);
+        console.log("Current Message Object : ", this.props.message);
 
-      if (!this.state.isDialogOpen) {
-        this.disableUserInput();
-      }
+        if (!this.state.isDialogOpen) {
+            this.disableUserInput();
+        }
 
-      const isopen = true;
-      const isLast = true;
-      return (
-        <div>
-          {isLast && (
+        const isopen = true;
+        const isLast = true;
+        return (
             <div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => this.openDialog()}
-              >
-                {this.props.message.get('text', 'Popup')}
-              </Button>
+                {isLast && (
+                    <div>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => this.openDialog()}
+                        >
+                            {this.props.message.get("text", "Popup")
+                                ? this.props.message.get("text", "Popup")
+                                : "Popup"}
+                        </Button>
 
-              <Dialog open={this.state.isDialogOpen} style={{ maxWidth: '1500px' }}>
-                <AlertDialog
-                  closeAlert={() => this.closeAlert()}
-                  showAlert={this.state.showAlert}
-                  discardPO={() => this.discardPO()}
-                />
-                <DialogTitle
-                  id="customized-dialog-title"
-                  onClose={() => this.handleClose()}
-                >
+                        <Dialog
+                            open={this.state.isDialogOpen}
+                            classes={{
+                                paper: this.props.classes.dialogStyles
+                            }}
+                        >
+                            <AlertDialog
+                                closeAlert={() => this.closeAlert()}
+                                showAlert={this.state.showAlert}
+                                discardPO={() => this.discardPO()}
+                            />
+                            <DialogTitle
+                                id="customized-dialog-title"
+                                onClose={() => this.handleClose()}
+                            >
                                 Item Detail
-                </DialogTitle>
-                <DialogContent dividers>
-                  <Grid container spacing={2} mb={2}>
-                    <Grid item xs={12}>
-                      <Selector
-                        isDisabled={this.disableItemSelect(
-                          this.props.deliveryData
-                        )}
-                      />
-                    </Grid>
-                    <Grid item container spacing={2} mb={2}>
-                      <Grid item xs={6}>
-                        {/* <Select
+                            </DialogTitle>
+                            <DialogContent dividers>
+                                <Grid container spacing={2} mb={2}>
+                                    <Grid item xs={12}>
+                                        <Selector
+                                            isDisabled={this.disableItemSelect(
+                                                this.props.deliveryData
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item container spacing={2} mb={2}>
+                                        <Grid item xs={6}>
+                                            {/* <Select
                           isDisabled={this.state.uomSelector.disabled}
                           className="basic-single"
                           classNamePrefix="select"
@@ -486,67 +534,98 @@ class IndentPopup extends Component {
                           name="color2"
                           options={this.state.uomSelector.options}
                         /> */}
-                        <UomSelector />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <TextField
-                          disabled={this.disableItemSelect(
-                            this.props.deliveryData
-                          )}
-                          size="small"
-                          type="number"
-                          value={this.props.qty}
-                          id="outlined-basic"
-                          label="Quantity"
-                          error={this.props.qty < this.props.qtyAlloted}
-                          onChange={this.handleQantityChange}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <TextField
-                          size="small"
-                          type="number"
-                          value={this.props.rate}
-                          id="outlined-basic"
-                          label="Rate"
-                          onChange={this.handleRateChange}
-                          variant="outlined"
-                        />
-                      </Grid>
-                    </Grid>
-                    <Grid item container spacing={2} m={2}>
-                      <Grid item xs={6}>
-                        <Select
-                          style={{ border: '1px solid red' }}
-                          className="basic-single"
-                          classNamePrefix="select"
-                          isSearchable
-                          isLoading={this.state.activitySelector.loading}
-                          name="color"
-                          onChange={this.handleActivitySelect}
-                          placeholder="Activity"
-                          options={this.state.activitySelector.options}
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Select
-                          className="basic-single"
-                          classNamePrefix="select"
-                          isSearchable
-                          onChange={this.handleSupplierSelect}
-                          isLoading={this.state.supplierSelector.loading}
-                          placeholder="Supplier"
-                          name="color2"
-                          options={this.state.supplierSelector.options}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                                            <UomSelector />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <TextField
+                                                disabled={this.disableItemSelect(
+                                                    this.props.deliveryData
+                                                )}
+                                                size="small"
+                                                type="number"
+                                                value={this.props.qty}
+                                                id="outlined-basic"
+                                                label={
+                                                    this.showQuantityError(this.props.qty)
+                                                        ? "cannot be zero"
+                                                        : "Quantity"
+                                                }
+                                                error={this.showQuantityError(this.props.qty)}
+                                                onChange={this.handleQantityChange}
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <TextField
+                                                size="small"
+                                                type="number"
+                                                value={this.props.rate}
+                                                id="outlined-basic"
+                                                error={this.showQuantityError(this.props.rate)}
+                                                label={
+                                                    this.showQuantityError(this.props.rate)
+                                                        ? "cannot be zero"
+                                                        : "Rate"
+                                                }
+                                                onChange={this.handleRateChange}
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item container spacing={2} m={2}>
+                                        <Grid item xs={6}>
+                                            <Select
+                                                style={{ border: "1px solid red" }}
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isSearchable
+                                                isLoading={this.state.activitySelector.loading}
+                                                name="color"
+                                                onChange={this.handleActivitySelect}
+                                                placeholder="Activity"
+                                                options={this.state.activitySelector.options}
+                                                styles={{
+                                                    menu: styles => ({ ...styles, zIndex: 2000 }),
+                                                    menuList: styles => ({
+                                                        ...styles,
+                                                        fontFamily: "Roboto"
+                                                    }),
+                                                    control: styles => ({
+                                                        ...styles,
+                                                        fontFamily: "Roboto"
+                                                    })
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <Select
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                isSearchable
+                                                onChange={this.handleSupplierSelect}
+                                                isLoading={this.state.supplierSelector.loading}
+                                                placeholder="Supplier"
+                                                name="color2"
+                                                styles={{
+                                                    menu: styles => ({ ...styles, zIndex: 2000 }),
+                                                    menuList: styles => ({
+                                                        ...styles,
+                                                        fontFamily: "Roboto"
+                                                    }),
+                                                    control: styles => ({
+                                                        ...styles,
+                                                        fontFamily: "Roboto"
+                                                    })
+                                                }}
+                                                options={this.state.supplierSelector.options}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
 
-                  <IndentDetails />
+                                <IndentDetails />
 
-                  {/* <selectuom />
+                                {/* <selectuom />
                                 <TextField
                                     id="outlined-basic"
                                     label="Outlined"
@@ -567,47 +646,52 @@ class IndentPopup extends Component {
                                 </form>
 
                                 <Table></Table> */}
-                </DialogContent>
-                {/* <Button variant="contained" color="secondary" onClick={() => this.discardPO()}>
+                            </DialogContent>
+                            {/* <Button variant="contained" color="secondary" onClick={() => this.discardPO()}>
                 Cancel
               </Button>
               <Button variant="contained" color="primary" onClick={() => this.savePO()}>
                 Submit
               </Button> */}
-                <DialogActions>
-                  <Button
-                    disabled={
-                      //   !this.isDataValid(
-                      //     this.props.selectedOrdersId,
-                      //     this.props.orders
-                      //   )
-                      false
-                    }
-                    autoFocus
-                    onClick={() => {
-                      this.saveChanges();
-                    }}
-                    color="primary"
-                  >
+                            <DialogActions>
+                                <Button
+                                    disabled={!this.isDataValid(this.props.qty, this.props.rate)}
+                                    autoFocus
+                                    onClick={() => {
+                                        this.saveChanges();
+                                    }}
+                                    color="primary"
+                                >
                                     Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                                </Button>
+                            </DialogActions>
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={this.state.error}
+                                autoHideDuration={6000}
+                                onClose={this.handleSnackBarClose}
+                            >
+                                <Alert onClose={this.handleSnackBarClose} severity="error">
+                                    {this.state.errorMessage}
+                                </Alert>
+                            </Snackbar>
+                        </Dialog>
+                    </div>
+                )}
             </div>
-          )}
-        </div>
-      );
+        );
     }
 }
 
 const mapStateToProps = state => ({
-  qty: state.indents.qty,
-  qtyAlloted: state.indents.qtyAlloted,
-  rate: state.indents.rate,
-  deliveryData: state.indents.deliveryData,
-  selectedItem: state.indents.item
+    qty: state.indents.qty,
+    qtyAlloted: state.indents.qtyAlloted,
+    rate: state.indents.rate,
+    deliveryData: state.indents.deliveryData,
+    selectedItem: state.indents.item,
+    uom: state.indents.uom
 });
 
-export default connect(mapStateToProps)(IndentPopup);
+export default connect(mapStateToProps)(withStyles(styles)(IndentPopup));
 
 // // export default Popup

@@ -6,5 +6,16 @@ import QuickReply from './QuickReply';
 import Popup from './Popup';
 import OtherPOCharges from './OtherPOCharges';
 import IndentPopup from './IndentPopup';
+import IndentTypeB from './IndentTypeB';
 
-export { Video, Image, Message, Snippet, QuickReply, Popup, OtherPOCharges, IndentPopup };
+export {
+  Video,
+  Image,
+  Message,
+  Snippet,
+  QuickReply,
+  Popup,
+  OtherPOCharges,
+  IndentPopup,
+  IndentTypeB
+};
