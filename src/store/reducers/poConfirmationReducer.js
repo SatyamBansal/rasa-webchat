@@ -92,6 +92,11 @@ export default function () {
         return { ...state, confirmationData: action.payload };
       }
 
+      case actionTypes.CLEAR_PO_DATA: {
+        console.log("Deleting Old PO confirmation data");
+        return INITIAL_STATE;
+      }
+
       default: {
         console.log("Returning Default State for po reducer : ", state);
         return state;

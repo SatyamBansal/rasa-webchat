@@ -318,7 +318,7 @@ class ConfirmationPopup extends Component {
                 id="customized-dialog-title"
                 onClose={() => this.handleClose()}
               >
-                Fill PO Details
+                Confimation
                             </DialogTitle>
               <DialogContent dividers>
                 <POTable />
@@ -343,8 +343,8 @@ class ConfirmationPopup extends Component {
                   }}
                   color="primary"
                 >
-                  Save
-                                </Button>
+                  {this.props.selectedOrdersId.length ? "Change" : "Save"}
+                </Button>
               </DialogActions>
             </Dialog>
           </div>

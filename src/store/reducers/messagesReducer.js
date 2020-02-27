@@ -104,7 +104,8 @@ export default function (storage) {
             return (
               value.get("type") != "popup" &&
               value.get("type") != "otherpocharges" &&
-              value.get("type") != "indentPopup"
+              value.get("type") != "indentPopup" &&
+              value.get("type") != "poConfirmationPopup"
             );
           })
         );

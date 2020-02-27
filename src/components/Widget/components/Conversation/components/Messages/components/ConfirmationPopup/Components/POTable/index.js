@@ -283,7 +283,7 @@ const EnhancedTableToolbar = props => {
                 </Typography>
       ) : (
           <Typography className={classes.title} variant="h6" id="tableTitle">
-            Orders
+            Please select the values that you want to change
                 </Typography>
         )}
     </Toolbar>
@@ -476,38 +476,36 @@ export default function EnhancedTable() {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+              {stableSort(rows, getSorting(order, orderBy)).map((row, index) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          disabled={!row.isSelectable}
-                          onClick={event => handleClick(event, row.id)}
-                          // onClick={event => handleClick(event, row.INDENT_DT_ID, isItemSelected)}
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={isItemSelected}
+                        disabled={!row.isSelectable}
+                        onClick={event => handleClick(event, row.id)}
+                        // onClick={event => handleClick(event, row.INDENT_DT_ID, isItemSelected)}
 
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-                      <TableCell id={labelId} scope="row" padding="none">
-                        {row.label}
-                      </TableCell>
-                      <TableCell align="right">{row.value}</TableCell>
-                    </TableRow>
-                  );
-                })}
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </TableCell>
+                    <TableCell id={labelId} scope="row" padding="none">
+                      {row.label}
+                    </TableCell>
+                    <TableCell align="right">{row.value}</TableCell>
+                  </TableRow>
+                );
+              })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                   <TableCell colSpan={6} />
@@ -516,7 +514,7 @@ export default function EnhancedTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
@@ -524,7 +522,7 @@ export default function EnhancedTable() {
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
     </div>
   );
