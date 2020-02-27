@@ -92,13 +92,7 @@
 // //////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////
 
-import {
-  modifyPurchaseOrder,
-  selectIndents,
-  modifyIndent,
-  changeIndentActivity,
-  changeIndentSupplier
-} from "actions";
+import { modifyPurchaseOrder, selectPOChanges } from "actions";
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -133,13 +127,6 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import axios from "axios";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -195,13 +182,8 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: "ITEM_NAME", numeric: false, disablePadding: true, label: "Item" },
-  { id: "UOM_CODE", numeric: false, disablePadding: false, label: "UOM" },
-  { id: "AVERAGE", numeric: true, disablePadding: false, label: "Average" },
-  { id: "QUANTITY", numeric: true, disablePadding: false, label: "Quantity" },
-  { id: "RATE", numeric: true, disablePadding: false, label: "Price" },
-  { id: "ACTIVITY", numeric: true, disablePadding: false, label: "Activity" },
-  { id: "SUPPLIER", numeric: true, disablePadding: false, label: "Supplier" }
+  { id: "label", numeric: false, disablePadding: true, label: "label" },
+  { id: "value", numeric: true, disablePadding: false, label: "value" }
 ];
 
 function EnhancedTableHead(props) {
@@ -232,8 +214,7 @@ function EnhancedTableHead(props) {
         {headCells.map(headCell => (
           <StyledTableCell
             key={headCell.id}
-            // align={headCell.numeric ? "right" : "left"}
-            align="center"
+            align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -338,113 +319,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function EnhancedTable() {
-  const rows = useSelector(state => state.indentsTypeB.indents);
+  const rows = useSelector(state => state.poConfirmation.confirmationData);
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [activities, setActivities] = React.useState([]);
-  const [suppliers, setSuppliers] = React.useState([]);
-  const [age, setAge] = React.useState("");
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState(
-    useSelector(state => state.purchaseOrders.selectedOrders)
+    useSelector(state => state.poConfirmation.selectedData)
   );
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  React.useEffect(() => {
-    const getActivityData = async () => {
-      const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
-        basic_Info: {
-          client_code: "akri48",
-          company_Id: 4,
-          location_Id: 6,
-          user_Id: 1
-        },
-        info_Type: "ACTIVITY_LIST"
-      });
-
-      // await this.sleep(2000);
-
-      const items = response.data.data;
-      console.log(response);
-      const options = [];
-      for (let i = 0; i < items.length; ++i) {
-        options.push({
-          value: items[i].Code,
-          label: items[i].Value
-        });
-      }
-
-      console.log(options);
-      setActivities(options);
-    };
-
-    getActivityData();
-  }, []);
-
-  React.useEffect(() => {
-    const getSupplierData = async () => {
-      const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
-        basic_Info: {
-          client_code: "akri48",
-          company_Id: 4,
-          location_Id: 6,
-          user_Id: 1
-        },
-        info_Type: "MERCHANT_LIST"
-      });
-
-      // await this.sleep(2000)
-
-      const items = response.data.data;
-      const options = [];
-      for (let i = 0; i < items.length; ++i) {
-        options.push({
-          value: items[i].Code,
-          label: items[i].Value
-        });
-      }
-
-      setSuppliers(options);
-    };
-
-    getSupplierData();
-  }, []);
-
-  // useEffect(() => {
-  //   const populateLocationSelector = async () => {
-  //     const { clientCode, companyId, locationId, userId } = userData.toJS();
-  //     console.log({ clientCode, companyId, locationId, userId });
-  //     console.log('Fetching location DAta');
-  //     const response = await axios.post('http://192.168.1.33:81/api/Chatbot/GetInfo', {
-  //       basic_Info: {
-  //         client_code: clientCode,
-  //         company_Id: companyId,
-  //         location_Id: locationId,
-  //         user_Id: userId
-  //       },
-  //       info_Type: 'LOCATION_LIST'
-  //     });
-
-  //     // await sleep(5000);
-  //     console.log({ response });
-  //     const items = response.data.data;
-  //     const optionsNew = [];
-  //     for (let i = 0; i < items.length; ++i) {
-  //       optionsNew.push({
-  //         value: items[i].Code,
-  //         label: items[i].Value
-  //       });
-  //     }
-
-  //     // this.setState({ deliverySelector: { loading: false, options } });
-  //     setOptions(optionsNew);
-  //     setLoading(false);
-  //   };
-  //   populateLocationSelector();
-  // }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -452,19 +337,15 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-  const handleChange = event => {
-    setAge(event.target.value);
-  };
-
   const handleSelectAllClick = event => {
+    return;
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.PD_ITEM_DT_ID);
-      dispatch(selectIndents(newSelecteds));
+      const newSelecteds = rows.map(n => n.id);
+      dispatch(selectPurchaseOrders(newSelecteds));
       console.log("Selected Elements", newSelecteds);
       setSelected(newSelecteds);
-      return;
     }
-    dispatch(selectIndents([]));
+    dispatch(selectPurchaseOrders([]));
     console.log("Selected Elements", []);
     setSelected([]);
   };
@@ -510,7 +391,7 @@ export default function EnhancedTable() {
     }
 
     setSelected(newSelected);
-    dispatch(selectIndents(newSelected));
+    dispatch(selectPOChanges(newSelected));
     console.log("Selected Elements", newSelected);
   };
 
@@ -527,29 +408,19 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
-  const handleSupplierChange = (id, value) => {
-    console.log("changing supplier ", { id, value });
-    dispatch(changeIndentSupplier(id, value));
-  };
-
-  const handleActivityChange = (id, value) => {
-    console.log("changing activity ", { id, value });
-    dispatch(changeIndentActivity(id, value));
-  };
-
   const isSelected = name => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   const inputChanged = (e, id, key) => {
-    const value = e.target.value;
+    let value = e.target.value;
 
-    // if (e.target.value == "") {
-    //     e.target.error = true;
-    //     console.log("Empty field setting to zero");
-    //     value = 0;
-    // }
-    dispatch(modifyIndent(id, key, value));
+    if (e.target.value == "") {
+      e.target.error = true;
+      console.log("Empty field setting to zero");
+      value = 0;
+    }
+    dispatch(modifyPurchaseOrder(id, key, parseFloat(value)));
     console.log("Row ID : ", id);
     console.log("Input Changed : ", e.target.value);
   };
@@ -561,7 +432,7 @@ export default function EnhancedTable() {
 
   const showQuantityError = (isSelected, balance, quantity, id) => {
     // console.log('Select Status for id ', id, ' ', isSelected);
-    // console.log('rowid : ', row.PD_ITEM_DT_ID, ' : ', typeof (parseFloat(quantity)), ' : ', (parseFloat(row.RATE)));
+    // console.log('rowid : ', row.INDENT_DT_ID, ' : ', typeof (parseFloat(quantity)), ' : ', (parseFloat(row.RATE)));
     if (isSelected) {
       if (parseFloat(balance) < parseFloat(quantity) || parseFloat(quantity) < 0) {
         return true;
@@ -571,7 +442,7 @@ export default function EnhancedTable() {
   };
 
   const showRateError = (isItemSelected, rate) => {
-    // console.log('rowid : ', row.PD_ITEM_DT_ID, ' : ', typeof (parseFloat(row.RATE)), ' : ', (parseFloat(row.RATE)));
+    // console.log('rowid : ', row.INDENT_DT_ID, ' : ', typeof (parseFloat(row.RATE)), ' : ', (parseFloat(row.RATE)));
     if (isItemSelected) {
       if (parseFloat(rate) <= 0) {
         return true;
@@ -581,7 +452,7 @@ export default function EnhancedTable() {
   };
 
   const getSelectedLength = () => {
-    const recordIds = rows.map(record => record.PD_ITEM_DT_ID);
+    const recordIds = rows.map(record => record.id);
     return selected.filter(value => recordIds.includes(value)).length;
   };
   return (
@@ -608,7 +479,7 @@ export default function EnhancedTable() {
               {stableSort(rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.PD_ITEM_DT_ID);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -616,210 +487,24 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       aria-checked={isItemSelected}
-                      onClick={event => handleClick(event, row.PD_ITEM_DT_ID)}
                       tabIndex={-1}
-                      key={row.PD_ITEM_DT_ID}
+                      key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell
-                        padding="checkbox"
-                        align="center"
-                        style={{ width: "5%" }}
-                      >
+                      <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          // onClick={event => handleClick(event, row.PD_ITEM_DT_ID, isItemSelected)}
+                          disabled={!row.isSelectable}
+                          onClick={event => handleClick(event, row.id)}
+                          // onClick={event => handleClick(event, row.INDENT_DT_ID, isItemSelected)}
 
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </TableCell>
-                      <TableCell
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                        align="left"
-                        style={{ width: "20%" }}
-                      >
-                        {row.ITEM_NAME}
+                      <TableCell id={labelId} scope="row" padding="none">
+                        {row.label}
                       </TableCell>
-                      <TableCell align="left" style={{ width: "10%" }}>
-                        {row.UOM_CODE}
-                      </TableCell>
-                      <TableCell
-                        align="right"
-                        align="center"
-                        style={{ width: "10%" }}
-                      >
-                        {row.AVERAGE}
-                      </TableCell>
-
-                      <TableCell
-                        align="right"
-                        align="center"
-                        style={{ width: "15%" }}
-                      >
-                        <TextField
-                          custom="valid"
-                          variant="outlined"
-                          type="number"
-                          error={isItemSelected && row.QUANTITY <= 0}
-                          value={row.QUANTITY}
-                          onChange={e => {
-                            inputChanged(
-                              e,
-                              row.PD_ITEM_DT_ID,
-                              "QUANTITY"
-                            );
-                          }}
-                          inputProps={{ "aria-label": "quantity" }}
-                        />
-                      </TableCell>
-                      <TableCell align="center" style={{ width: "10%" }}>
-                        {row.RATE}
-                      </TableCell>
-                      <TableCell align="center" style={{ width: "15%" }}>
-                        <FormControl
-                          variant="outlined"
-                          className={classes.formControl}
-                          style={{ width: "100%" }}
-                        >
-                          <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={row.ACTIVITY}
-                            displayEmpty
-                            onChange={event => {
-                              handleActivityChange(
-                                row.PD_ITEM_DT_ID,
-                                event.target.value
-                              );
-                            }}
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-
-                            {activities.map(item => (
-                              <MenuItem value={item.value}>
-                                <em>{item.label}</em>
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-
-                      <TableCell align="center" style={{ width: "25%" }}>
-                        <FormControl
-                          variant="outlined"
-                          className={classes.formControl}
-                          style={{ width: "100%" }}
-                        >
-                          <Select
-                            displayEmpty
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={row.SUPPLIER}
-                            onChange={event => {
-                              handleSupplierChange(
-                                row.PD_ITEM_DT_ID,
-                                event.target.value
-                              );
-                            }}
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            {suppliers.map(item => (
-                              <MenuItem value={item.value}>
-                                <em>{item.label}</em>
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-
-                      {/* <TableCell align="right">
-                        <TextField
-                          custom="valid"
-                          variant="outlined"
-                          label={
-                            showQuantityError(
-                              isItemSelected,
-                              row.BALANCE_QUANTITY,
-                              row.QUANTITY,
-                              row.PD_ITEM_DT_ID
-                            ) &&
-                                                        (row.QUANTITY < 0
-                                                          ? 'cannot be negative'
-                                                          : 'greater than Balance')
-                          }
-                          error={showQuantityError(
-                            isItemSelected,
-                            row.BALANCE_QUANTITY,
-                            row.QUANTITY,
-                            row.PD_ITEM_DT_ID
-                          )}
-                          type="number"
-                          defaultValue={row.QUANTITY}
-                          onChange={(e) => {
-                            inputChanged(
-                              e,
-                              row.PD_ITEM_DT_ID,
-                              'QUANTITY'
-                            );
-                          }}
-                          inputProps={{ 'aria-label': 'quantity' }}
-                        />
-                      </TableCell>
-
-                      <TableCell align="right">
-                        <TextField
-                          variant="outlined"
-                          type="number"
-                          defaultValue={row.RATE}
-                          onChange={(e) => {
-                            inputChanged(e, row.PD_ITEM_DT_ID, 'RATE');
-                          }}
-                          error={showRateError(isItemSelected, row.RATE)}
-                          label={
-                            showRateError(isItemSelected, row.RATE) &&
-                                                        (row.RATE < 0
-                                                          ? 'cannot be negative'
-                                                          : 'rate cannot be zero')
-                          }
-                          inputProps={{ 'aria-label': 'rate' }}
-                        />
-                      </TableCell>
-
-                      <TableCell align="right">
-                        {row.HSN_CODE__TEXT}
-                      </TableCell>
-                      <TableCell>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DatePicker
-                            format="dd/MMM/yyyy"
-                            minDateMessage="shoud be greater than current date"
-                            minDate={
-                              isItemSelected
-                                ? format(new Date(), 'dd/MMM/yyyy')
-                                : '01/JAN/1970'
-                            }
-                            disablePast={isItemSelected}
-                            onChange={(date) => {
-                              dateChanged(
-                                date,
-                                row.PD_ITEM_DT_ID,
-                                'DEL_DATE'
-                              );
-                            }}
-                            value={
-                              row.DEL_DATE == 'null'
-                                ? format(new Date(), 'dd/MMM/yyyy')
-                                : row.DEL_DATE
-                            }
-                          />
-                        </MuiPickersUtilsProvider>
-                      </TableCell> */}
+                      <TableCell align="right">{row.value}</TableCell>
                     </TableRow>
                   );
                 })}

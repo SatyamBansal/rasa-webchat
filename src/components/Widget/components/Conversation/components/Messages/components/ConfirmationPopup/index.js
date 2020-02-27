@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import {
   toggleInputDisabled,
   changeInputFieldHint,
-  sendAgainstSampleIndentData,
+  sendPOData,
   deletePopupMessage,
   cancelPO,
-  updatePOAmount
+  updatePOAmount,
+  sendPOConfirmationData
 } from "actions";
 import moment from "moment";
 import { withStyles } from "@material-ui/core/styles";
@@ -35,6 +36,9 @@ const styles = theme => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500]
+  },
+  dialogStyles: {
+    maxWidth: 1800
   }
 });
 
@@ -110,7 +114,7 @@ const DialogActions = withStyles(theme => ({
   }
 }))(MuiDialogActions);
 
-class IndentTypeB extends Component {
+class ConfirmationPopup extends Component {
   state = {
     isDialogOpen: false,
     isDirty: false,
@@ -144,7 +148,7 @@ class IndentTypeB extends Component {
     // this.enableUserInput();
     // this.setState({ isDialogOpen: false, showAlert: false });
 
-    this.props.dispatch(sendAgainstSampleIndentData(this.props.savedOrders));
+    this.props.dispatch(sendPOData(this.props.savedOrders));
     this.props.dispatch(deletePopupMessage());
     console.log("Discarding Changes in Dialog");
     this.enableUserInput();
@@ -163,7 +167,7 @@ class IndentTypeB extends Component {
   filterOrdersData(orderids = [], orders) {
     console.log("IDS : ", orderids);
     console.log("Orders : ", orders);
-    return orders.filter(order => orderids.includes(order.PD_ITEM_DT_ID));
+    return orders.filter(order => orderids.includes(order.id));
   }
 
   getOrdersData(selectedOrderids = [], orders, savedOrders) {
@@ -171,9 +175,9 @@ class IndentTypeB extends Component {
     // console.log('Filtered Selected Records', this.filterOrdersData(selectedOrderids, orders));
     const exclusiveSavedIds = [];
 
-    const savedIds = savedOrders.map(order => order.PD_ITEM_DT_ID);
+    const savedIds = savedOrders.map(order => order.id);
 
-    const orderIds = orders.map(order => order.PD_ITEM_DT_ID);
+    const orderIds = orders.map(order => order.id);
     for (let i = 0; i < savedIds.length; ++i) {
       if (!orderIds.includes(savedIds[i])) {
         exclusiveSavedIds.push(savedIds[i]);
@@ -205,15 +209,34 @@ class IndentTypeB extends Component {
 
   isDataValid(ids, orders) {
     const selectedOrders = this.filterOrdersData(ids, orders);
-
-    if (selectedOrders.length <= 0) {
-      return false;
-    }
-
     console.log("Checking DAta Valadity for orders : ", selectedOrders);
     // return selectedOrders.length > 2;
     for (let i = 0; i < selectedOrders.length; ++i) {
-      if (selectedOrders[i].QUANTITY <= 0) {
+      if (parseFloat(selectedOrders[i].RATE) <= 0) {
+        console.log("Validation Failed on rate");
+        return false;
+      }
+      if (
+        parseFloat(selectedOrders[i].BALANCE_QUANTITY) <
+        parseFloat(selectedOrders[i].QUANTITY) ||
+        selectedOrders[i].QUANTITY < 0
+      ) {
+        console.log("Validation Failed on quantity");
+        return false;
+      }
+      console.log(
+        "Checking Date Validation ( is date before ?): ",
+        moment(selectedOrders[i].DEL_DATE, "DD/MMM/YYYY").isBefore(
+          moment().subtract(1, "day")
+        )
+      );
+
+      if (
+        moment(selectedOrders[i].DEL_DATE, "DD/MMM/YYYY").isBefore(
+          moment().subtract(1, "day")
+        )
+      ) {
+        console.log("Validation Failed on date");
         return false;
       }
     }
@@ -253,9 +276,11 @@ class IndentTypeB extends Component {
       this.props.orders,
       this.props.savedOrders
     );
-    console.log("SENDING DATA ........ : ", data);
+
+    const slotKeys = data.map(item => item.key);
+    console.log("SENDING DATA ........ : ", slotKeys);
     // console.log("Total PO AMOUNT : ", this.getTotalPOAmount(data));
-    this.props.dispatch(sendAgainstSampleIndentData(data));
+    this.props.dispatch(sendPOConfirmationData(slotKeys));
 
     // this.props.dispatch(updatePOAmount(this.getTotalPOAmount(data)));
     this.props.dispatch(deletePopupMessage());
@@ -280,8 +305,8 @@ class IndentTypeB extends Component {
               color="primary"
               onClick={() => this.openDialog()}
             >
-              Detials
-                        </Button>
+              {this.props.message.get("text", "Fill PO")}
+            </Button>
 
             <Dialog open={this.state.isDialogOpen} maxWidth="lg">
               <AlertDialog
@@ -330,9 +355,9 @@ class IndentTypeB extends Component {
 }
 
 const mapStateToProps = state => ({
-  orders: state.indentsTypeB.indents,
-  selectedOrdersId: state.indentsTypeB.selectedIndents,
-  savedOrders: state.indentsTypeB.savedIndents
+  orders: state.poConfirmation.confirmationData,
+  selectedOrdersId: state.poConfirmation.selectedData,
+  savedOrders: state.poConfirmation.savedConfirmationData
 });
 
-export default connect(mapStateToProps)(IndentTypeB);
+export default connect(mapStateToProps)(withStyles(styles)(ConfirmationPopup));

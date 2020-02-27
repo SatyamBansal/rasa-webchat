@@ -1,12 +1,13 @@
-import Video from './VidReply';
-import Image from './ImgReply';
-import Message from './Message';
-import Snippet from './Snippet';
-import QuickReply from './QuickReply';
-import Popup from './Popup';
-import OtherPOCharges from './OtherPOCharges';
-import IndentPopup from './IndentPopup';
-import IndentTypeB from './IndentTypeB';
+import Video from "./VidReply";
+import Image from "./ImgReply";
+import Message from "./Message";
+import Snippet from "./Snippet";
+import QuickReply from "./QuickReply";
+import Popup from "./Popup";
+import OtherPOCharges from "./OtherPOCharges";
+import IndentPopup from "./IndentPopup";
+import IndentTypeB from "./IndentTypeB";
+import ConfirmationPopup from "./ConfirmationPopup";
 
 export {
   Video,
@@ -17,5 +18,6 @@ export {
   Popup,
   OtherPOCharges,
   IndentPopup,
-  IndentTypeB
+  IndentTypeB,
+  ConfirmationPopup
 };

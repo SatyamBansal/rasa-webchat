@@ -1,33 +1,34 @@
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import PropTypes from "prop-types";
+import ImmutablePropTypes from "react-immutable-proptypes";
 
-export const SESSION_NAME = 'chat_session';
+export const SESSION_NAME = "chat_session";
 
 export const MESSAGE_SENDER = {
-  CLIENT: 'client',
-  RESPONSE: 'response'
+  CLIENT: "client",
+  RESPONSE: "response"
 };
 
 export const MESSAGES_TYPES = {
-  TEXT: 'text',
+  TEXT: "text",
   SNIPPET: {
-    LINK: 'snippet'
+    LINK: "snippet"
   },
   VIDREPLY: {
-    VIDEO: 'vidreply'
+    VIDEO: "vidreply"
   },
   IMGREPLY: {
-    IMAGE: 'imgreply'
+    IMAGE: "imgreply"
   },
-  QUICK_REPLY: 'quickreply',
-  CUSTOM_COMPONENT: 'component',
-  POPUP: 'popup',
-  OTHER_PO_CHARGES: 'otherpocharges',
-  INDENT_POPUP: 'indentPopup',
-  AGAINST_SAMPLE_INDENT_POPUP: 'againstSampleIndentPopup'
+  QUICK_REPLY: "quickreply",
+  CUSTOM_COMPONENT: "component",
+  POPUP: "popup",
+  OTHER_PO_CHARGES: "otherpocharges",
+  INDENT_POPUP: "indentPopup",
+  AGAINST_SAMPLE_INDENT_POPUP: "againstSampleIndentPopup",
+  PO_CONFIRMATION_POPUP: "poConfirmationPopup"
 };
 
-export const NEXT_MESSAGE = 'mrbot_next_message';
+export const NEXT_MESSAGE = "mrbot_next_message";
 
 export const PROP_TYPES = {
   MESSAGE: ImmutablePropTypes.contains({
@@ -90,6 +91,6 @@ export const PROP_TYPES = {
 };
 
 export const UI_MESSAGES = {
-  INPUT_HINT: 'Enter Message...'
+  INPUT_HINT: "Enter Message..."
 };
 export const ERROR = {};

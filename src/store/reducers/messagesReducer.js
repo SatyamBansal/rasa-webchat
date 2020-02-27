@@ -1,5 +1,5 @@
-import { List } from 'immutable';
-import { MESSAGE_SENDER, SESSION_NAME } from 'constants';
+import { List } from "immutable";
+import { MESSAGE_SENDER, SESSION_NAME } from "constants";
 
 import {
   createQuickReply,
@@ -13,10 +13,11 @@ import {
   createPopup,
   createOtherChargesPopup,
   createIndentPopup,
-  createAgainstSampleIndentPopup
-} from './helper';
+  createAgainstSampleIndentPopup,
+  createPOConfirmationPopup
+} from "./helper";
 
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from "../actions/actionTypes";
 
 export default function (storage) {
   const initialState = List([]);
@@ -53,6 +54,11 @@ export default function (storage) {
           state.push(createAgainstSampleIndentPopup(action.text, MESSAGE_SENDER.RESPONSE))
         );
       }
+      case actionTypes.ADD_PO_CONFIRMATION_POPUP: {
+        return storeMessage(
+          state.push(createPOConfirmationPopup(action.text, MESSAGE_SENDER.RESPONSE))
+        );
+      }
       case actionTypes.ADD_NEW_LINK_SNIPPET: {
         return storeMessage(
           state.push(createLinkSnippet(action.link, MESSAGE_SENDER.RESPONSE))
@@ -81,7 +87,7 @@ export default function (storage) {
         );
       }
       case actionTypes.SET_QUICK_REPLY: {
-        return storeMessage(state.setIn([action.id, 'chosenReply'], action.title));
+        return storeMessage(state.setIn([action.id, "chosenReply"], action.title));
       }
       case actionTypes.INSERT_NEW_USER_MESSAGE: {
         return storeMessage(
@@ -93,10 +99,12 @@ export default function (storage) {
       }
       case actionTypes.DELETE_POPUP_MESSAGE: {
         return storeMessage(
-          state.filter((value) => {
-            console.log('Value :', value.get('type'));
+          state.filter(value => {
+            console.log("Value :", value.get("type"));
             return (
-              value.get('type') != 'popup' && value.get('type') != 'otherpocharges' && value.get('type') != 'indentPopup'
+              value.get("type") != "popup" &&
+              value.get("type") != "otherpocharges" &&
+              value.get("type") != "indentPopup"
             );
           })
         );
@@ -104,13 +112,13 @@ export default function (storage) {
 
       case actionTypes.ABORT_PROCESS: {
         const modifiedMessages = state.update(
-          state.findIndex(item => item.get('chosenReply') === null),
-          item => item.set('chosenReply', 'invalid')
+          state.findIndex(item => item.get("chosenReply") === null),
+          item => item.set("chosenReply", "invalid")
         );
         return storeMessage(
-          modifiedMessages.filter((value) => {
-            console.log('Value :', value.get('type'));
-            return value.get('type') != 'popup';
+          modifiedMessages.filter(value => {
+            console.log("Value :", value.get("type"));
+            return value.get("type") != "popup";
           })
         );
       }

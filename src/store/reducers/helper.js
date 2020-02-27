@@ -1,10 +1,10 @@
-import { Map, List } from 'immutable';
-import { MESSAGES_TYPES, MESSAGE_SENDER, SESSION_NAME } from 'constants';
+import { Map, List } from "immutable";
+import { MESSAGES_TYPES, MESSAGE_SENDER, SESSION_NAME } from "constants";
 
-import { Video, Image, Message, Snippet, QuickReply } from 'messagesComponents';
+import { Video, Image, Message, Snippet, QuickReply } from "messagesComponents";
 
 export function createNewMessage(text, sender) {
-  console.log('Message component : ', Message);
+  console.log("Message component : ", Message);
   return Map({
     type: MESSAGES_TYPES.TEXT,
     text,
@@ -54,6 +54,16 @@ export function createAgainstSampleIndentPopup(text, sender) {
   });
 }
 
+export function createPOConfirmationPopup(text, sender) {
+  return Map({
+    type: MESSAGES_TYPES.PO_CONFIRMATION_POPUP,
+    text,
+    sender,
+    showAvatar: sender === MESSAGE_SENDER.RESPONSE,
+    timestamp: new Date().getTime()
+  });
+}
+
 export function createLinkSnippet(link, sender) {
   return Map({
     type: MESSAGES_TYPES.SNIPPET.LINK,
@@ -61,7 +71,7 @@ export function createLinkSnippet(link, sender) {
     title: link.title,
     link: link.link,
     content: link.content,
-    target: link.target || '_blank',
+    target: link.target || "_blank",
     sender,
     showAvatar: true,
     timestamp: new Date().getTime()
@@ -97,7 +107,7 @@ export function createQuickReply(quickReply, sender) {
     type: MESSAGES_TYPES.QUICK_REPLY,
     component: QuickReply,
     text: quickReply.text,
-    hint: quickReply.hint || 'Select an option...',
+    hint: quickReply.hint || "Select an option...",
     quick_replies: List(quickReply.quick_replies),
     sender,
     showAvatar: true,
@@ -162,7 +172,7 @@ export function storeLocalSession(storage, key, sid) {
   storage.setItem(key, JSON.stringify(session));
 }
 
-export const storeMessageTo = storage => (conversation) => {
+export const storeMessageTo = storage => conversation => {
   // Store a conversation List to storage
   const localSession = getLocalSession(storage, SESSION_NAME);
   const newSession = {
@@ -175,7 +185,7 @@ export const storeMessageTo = storage => (conversation) => {
   return conversation;
 };
 
-export const storeParamsTo = storage => (params) => {
+export const storeParamsTo = storage => params => {
   // Store a params List to storage
   const localSession = getLocalSession(storage, SESSION_NAME);
   const newSession = {

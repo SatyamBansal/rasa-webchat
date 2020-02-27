@@ -16,7 +16,7 @@ export default function() {
                 let newOrders = action.payload;
 
                 newOrders = newOrders.map(order => {
-                    if (order.DEL_DATE == "null") {
+                    if (order.DEL_DATE == "null" || order.DEL_DATE == null) {
                         return {
                             ...order,
                             DEL_DATE: moment().format("DD/MMM/YYYY")
@@ -77,9 +77,11 @@ export default function() {
                 return {
                     selectedOrders: [],
                     orders: [],
-                    savedOrders: []
+                    savedOrders: [],
+                    confirmationData: []
                 };
             }
+
             default: {
                 console.log("Returning Default State for po reducer : ", state);
                 return state;
