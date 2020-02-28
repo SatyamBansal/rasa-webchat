@@ -68,11 +68,7 @@ export default function() {
             }
             case actionTypes.CLEAR_INDENT_DATA: {
                 console.log("Deleting Old PO data");
-                return {
-                    selectedIndents: [],
-                    indents: [],
-                    savedIndents: []
-                };
+                return INITIAL_STATE;
             }
             case actionTypes.CHANGE_INDENT_SUPPLIER: {
                 console.log("IN change indent supplier", { action });
@@ -108,6 +104,7 @@ export default function() {
 
                 return { ...modifiedState };
             }
+
             default: {
                 console.log("Returning Default State for po reducer : ", state);
                 return state;
@@ -115,4 +112,3 @@ export default function() {
         }
     };
 }
-("");
