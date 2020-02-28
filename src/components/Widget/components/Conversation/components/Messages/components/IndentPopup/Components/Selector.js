@@ -92,7 +92,7 @@ class Selector extends React.Component {
         const currentPath = this.state.path;
 
         const newPath = _.dropRightWhile(currentPath, obj => obj.name != pathItemClicked);
-
+        this.props.dispatch(addItem(null));
         this.setState(
             {
                 path: newPath,

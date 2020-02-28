@@ -6,5 +6,13 @@
     "eslint.enable": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
+    },
+
+    "background.useDefault": false,
+    "background.customImages": ["C:/Users/geuser/Desktop/ken2.png"],
+    "background.style": {
+        "background-position": "100% 100%",
+        "background-size": "20%",
+        "opacity": 0.5
     }
 }
