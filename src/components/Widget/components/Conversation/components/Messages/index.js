@@ -108,21 +108,22 @@ class Messages extends Component {
         const b = true;
         if (message.get("type") === "component") {
             return (
-                <ComponentToRender
-                    id={index}
-                    {...message.get("props")}
+              <ComponentToRender
+                  id={index}
+                  {...message.get("props")}
                     isLast={isLast}
-                    disabled={b}
+                  disabled={b}
                 />
             );
         }
         return (
-            <ComponentToRender
+          <ComponentToRender
                 id={index}
-                params={params}
+              params={params}
+              messageObj={message}
                 message={message}
                 isLast={isLast}
-                disabled={b}
+              disabled={b}
             />
         );
     };
@@ -151,19 +152,19 @@ class Messages extends Component {
                 if (!dateRenderer || !timestamp) return null;
                 const dateToRender = dateRenderer(message.get("timestamp", message));
                 return dateToRender ? (
-                    <span className="message-date">
-                        {dateRenderer(message.get("timestamp"), message)}
+                  <span className="message-date">
+                      {dateRenderer(message.get("timestamp"), message)}
                     </span>
                 ) : null;
             };
 
             const renderMessage = (message, index) => (
-                <div className={`message ${profileAvatar && "with-avatar"}`} key={index}>
-                    {profileAvatar && message.get("showAvatar") && (
+              <div className={`message ${profileAvatar && "with-avatar"}`} key={index}>
+                  {profileAvatar && message.get("showAvatar") && (
                         <img src={profileAvatar} className="avatar" alt="profile" />
                     )}
                     {this.getComponentToRender(message, index, index === messages.size - 1)}
-                    {renderMessageDate(message)}
+                  {renderMessageDate(message)}
                 </div>
             );
 
@@ -186,27 +187,28 @@ class Messages extends Component {
             groups.push(group); // finally push last group of messages.
 
             return groups.map((g, index) => (
-                <div className={`group-message from-${g.from}`} key={`group_${index}`}>
-                    {g.messages}
+              <div className={`group-message from-${g.from}`} key={`group_${index}`}>
+                  {g.messages}
                 </div>
             ));
         };
 
         return (
-            <div id="messages" className="messages-container">
-                {renderMessages()}
+          <div id="messages" className="messages-container">
+              {renderMessages()}
                 {displayTypingIndication && (
-                    <div className={`message typing-indication ${profileAvatar && "with-avatar"}`}>
+            <div className={`message typing-indication ${profileAvatar && "with-avatar"}`}>
                         {profileAvatar && (
-                            <img src={profileAvatar} className="avatar" alt="profile" />
+                  <img src={profileAvatar} className="avatar" alt="profile" />
                         )}
-                        <div className="response">
-                            <div id="wave">
+                      <div className="response">
+                    <div id="wave">
                                 <span className="dot" />
-                                <span className="dot" />
-                                <span className="dot" />
-                            </div>
-                        </div>
+                            <span className="dot" />
+                            <span className="dot" />
+                            <span className="dot" />
+                          </div>
+                  </div>
                     </div>
                 )}
             </div>

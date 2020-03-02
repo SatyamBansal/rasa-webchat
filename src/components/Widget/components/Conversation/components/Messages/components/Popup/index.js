@@ -218,7 +218,7 @@ class Popup extends Component {
             if (
                 parseFloat(selectedOrders[i].BALANCE_QUANTITY) <
                     parseFloat(selectedOrders[i].QUANTITY) ||
-                selectedOrders[i].QUANTITY < 0
+                selectedOrders[i].QUANTITY <= 0
             ) {
                 console.log("Validation Failed on quantity");
                 return false;

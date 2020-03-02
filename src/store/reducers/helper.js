@@ -20,6 +20,7 @@ export function createPopup(text, sender) {
         text,
         sender,
         renderComponent: true,
+        isAbortTriggered: false,
         showAvatar: sender === MESSAGE_SENDER.RESPONSE,
         timestamp: new Date().getTime()
     });
@@ -31,6 +32,7 @@ export function createOtherChargesPopup(text, sender) {
         text,
         sender,
         renderComponent: true,
+        isAbortTriggered: false,
         showAvatar: sender === MESSAGE_SENDER.RESPONSE,
         timestamp: new Date().getTime()
     });
@@ -42,6 +44,7 @@ export function createIndentPopup(text, sender) {
         text,
         sender,
         renderComponent: true,
+        isAbortTriggered: false,
         showAvatar: sender === MESSAGE_SENDER.RESPONSE,
         timestamp: new Date().getTime()
     });
@@ -53,6 +56,7 @@ export function createAgainstSampleIndentPopup(text, sender) {
         text,
         sender,
         renderComponent: true,
+        isAbortTriggered: false,
         showAvatar: sender === MESSAGE_SENDER.RESPONSE,
         timestamp: new Date().getTime()
     });
@@ -64,6 +68,7 @@ export function createPOConfirmationPopup(text, sender) {
         text,
         sender,
         renderComponent: true,
+        isAbortTriggered: false,
         showAvatar: sender === MESSAGE_SENDER.RESPONSE,
         timestamp: new Date().getTime()
     });

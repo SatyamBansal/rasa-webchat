@@ -87,6 +87,10 @@ export default function() {
 
                 return { ...modifiedState };
             }
+            case actionTypes.ABORT_PROCESS: {
+                return INITIAL_STATE;
+            }
+
             case actionTypes.CHANGE_INDENT_ACTIVITY: {
                 console.log("IN change indent activity", { action });
                 let modifiedState;

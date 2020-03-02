@@ -158,6 +158,10 @@ export default function() {
             case actionTypes.CLEAR_INDENT_DATA: {
                 return INITIAL_STATE;
             }
+
+            case actionTypes.ABORT_PROCESS: {
+                return INITIAL_STATE;
+            }
             case actionTypes.ADD_INDENT_DATA: {
                 // called after sending data in middleware , so append data
 

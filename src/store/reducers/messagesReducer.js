@@ -112,10 +112,12 @@ export default function(storage) {
             }
 
             case actionTypes.ABORT_PROCESS: {
-                const modifiedMessages = state.update(
+                let modifiedMessages = state.update(
                     state.findIndex(item => item.get("chosenReply") === null),
                     item => item.set("chosenReply", "invalid")
                 );
+
+                modifiedMessages = modifiedMessages.map(msg => msg.set("isAbortTriggered", true));
                 return storeMessage(
                     modifiedMessages.filter(value => {
                         console.log("Value :", value.get("type"));

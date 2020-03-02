@@ -267,10 +267,10 @@ class IndentTypeB extends Component {
         this.closeDialog();
     }
     render() {
-        if (!this.state.isDialogOpen) {
+        if (!this.state.isDialogOpen && !this.props.messageObj.get("isAbortTriggered")) {
             this.disableUserInput();
         }
-
+        console.log("Message Object Recieved : ", this.props.messageObj);
         console.log("***********************", this.props.message.get("text"));
         const isopen = true;
         const isLast = true;
@@ -281,9 +281,10 @@ class IndentTypeB extends Component {
                         <Button
                             variant="contained"
                             color="primary"
+                            disabled={this.props.messageObj.get("isAbortTriggered")}
                             onClick={() => this.openDialog()}
                         >
-                            Detials
+                            Details
                         </Button>
 
                         <Dialog open={this.state.isDialogOpen} maxWidth="lg">
