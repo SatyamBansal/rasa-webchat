@@ -128,6 +128,18 @@ export default function(storage) {
                     })
                 );
             }
+
+            case actionTypes.HIDE_COMPONENT: {
+                return storeMessage(
+                    state.map(value => {
+                        if (value.get("type") == action.data) {
+                            return value.set("renderComponent", false);
+                        }
+
+                        return value;
+                    })
+                );
+            }
             // Pull conversation from storage, parsing as immutable List
             case actionTypes.PULL_SESSION: {
                 const localSession = getLocalSession(storage, SESSION_NAME);

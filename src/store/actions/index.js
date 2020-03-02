@@ -487,3 +487,10 @@ export function clearIndentData() {
         type: actions.CLEAR_INDENT_DATA
     };
 }
+
+export function hideComponent(componentName) {
+    return {
+        type: actions.HIDE_COMPONENT,
+        data: componentName
+    };
+}

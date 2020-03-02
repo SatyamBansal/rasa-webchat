@@ -12,7 +12,7 @@
     "background.customImages": ["C:/Users/geuser/Desktop/ken2.png"],
     "background.style": {
         "background-position": "100% 100%",
-        "background-size": "20%",
+        "background-size": "15%",
         "opacity": 1
     }
 }
