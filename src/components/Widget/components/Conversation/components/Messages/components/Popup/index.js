@@ -207,6 +207,9 @@ class Popup extends Component {
     }
 
     isDataValid(ids, orders) {
+        if (ids.length <= 0) {
+            return false;
+        }
         const selectedOrders = this.filterOrdersData(ids, orders);
         console.log("Checking DAta Valadity for orders : ", selectedOrders);
         // return selectedOrders.length > 2;

@@ -12,10 +12,13 @@
             WebChat.default.init({
                 selector: "#webchat",
                 initPayload:
-                    '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://192.168.1.33:81", "ccid":"69", "cost_user":"arvind@bluekaktus.com", "company_id": "4", "location_id": "6", "client_code": "akri48"}',
-                interval: 10, // 1000 ms between each message
+                    '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://192.168.1.33:81", "ccid":"69", "cost_user":"arvind@bluekaktus.com", "company_id": "4", "location_id": "6", "client_code": "akri48", "indent_department_code_login": "36"}',
+                // initPayload:
+                //     '/greet{"company_name":"Arvind", "project_name":"ProAct", "user_name":"Deepmala", "user_email":"deepmala.burnwal@arvindbrands.co.in", "user_id":"1", "api_host": "http://192.168.1.33:81", "ccid":"69", "cost_user":"arvind@bluekaktus.com", "company_id": "5", "location_id": "6", "client_code": "demo", "indent_department_code_login": "36"}',
+                interval: 1000, // 1000 ms between each message
                 customData: {}, // arbitrary custom data. Stay minimal as this will be added to the socket
-                socketUrl: "http://192.168.1.185:5046",
+                socketUrl: "http://192.168.1.185:5005/",
+                // socketUrl: "http://bluekaktus.ml:5007/",
                 socketPath: "/socket.io/",
                 title: "Mili",
                 subtitle: "Hi! I'm a technical support chatbot.",
@@ -36,7 +39,6 @@
                     storage: "session"
                 }
             });
-            WebChat.open();
         </script>
     </body>
 </html>

@@ -616,7 +616,7 @@ export default function EnhancedTable() {
                                             hover
                                             role="checkbox"
                                             aria-checked={isItemSelected}
-                                            onClick={event => handleClick(event, row.PD_ITEM_DT_ID)}
+                                            // onClick={event => handleClick(event, row.PD_ITEM_DT_ID)}
                                             tabIndex={-1}
                                             key={row.PD_ITEM_DT_ID}
                                             selected={isItemSelected}
@@ -628,8 +628,13 @@ export default function EnhancedTable() {
                                             >
                                                 <Checkbox
                                                     checked={isItemSelected}
-                                                    // onClick={event => handleClick(event, row.PD_ITEM_DT_ID, isItemSelected)}
-
+                                                    onClick={event =>
+                                                        handleClick(
+                                                            event,
+                                                            row.PD_ITEM_DT_ID,
+                                                            isItemSelected
+                                                        )
+                                                    }
                                                     inputProps={{ "aria-labelledby": labelId }}
                                                 />
                                             </TableCell>
@@ -684,6 +689,7 @@ export default function EnhancedTable() {
                                                     style={{ width: "100%" }}
                                                 >
                                                     <Select
+                                                        autoWidth={false}
                                                         labelId="demo-simple-select-outlined-label"
                                                         id="demo-simple-select-outlined"
                                                         value={row.ACTIVITY}
@@ -716,6 +722,7 @@ export default function EnhancedTable() {
                                                 >
                                                     <Select
                                                         displayEmpty
+                                                        autoWidth={false}
                                                         labelId="demo-simple-select-outlined-label"
                                                         id="demo-simple-select-outlined"
                                                         value={row.SUPPLIER}

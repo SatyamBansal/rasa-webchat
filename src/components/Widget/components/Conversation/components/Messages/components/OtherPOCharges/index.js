@@ -166,6 +166,9 @@ class OtherPOCharges extends Component {
     }
 
     isDataValid(ids, orders) {
+        if (ids.length <= 0) {
+            return false;
+        }
         console.log("DATA valididty", { ids, orders });
         const selectedOrders = this.getOrdersData(ids, orders);
         console.log("Checking DAta Valadity for orders : ", selectedOrders);

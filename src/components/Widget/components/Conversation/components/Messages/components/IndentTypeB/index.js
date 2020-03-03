@@ -36,6 +36,10 @@ const styles = theme => ({
         right: theme.spacing(1),
         top: theme.spacing(1),
         color: theme.palette.grey[500]
+    },
+    dialogStyles: {
+        width: "90%",
+        maxWidth: 1500
     }
 });
 
@@ -287,7 +291,13 @@ class IndentTypeB extends Component {
                             ITEM DETAILS
                         </Button>
 
-                        <Dialog open={this.state.isDialogOpen} maxWidth="lg">
+                        <Dialog
+                            open={this.state.isDialogOpen}
+                            classes={{
+                                paper: this.props.classes.dialogStyles
+                            }}
+                            maxWidth="lg"
+                        >
                             <AlertDialog
                                 closeAlert={() => this.closeAlert()}
                                 showAlert={this.state.showAlert}
@@ -339,4 +349,4 @@ const mapStateToProps = state => ({
     savedOrders: state.indentsTypeB.savedIndents
 });
 
-export default connect(mapStateToProps)(IndentTypeB);
+export default connect(mapStateToProps)(withStyles(styles)(IndentTypeB));

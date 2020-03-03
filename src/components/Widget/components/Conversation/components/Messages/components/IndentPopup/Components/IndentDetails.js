@@ -1,107 +1,110 @@
-import React from 'react';
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import React from "react";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
-import TextField from '@material-ui/core/TextField';
-import moment from 'moment';
-import Select from 'react-select';
-import axios from 'axios';
-import Button from '@material-ui/core/Button';
-import DeliveryTable from './DeliveryTable';
+import TextField from "@material-ui/core/TextField";
+import moment from "moment";
+import Select from "react-select";
+import axios from "axios";
+import Button from "@material-ui/core/Button";
+import DeliveryTable from "./DeliveryTable";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 // pick a date util library
-import MomentUtils from '@date-io/moment';
-import { addDeliveryData } from 'actions';
-import DeliveryForm from './DeliveryForm';
+import MomentUtils from "@date-io/moment";
+import { addDeliveryData } from "actions";
+import DeliveryForm from "./DeliveryForm";
 
 class IndentDetails extends React.Component {
     state = {
-      deliverySelector: {
-        options: [],
-        loading: true
-      },
-      tableForm: {
-        date: moment().format('DD/MMM/YYYY'),
-        qty: '',
-        location: null
-      }
+        deliverySelector: {
+            options: [],
+            loading: true
+        },
+        tableForm: {
+            date: moment().format("DD/MMM/YYYY"),
+            qty: "",
+            location: null
+        }
     };
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     getDeliveryLocationData = async () => {
-      await this.sleep(2000);
-      const response = await axios.post('http://bluekaktus.ml/proxy/getDeliveryLocationList', {
-        BASICPARAMS: {
-          CLIENT_CODE: 'demo',
-          APP_VERSION: '1.0'
-        }
-      });
+        const { clientCode, companyId, locationId, userId } = this.props.user;
+        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+            basic_Info: {
+                client_code: clientCode,
+                company_Id: companyId,
+                location_Id: locationId,
+                user_Id: userId
+            },
+            info_Type: "LOCATION_LIST"
+        });
 
         // await this.sleep(2000)
 
-      const items = response.data.data;
-      const options = [];
-      for (let i = 0; i < items.length; ++i) {
-        options.push({
-          value: items[i].DELIVERY_LOCATION_ID,
-          label: items[i].DELIVERY_LOCATION
-        });
-      }
+        const items = response.data.data;
+        const options = [];
+        for (let i = 0; i < items.length; ++i) {
+            options.push({
+                value: items[i].DELIVERY_LOCATION_ID,
+                label: items[i].DELIVERY_LOCATION
+            });
+        }
 
-      this.setState({ deliverySelector: { loading: false, options } });
+        this.setState({ deliverySelector: { loading: false, options } });
     };
 
     componentDidMount() {
-      this.getDeliveryLocationData();
+        this.getDeliveryLocationData();
     }
 
     handleLocationSelect = (item, action) => {
-      console.log({ item, action });
+        console.log({ item, action });
 
-      this.setState(prevState => ({
-        tableForm: {
-          ...prevState.tableForm,
-          location: item
-        }
-      }));
+        this.setState(prevState => ({
+            tableForm: {
+                ...prevState.tableForm,
+                location: item
+            }
+        }));
     };
 
-    handleQuantityChange = (event) => {
-      const value = event.target.value;
-      console.log(value);
-      this.setState(prevState => ({
-        tableForm: {
-          ...prevState.tableForm,
-          qty: value
-        }
-      }));
+    handleQuantityChange = event => {
+        const value = event.target.value;
+        console.log(value);
+        this.setState(prevState => ({
+            tableForm: {
+                ...prevState.tableForm,
+                qty: value
+            }
+        }));
     };
     submitDeliveryData = () => {
-      const { date, qty, location } = this.state.tableForm;
-      this.props.dispatch(addDeliveryData(moment().unix(), date, qty, location));
-      this.setState({
-        tableForm: {
-          date: moment().format('DD/MMM/YYYY'),
-          qty: '',
-          location: null
-        }
-      });
+        const { date, qty, location } = this.state.tableForm;
+        this.props.dispatch(addDeliveryData(moment().unix(), date, qty, location));
+        this.setState({
+            tableForm: {
+                date: moment().format("DD/MMM/YYYY"),
+                qty: "",
+                location: null
+            }
+        });
     };
-    handleDateChange = (date) => {
-      this.setState(prevState => ({
-        tableForm: {
-          ...prevState.tableForm,
-          date: date.format('DD/MMM/YYYY')
-        }
-      }));
+    handleDateChange = date => {
+        this.setState(prevState => ({
+            tableForm: {
+                ...prevState.tableForm,
+                date: date.format("DD/MMM/YYYY")
+            }
+        }));
     };
 
     render() {
-      return (
-        <div>
-          {/* <hr />
+        return (
+            <div>
+                {/* <hr />
           <hr />
 
           <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -142,17 +145,18 @@ class IndentDetails extends React.Component {
           </Button>
 
           <hr /> */}
-          <DeliveryForm />
+                <DeliveryForm />
 
-          <DeliveryTable />
-        </div>
-      );
+                <DeliveryTable />
+            </div>
+        );
     }
 }
 
 const mapStateToProps = state => ({
-  maxQty: state.indents.qty,
-  rate: state.indents.rate
+    maxQty: state.indents.qty,
+    rate: state.indents.rate,
+    user: state.userData
 });
 
 export default connect(mapStateToProps)(IndentDetails);

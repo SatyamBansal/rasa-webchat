@@ -193,8 +193,9 @@ class IndentPopup extends Component {
     }
 
     discardPO() {
+        this.props.dispatch(sendIndentData());
+        console.log("Deleting Indent ");
         this.props.dispatch(deletePopupMessage());
-        this.props.dispatch(cancelPO());
         this.enableUserInput();
         this.setState({ isDialogOpen: false, showAlert: false });
     }
@@ -337,8 +338,6 @@ class IndentPopup extends Component {
             info_Type: "ACTIVITY_LIST"
         });
 
-        await this.sleep(2000);
-
         const items = response.data.data;
         console.log(response);
         const options = [];
@@ -364,7 +363,7 @@ class IndentPopup extends Component {
                 location_Id: locationId,
                 user_Id: userId
             },
-            info_Type: "MERCHANT_LIST"
+            info_Type: "PARTY_LIST"
         });
 
         // await this.sleep(2000)
