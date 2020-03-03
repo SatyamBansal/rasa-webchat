@@ -139,9 +139,14 @@ class OtherPOCharges extends Component {
     }
 
     discardPO() {
+        // this.props.dispatch(deletePopupMessage());
+        // this.props.dispatch(cancelPO());
+        // this.enableUserInput();
+
+        this.props.dispatch(sendChargesData([]));
         this.props.dispatch(deletePopupMessage());
-        this.props.dispatch(cancelPO());
         this.enableUserInput();
+
         this.setState({ isDialogOpen: false, showAlert: false });
     }
 

@@ -199,18 +199,16 @@ const DeliveryForm = props => {
                 </Grid>
                 <Grid item xs={2}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <ThemeProvider theme={{ typography: { fontSize: 10 } }}>
-                            <DatePicker
-                                size="small"
-                                label="Delivery"
-                                format="DD/MMM/YYYY"
-                                value={date}
-                                // defaultValue={moment().toDate()}
-                                inputVariant="outlined"
-                                // value={selectedDate}
-                                onChange={handleDateChange}
-                            />
-                        </ThemeProvider>
+                        <DatePicker
+                            size="small"
+                            label="Delivery"
+                            format="DD/MMM/YYYY"
+                            value={date}
+                            // defaultValue={moment().toDate()}
+                            inputVariant="outlined"
+                            // value={selectedDate}
+                            onChange={handleDateChange}
+                        />
                     </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={2}>
