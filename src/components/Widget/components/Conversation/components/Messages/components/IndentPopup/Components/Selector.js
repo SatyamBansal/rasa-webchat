@@ -50,13 +50,14 @@ class Selector extends React.Component {
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     getData = async itemID => {
-        console.log("Gettting Item List ");
-        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetItemList", {
+        const user = this.props.user;
+        console.log("Gettting Item List for user : ", user);
+        const response = await axios.post("http://bluekaktus.ml/proxy/GetItemList", {
             basic_Info: {
-                client_code: "akri48",
-                company_Id: 4,
-                location_Id: 6,
-                user_Id: 1
+                client_code: user.clientCode,
+                company_Id: user.companyId,
+                location_Id: user.locationId,
+                user_Id: user.userId
             },
             raw_data: {
                 item_id: itemID
@@ -283,4 +284,8 @@ class Selector extends React.Component {
     }
 }
 
-export default connect()(Selector);
+const mapStateToProps = state => ({
+    user: state.userData
+});
+
+export default connect(mapStateToProps)(Selector);

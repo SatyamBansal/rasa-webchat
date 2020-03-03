@@ -284,7 +284,7 @@ class IndentTypeB extends Component {
                             disabled={this.props.messageObj.get("isAbortTriggered")}
                             onClick={() => this.openDialog()}
                         >
-                            Details
+                            ITEM DETAILS
                         </Button>
 
                         <Dialog open={this.state.isDialogOpen} maxWidth="lg">

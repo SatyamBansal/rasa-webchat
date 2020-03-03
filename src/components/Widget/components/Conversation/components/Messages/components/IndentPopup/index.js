@@ -326,12 +326,13 @@ class IndentPopup extends Component {
     };
 
     getActivityData = async () => {
-        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+        const { clientCode, companyId, locationId, userId } = this.props.user;
+        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
             basic_Info: {
-                client_code: "akri48",
-                company_Id: 4,
-                location_Id: 6,
-                user_Id: 1
+                client_code: clientCode,
+                company_Id: companyId,
+                location_Id: locationId,
+                user_Id: userId
             },
             info_Type: "ACTIVITY_LIST"
         });
@@ -355,13 +356,13 @@ class IndentPopup extends Component {
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     getSupplierData = async () => {
-        await this.sleep(2000);
-        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+        const { clientCode, companyId, locationId, userId } = this.props.user;
+        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
             basic_Info: {
-                client_code: "akri48",
-                company_Id: 4,
-                location_Id: 6,
-                user_Id: 1
+                client_code: clientCode,
+                company_Id: companyId,
+                location_Id: locationId,
+                user_Id: userId
             },
             info_Type: "MERCHANT_LIST"
         });
@@ -383,7 +384,7 @@ class IndentPopup extends Component {
     getUomData = async itemId => {
         // this.setState({ uomSelector: { disabled: false, loading: true, options: [] } });
         await this.sleep(2000);
-        const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
             basic_info: {
                 client_code: "akri48",
                 company_id: 4,
@@ -814,7 +815,8 @@ const mapStateToProps = state => ({
     rate: state.indents.rate,
     deliveryData: state.indents.deliveryData,
     selectedItem: state.indents.item,
-    uom: state.indents.uom
+    uom: state.indents.uom,
+    user: state.userData
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(IndentPopup));

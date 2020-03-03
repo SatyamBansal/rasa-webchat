@@ -12,6 +12,7 @@ const UomSelector = props => {
     const [selectInputValue, setSelectInputValue] = useState("");
     const item = useSelector(state => state.indents.item);
     const dispatch = useDispatch();
+    const { clientCode, companyId, locationId, userId } = useSelector(state => state.userData);
 
     useEffect(() => {
         const getUomData = async itemId => {
@@ -20,13 +21,13 @@ const UomSelector = props => {
             setSelectInputValue("");
             setOptions([]);
             setLoading(true);
-            await sleep(2000);
-            const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+
+            const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
                 basic_info: {
-                    client_code: "akri48",
-                    company_id: 4,
-                    location_id: 6,
-                    user_id: 1
+                    client_code: clientCode,
+                    company_id: companyId,
+                    location_id: locationId,
+                    user_id: userId
                 },
                 info_type: "UOM_LIST",
                 raw_data: {

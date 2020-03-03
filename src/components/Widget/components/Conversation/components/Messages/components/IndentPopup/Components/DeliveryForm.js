@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { ThemeProvider } from "@material-ui/styles";
 import axios from "axios";
 import moment from "moment";
 import MomentUtils from "@date-io/moment";
@@ -16,6 +16,13 @@ import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import Select from "react-select";
 import { addDeliveryData } from "actions";
 
+// const styles = useStyles({
+//     dateStyles: {
+//         fontSize: "0.75rem",
+//         paddingTop: "14px",
+//         paddingBottom: "12px"
+//     }
+// });
 const currentDate = () => moment();
 
 function Alert(props) {
@@ -41,15 +48,15 @@ const DeliveryForm = props => {
 
     const dispatch = useDispatch();
 
-    userData.set("userId", "2");
-    console.log(`${userData} : user id : ${userData.get("userId")}`);
+    // userData.set("userId", "2");
+    // console.log(`${userData} : user id : ${userData.get("userId")}`);
 
     useEffect(() => {
         const populateLocationSelector = async () => {
-            const { clientCode, companyId, locationId, userId } = userData.toJS();
+            const { clientCode, companyId, locationId, userId } = userData;
             console.log({ clientCode, companyId, locationId, userId });
             console.log("Fetching location DAta");
-            const response = await axios.post("http://192.168.1.33:81/api/Chatbot/GetInfo", {
+            const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
                 basic_Info: {
                     client_code: clientCode,
                     company_Id: companyId,
@@ -192,16 +199,18 @@ const DeliveryForm = props => {
                 </Grid>
                 <Grid item xs={2}>
                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <DatePicker
-                            size="small"
-                            label="Delivery"
-                            format="DD/MMM/YYYY"
-                            value={date}
-                            // defaultValue={moment().toDate()}
-                            inputVariant="outlined"
-                            // value={selectedDate}
-                            onChange={handleDateChange}
-                        />
+                        <ThemeProvider theme={{ typography: { fontSize: 10 } }}>
+                            <DatePicker
+                                size="small"
+                                label="Delivery"
+                                format="DD/MMM/YYYY"
+                                value={date}
+                                // defaultValue={moment().toDate()}
+                                inputVariant="outlined"
+                                // value={selectedDate}
+                                onChange={handleDateChange}
+                            />
+                        </ThemeProvider>
                     </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={2}>
