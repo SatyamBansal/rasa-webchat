@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
-import axios from "axios";
+import axios from "network";
 import UomSelector from "./Components/UomSelector";
 import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
 import {
@@ -327,14 +327,15 @@ class IndentPopup extends Component {
     };
 
     getActivityData = async () => {
-        const { clientCode, companyId, locationId, userId } = this.props.user;
-        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+        const { clientCode, companyId, locationId, userId, apiHost } = this.props.user;
+        const response = await axios.post(`/api/Chatbot/GetInfo`, {
             basic_Info: {
                 client_code: clientCode,
                 company_Id: companyId,
                 location_Id: locationId,
                 user_Id: userId
             },
+            api_host: apiHost,
             info_Type: "ACTIVITY_LIST"
         });
 
@@ -355,14 +356,15 @@ class IndentPopup extends Component {
 
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
     getSupplierData = async () => {
-        const { clientCode, companyId, locationId, userId } = this.props.user;
-        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+        const { clientCode, companyId, locationId, userId, apiHost } = this.props.user;
+        const response = await axios.post(`/api/Chatbot/GetInfo`, {
             basic_Info: {
                 client_code: clientCode,
                 company_Id: companyId,
                 location_Id: locationId,
                 user_Id: userId
             },
+            api_host: apiHost,
             info_Type: "PARTY_LIST"
         });
 
@@ -381,16 +383,18 @@ class IndentPopup extends Component {
     };
 
     getUomData = async itemId => {
+        const { clientCode, companyId, locationId, userId, apiHost } = this.props.user;
         // this.setState({ uomSelector: { disabled: false, loading: true, options: [] } });
         await this.sleep(2000);
-        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+        const response = await axios.post(`/api/Chatbot/GetInfo`, {
             basic_info: {
-                client_code: "akri48",
-                company_id: 4,
-                location_id: 6,
-                user_id: 1
+                client_code: clientCode,
+                company_id: companyId,
+                location_id: locationId,
+                user_id: userId
             },
             info_type: "UOM_LIST",
+            api_host: apiHost,
             raw_data: {
                 input_type_code: itemId // item_id
             }

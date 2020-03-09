@@ -307,7 +307,7 @@ class IndentTypeB extends Component {
                                 id="customized-dialog-title"
                                 onClose={() => this.handleClose()}
                             >
-                                Fill PO Details
+                                Fill Indent Details
                             </DialogTitle>
                             <DialogContent dividers>
                                 <POTable />

@@ -107,7 +107,7 @@ function initStore(hintText, connectingText, socket, storage, docViewer = false)
                     item_id1: data.ITEM_ID1,
                     amount: data.AMOUNT,
                     activity_id: data.ACTIVITY,
-                    supplier_id: data.SUPPLIER
+                    party_id: data.SUPPLIER
                 }));
                 console.log(
                     "*************************sending against indent data to server ......",

@@ -1,6 +1,6 @@
 import React from "react";
 import Select from "react-select";
-import axios from "axios";
+
 import _ from "lodash";
 
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
@@ -9,6 +9,8 @@ import Link from "@material-ui/core/Link";
 
 import { connect } from "react-redux";
 import { addItem } from "actions";
+
+import axios from "network";
 
 const colourOptions = [
     { value: "ocean", label: "Ocean", color: "#00B8D9", isFixed: true },
@@ -52,13 +54,14 @@ class Selector extends React.Component {
     getData = async itemID => {
         const user = this.props.user;
         console.log("Gettting Item List for user : ", user);
-        const response = await axios.post("http://bluekaktus.ml/proxy/GetItemList", {
+        const response = await axios.post(`/api/Chatbot/GetItemList`, {
             basic_Info: {
                 client_code: user.clientCode,
                 company_Id: user.companyId,
                 location_Id: user.locationId,
                 user_Id: user.userId
             },
+            api_host: user.apiHost,
             raw_data: {
                 item_id: itemID
             }

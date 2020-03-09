@@ -381,7 +381,9 @@ export const addUserData = info => {
             costUser: info.cost_user,
             companyId: info.company_id,
             locationId: info.location_id,
-            clientCode: info.client_code
+            clientCode: info.client_code,
+            uiApiHost: info.ui_api_host || "https://bluekaktus.com",
+            department: info.indent_department_code_login
         }
     };
 };

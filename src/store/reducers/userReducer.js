@@ -13,7 +13,9 @@ export default function() {
         costUser: null,
         companyId: null,
         locationId: null,
-        clientCode: null
+        clientCode: null,
+        uiApiHost: null,
+        department: null
     };
 
     return function reducer(state = initialState, action) {

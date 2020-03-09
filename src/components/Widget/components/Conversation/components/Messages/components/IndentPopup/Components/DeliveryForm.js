@@ -8,7 +8,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import axios from "axios";
+import axios from "network";
 import moment from "moment";
 import MomentUtils from "@date-io/moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,16 +53,17 @@ const DeliveryForm = props => {
 
     useEffect(() => {
         const populateLocationSelector = async () => {
-            const { clientCode, companyId, locationId, userId } = userData;
+            const { clientCode, companyId, locationId, userId, apiHost } = userData;
             console.log({ clientCode, companyId, locationId, userId });
             console.log("Fetching location DAta");
-            const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+            const response = await axios.post(`/api/Chatbot/GetInfo`, {
                 basic_Info: {
                     client_code: clientCode,
                     company_Id: companyId,
                     location_Id: locationId,
                     user_Id: userId
                 },
+                api_host: apiHost,
                 info_Type: "LOCATION_LIST"
             });
 

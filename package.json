@@ -9,6 +9,7 @@
     "scripts": {
         "dev": "webpack-dev-server --config webpack.dev.js",
         "build": "webpack --config ./webpack.prod.js -p",
+        "staging": "webpack --config ./webpack.staging.js",
         "test": "jest --coverage",
         "prepare": "npm run build",
         "release": "standard-version"

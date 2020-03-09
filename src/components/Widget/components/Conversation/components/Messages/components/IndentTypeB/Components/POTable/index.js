@@ -139,7 +139,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import axios from "axios";
+import axios from "network";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -352,17 +352,21 @@ export default function EnhancedTable() {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const { clientCode, companyId, locationId, userId, apiHost } = useSelector(
+        state => state.userData
+    );
 
     React.useEffect(() => {
         const getActivityData = async () => {
-            const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+            const response = await axios.post(`/api/Chatbot/GetInfo`, {
                 basic_Info: {
-                    client_code: "akri48",
-                    company_Id: 4,
-                    location_Id: 6,
-                    user_Id: 1
+                    client_code: clientCode,
+                    company_Id: companyId,
+                    location_Id: locationId,
+                    user_Id: userId
                 },
-                info_Type: "ACTIVITY_LIST"
+                info_Type: "ACTIVITY_LIST",
+                api_host: apiHost
             });
 
             // await this.sleep(2000);
@@ -386,14 +390,15 @@ export default function EnhancedTable() {
 
     React.useEffect(() => {
         const getSupplierData = async () => {
-            const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+            const response = await axios.post(`/api/Chatbot/GetInfo`, {
                 basic_Info: {
-                    client_code: "akri48",
-                    company_Id: 4,
-                    location_Id: 6,
-                    user_Id: 1
+                    client_code: clientCode,
+                    company_Id: companyId,
+                    location_Id: locationId,
+                    user_Id: userId
                 },
-                info_Type: "MERCHANT_LIST"
+                info_Type: "PARTY_LIST",
+                api_host: apiHost
             });
 
             // await this.sleep(2000)

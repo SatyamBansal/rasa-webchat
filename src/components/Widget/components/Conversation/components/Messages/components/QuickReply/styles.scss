@@ -42,7 +42,7 @@ input:disabled {
     }
 
     .response {
-        @include message-bubble($grey-2, #000, 0 15px 15px 15px);
+        @include message-bubble($light-blue, #000, 0 15px 15px 15px);
     }
 
     .avatar {

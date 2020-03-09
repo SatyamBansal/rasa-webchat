@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import axios from "network";
 import Select from "react-select";
 import { changeUom } from "actions";
 
@@ -12,7 +12,9 @@ const UomSelector = props => {
     const [selectInputValue, setSelectInputValue] = useState("");
     const item = useSelector(state => state.indents.item);
     const dispatch = useDispatch();
-    const { clientCode, companyId, locationId, userId } = useSelector(state => state.userData);
+    const { clientCode, companyId, locationId, userId, apiHost } = useSelector(
+        state => state.userData
+    );
 
     useEffect(() => {
         const getUomData = async itemId => {
@@ -22,7 +24,7 @@ const UomSelector = props => {
             setOptions([]);
             setLoading(true);
 
-            const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+            const response = await axios.post(`/api/Chatbot/GetInfo`, {
                 basic_info: {
                     client_code: clientCode,
                     company_id: companyId,
@@ -30,6 +32,7 @@ const UomSelector = props => {
                     user_id: userId
                 },
                 info_type: "UOM_LIST",
+                api_host: apiHost,
                 raw_data: {
                     input_type_code: itemId // item_id
                 }

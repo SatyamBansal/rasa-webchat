@@ -4,7 +4,7 @@ import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
 import Select from "react-select";
-import axios from "axios";
+import axios from "network";
 import Button from "@material-ui/core/Button";
 import DeliveryTable from "./DeliveryTable";
 
@@ -31,14 +31,15 @@ class IndentDetails extends React.Component {
     sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     getDeliveryLocationData = async () => {
-        const { clientCode, companyId, locationId, userId } = this.props.user;
-        const response = await axios.post("http://bluekaktus.ml/proxy/GetInfo", {
+        const { clientCode, companyId, locationId, userId, apiHost } = this.props.user;
+        const response = await axios.post(`/api/Chatbot/GetInfo`, {
             basic_Info: {
                 client_code: clientCode,
                 company_Id: companyId,
                 location_Id: locationId,
                 user_Id: userId
             },
+            api_host: apiHost,
             info_Type: "LOCATION_LIST"
         });
 

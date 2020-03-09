@@ -195,7 +195,7 @@ class Widget extends Component {
                 }
 
                 console.log("####################Response from bot socket : ", botUttered);
-
+                // botUttered = { text: "Hey Deepmala! How may I help you? 😊 " };
                 if (botUttered.type === "action") {
                     if (botUttered.actionType === "SEND_TEXT") {
                         dispatch(sendCustomActionText(botUttered.payload.text));

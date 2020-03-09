@@ -19,6 +19,7 @@
                 "root": ["./src"],
                 "alias": {
                     "constants": "./src/constants.js",
+                    "network": "./src/utils/networkConfig.js",
                     "assets": "./assets",
                     "tests-mocks": "./mocks",
                     "actions": "./src/store/actions",

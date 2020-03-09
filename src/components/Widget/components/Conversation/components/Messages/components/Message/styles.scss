@@ -115,7 +115,7 @@
     }
 
     .client {
-        @include message-bubble($blue-1, $white);
+        @include message-bubble(#0084ff, $white);
         margin-left: auto;
         overflow-wrap: break-word;
 
