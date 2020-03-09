@@ -22,6 +22,7 @@
     ],
     "dependencies": {
         "@date-io/date-fns": "^1.3.13",
+        "@livechat/ui-kit": "^0.4.0-10",
         "@material-ui/core": "^4.8.3",
         "@material-ui/icons": "^4.5.1",
         "@material-ui/lab": "^4.0.0-alpha.43",
@@ -29,6 +30,7 @@
         "@stomp/stompjs": "^5.4.2",
         "chalk": "^3.0.0",
         "date-fns": "^2.9.0",
+        "fg-loadcss": "^2.1.0",
         "html-webpack-plugin": "^3.2.0",
         "immutable": "^3.8.2",
         "material-ui-icons": "^1.0.0-beta.36",

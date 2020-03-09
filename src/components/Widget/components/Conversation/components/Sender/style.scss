@@ -1,19 +1,25 @@
 @import "variables.scss";
 
 .conversation-container {
+    // .sender {
+    //     align-items: center;
+    //     display: flex;
+    //     background-color: $grey-2;
+    //     height: 45px;
+    //     padding: 5px;
+    //     margin-bottom: 8px;
+    // }
     .sender {
-        align-items: center;
-        display: flex;
-        background-color: $grey-2;
-        height: 45px;
-        padding: 5px;
+        margin-bottom: 8px;
     }
 
     .new-message {
-        font-size: $font-size;
+        margin-left: 16px;
+        font-size: 14px;
+
         width: 100%;
         border: 0;
-        background-color: $grey-2;
+        background-color: white;
         height: 30px;
         padding-left: 15px;
 
