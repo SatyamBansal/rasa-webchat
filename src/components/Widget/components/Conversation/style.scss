@@ -4,8 +4,10 @@
 
 .conversation-container {
     @include animation(0, 0.5s, slide-in);
-    border-radius: 10px;
+    border-radius: 20px;
     // box-shadow: 0px 2px 10px 1px $grey-3;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
     box-shadow: 0 1px 8px 0 rgba(122, 107, 107, 0.22);
     overflow: hidden;
     width: 370px;

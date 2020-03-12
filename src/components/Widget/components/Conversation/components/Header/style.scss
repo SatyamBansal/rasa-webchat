@@ -37,24 +37,25 @@
             color: #fff;
         }
         span {
-            bottom: 12px;
-            position: absolute;
-            left: 22px;
-            &.with-avatar {
-                left: 60px;
-            }
+            // bottom: 12px;
+            // position: absolute;
+            // left: 22px;
+            // &.with-avatar {
+            //     left: 60px;
+            // }
         }
     }
 
     .title {
         font-size: 20px;
         margin: 0;
-        font-family: $roboto;
-        position: absolute;
-        left: 20px;
-        &.with-avatar {
-            left: 58px;
-        }
+        margin-bottom: 8px;
+        // font-family: $roboto;
+        // position: absolute;
+        // left: 20px;
+        // &.with-avatar {
+        //     left: 58px;
+        // }
     }
 
     .header-buttons {
@@ -142,6 +143,12 @@
             @include loading-fs;
         }
     }
+}
+
+.headerInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 //////////////////  for Material ui

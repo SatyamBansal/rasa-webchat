@@ -435,7 +435,8 @@ start a new session.
     handleMessageSubmit(event) {
         event.preventDefault();
         const userUttered = event.target.message.value;
-        if (userUttered) {
+
+        if (userUttered && userUttered.trim() != "") {
             this.props.dispatch(addUserMessage(userUttered));
             this.props.dispatch(emitUserMessage(userUttered));
         }

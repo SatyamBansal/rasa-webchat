@@ -116,44 +116,7 @@ class QuickReply extends PureComponent {
                         })}
                     </div>
                 )}
-                <Message message={message} />
-
-                {isLast && (
-                    <ButtonGroup
-                        orientation="vertical"
-                        color="primary"
-                        aria-label="vertical outlined primary button group"
-                    >
-                        {/* <Button variant="contained" color="primary" disableElevation>
-          {message.get("text")}
-      </Button> */}
-                        {message.get("quick_replies").map((reply, index) => {
-                            if (reply.type === "web_url") {
-                                return (
-                                    <a
-                                        key={index}
-                                        href={reply.payload}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={"reply"}
-                                    >
-                                        {reply.title}
-                                    </a>
-                                );
-                            }
-                            return (
-                                // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-                                <Button
-                                    key={index}
-                                    // className={'reply'}
-                                    onClick={() => this.handleClick(reply)}
-                                >
-                                    {reply.title}
-                                </Button>
-                            );
-                        })}
-                    </ButtonGroup>
-                )}
+     
             </div>
         );
     }

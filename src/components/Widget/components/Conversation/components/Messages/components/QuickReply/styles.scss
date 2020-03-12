@@ -19,12 +19,13 @@ input:disabled {
     background-color: white;
     color: #574ae2;
     cursor: pointer;
-    font-family: "Open Sans", Arial;
+    // font-family: "Open Sans", Arial;
+    font-family: Roboto;
     font-size: 15px;
 
     &:hover {
         color: white;
-        background-color: #0084ff;
+        background-color: rgba(151, 140, 243, 0.75);
     }
 }
 .pb-buttonList__container button:first-of-type {

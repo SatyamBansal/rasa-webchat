@@ -1,6 +1,10 @@
 @import "variables.scss";
 @import "common.scss";
 
+.greetAvatar {
+    width: 96px;
+    height: 96px;
+}
 .group-message.from-client {
     span.message-date {
         text-align: right;
@@ -67,7 +71,7 @@
 }
 
 .messages-container {
-    background-color: $white;
+    background-color: $chat-background;
     height: 50vh;
     max-height: 425px;
     overflow-y: auto;

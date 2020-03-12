@@ -20,10 +20,11 @@
                 interval: 1000, // 1000 ms between each message
                 customData: {}, // arbitrary custom data. Stay minimal as this will be added to the socket
 
-                socketUrl: "http://bluekaktus.ml:5007/",
+                // socketUrl: "http://192.168.1.185:5005/",
+                socketUrl:"http://bluekaktus.ml:5007",
                 socketPath: "/socket.io/",
                 title: "Mili",
-                subtitle: "Hi! I'm a technical support chatbot.",
+                subtitle: "Technical Support Chatbot",
                 inputTextFieldHint: "Type a message...",
                 connectingText: "Bot is under training... ",
                 hideWhenNotConnected: false,
@@ -41,6 +42,7 @@
                     storage: "session"
                 }
             });
+            WebChat.open();
         </script>
     </body>
 </html>

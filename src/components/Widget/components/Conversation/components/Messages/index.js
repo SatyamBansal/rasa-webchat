@@ -2,6 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImmutablePropTypes from "react-immutable-proptypes";
 import { connect } from "react-redux";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
+import CardMedia from "@material-ui/core/CardMedia";
+
+import CardContent from "@material-ui/core/CardContent";
 
 import { MESSAGES_TYPES } from "constants";
 import {
@@ -128,6 +135,144 @@ class Messages extends Component {
         );
     };
 
+    card1() {
+        return (
+            <Card
+                style={{
+                    width: "320px",
+                    height: "120px",
+                    marginLeft: "16px",
+                    marginBottom: "24px"
+                }}
+            >
+                <Box display="flex" flexDirection="row">
+                    <Box>
+                        <Paper>
+                            <img height="120px" src="https://i.imgur.com/KlCBsi3.jpg" />
+                        </Paper>
+                    </Box>
+                    <Box />
+                    <Box pt={1} style={{ background: "#574ae2", color: "white" }}>
+                        <CardContent>
+                            <Typography align="left" variant="body2" gutterBottom>
+                                Hello! I am Mili, BlueKaktus Technical Support Assistant
+                            </Typography>
+                            <Typography align="left" variant="subtitle2">
+                                How can I help you?
+                            </Typography>
+                        </CardContent>
+                    </Box>
+                </Box>
+            </Card>
+        );
+    }
+    card2() {
+        return (
+            <Card style={{ width: "172px", marginLeft: "96px" }}>
+                <Box display="flex" flexDirection="column">
+                    <Box>
+                        <img
+                            width="170px"
+                            src="https://www.itvarnews.com/wp-content/uploads/2019/07/Amara-Avatar-01-330x330.jpg"
+                        />
+                    </Box>
+                    <Box />
+                    <CardContent>
+                        <Typography
+                            style={{ fontWeight: "bold" }}
+                            align="center"
+                            variant="subtitle2"
+                            gutterBottom
+                        >
+                            Hello! I am Mili, the BlueKaktus Technical Support Assistant
+                        </Typography>
+                        <Typography align="center" variant="body2">
+                            How can I help you?
+                        </Typography>
+                    </CardContent>
+                </Box>
+            </Card>
+        );
+    }
+    card3() {
+        return (
+            <Box width={"100%"} display="flex" alignItems="center">
+                <Card
+                    style={{
+                        width: "310px",
+                        height: "120px",
+                        marginLeft: "12px",
+                        marginBottom: "16px",
+                        marginTop: "16px"
+                        // margin: "16px auto"
+                    }}
+                >
+                    <Box display="flex" flexDirection="row">
+                        <Box>
+                            <Paper elevation={3}>
+                                <img height="120px" src="https://i.imgur.com/KlCBsi3.jpg" />
+                            </Paper>
+                        </Box>
+                        <Box />
+                        <Box pt={3}>
+                            <CardContent>
+                                <Typography
+                                    style={{ fontWeight: "bold" }}
+                                    align="left"
+                                    variant="body2"
+                                    gutterBottom
+                                >
+                                    Hello! I am Mili, BlueKaktus Technical Support Assistant
+                                </Typography>
+                                {/* <Typography align="left" variant="body2">
+                                How can I help you?
+                            </Typography> */}
+                            </CardContent>
+                        </Box>
+                    </Box>
+                </Card>
+            </Box>
+        );
+    }
+
+    card4() {
+        return (
+            <Card
+                style={{
+                    width: "310px",
+                    height: "120px",
+                    marginLeft: "16px",
+                    marginBottom: "24px",
+                    marginTop: "16px"
+                }}
+            >
+                <Box display="flex" flexDirection="row">
+                    <Box>
+                        <img height="120px" src="https://i.imgur.com/KlCBsi3.jpg" />
+                    </Box>
+                    <Box />
+                    <Paper elevation={5}>
+                        <Box pt={1}>
+                            <CardContent>
+                                <Typography
+                                    style={{ fontWeight: "bold" }}
+                                    align="left"
+                                    variant="body2"
+                                    gutterBottom
+                                >
+                                    Hello! I am Mili, BlueKaktus Technical Support Assistant
+                                </Typography>
+                                <Typography align="left" variant="body2">
+                                    How can I help you?
+                                </Typography>
+                            </CardContent>
+                        </Box>
+                    </Paper>
+                </Box>
+            </Card>
+        );
+    }
+
     render() {
         const { displayTypingIndication, profileAvatar } = this.props;
 
@@ -195,6 +340,14 @@ class Messages extends Component {
 
         return (
             <div id="messages" className="messages-container">
+                {/* <div>
+                    <img src={profileAvatar} className="greetAvatar" alt="profile" />
+                </div> */}
+                {/* {this.card1()} */}
+                {/* {this.card2()} */}
+
+                {this.card3()}
+
                 {renderMessages()}
                 {displayTypingIndication && (
                     <div className={`message typing-indication ${profileAvatar && "with-avatar"}`}>
