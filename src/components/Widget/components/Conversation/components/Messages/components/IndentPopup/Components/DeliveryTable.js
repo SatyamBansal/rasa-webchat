@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteDeliveryData } from "actions";
 
 import DeliveryForm from "./DeliveryForm";
+import { blue } from "@material-ui/core/colors";
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -33,7 +34,7 @@ function createData(name, calories, fat, carbs, protein) {
 
 const StyledTableCell = withStyles(theme => ({
     head: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: "#8980EB",
         color: theme.palette.common.white
     },
     body: {
@@ -127,6 +128,7 @@ function EnhancedTableHead(props) {
                 {headCells.map(headCell => (
                     <TableCell
                         key={headCell.id}
+                        style={{ backgroundColor: "blue" }}
                         align={headCell.numeric ? "right" : "left"}
                         padding={headCell.disablePadding ? "none" : "default"}
                         sortDirection={orderBy === headCell.id ? order : false}
@@ -163,7 +165,9 @@ EnhancedTableHead.propTypes = {
 const useToolbarStyles = makeStyles(theme => ({
     root: {
         paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1)
+        paddingRight: theme.spacing(1),
+        backgroundColor: "#7065E6",
+        color: "white"
     },
     highlight:
         theme.palette.type === "light"
@@ -222,6 +226,9 @@ const useStyles = makeStyles(theme => ({
     paper: {
         width: "100%",
         marginBottom: theme.spacing(2)
+    },
+    disabledDummyInput: {
+        "& input": { backgroundColor: "white", color: "#696161" }
     },
     table: {
         // minWidth: 750
@@ -326,6 +333,7 @@ export default function EnhancedTable() {
                 {rows.length <= 0 ? (
                     <TextField
                         variant="filled"
+                        classes={{ root: classes.disabledDummyInput }}
                         disabled
                         fullWidth
                         defaultValue="No delivery Data"

@@ -41,6 +41,9 @@ input:disabled {
     border: 1px solid #ddd;
     border-radius: 0px 0px 20px 20px;
 }
+// .quickReplies-container .response {
+//     display: inline-block;
+// }
 
 .conversation-container {
     .replies {
@@ -81,6 +84,7 @@ input:disabled {
 
     .response {
         @include message-bubble($light-blue, #000, 0 15px 15px 15px);
+        overflow-wrap: break-word;
     }
 
     .avatar {

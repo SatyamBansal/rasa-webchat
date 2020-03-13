@@ -13,6 +13,7 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import PropTypes from "prop-types";
 
 import AlertDialogComponent from "../AlertDialogComponent";
+import { isWithinInterval } from "date-fns";
 
 const styles = theme => ({
     root: {
@@ -30,15 +31,24 @@ const styles = theme => ({
     }
 });
 
-const titleStyles = makeStyles({
+const useFooterStyles = makeStyles({
+    root: {
+        backgroundColor: "#c9cbff"
+    }
+});
+const titleStyles = makeStyles(theme => ({
     root: {
         paddingTop: 8,
         paddingBottom: 8,
         paddingRight: 8,
-        paddingLeft: 16
+        paddingLeft: 16,
+        backgroundColor: theme.palette.primary.main,
+        color: "white"
     },
-    iconButton: {}
-});
+    iconButton: {
+        color: "white"
+    }
+}));
 
 const DialogActions = withStyles(theme => ({
     root: {
@@ -49,7 +59,8 @@ const DialogActions = withStyles(theme => ({
 
 const DialogContent = withStyles(theme => ({
     root: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        backgroundImage: "linear-gradient(#e5e4ff, #c8caff)"
     }
 }))(MuiDialogContent);
 
@@ -87,6 +98,7 @@ const SaveDialogComponent = props => {
         title,
         children
     } = props;
+    const classes = useFooterStyles();
 
     const [showAlertDialog, toggleAlertDialog] = React.useState(false);
 
@@ -103,7 +115,7 @@ const SaveDialogComponent = props => {
 
     const onDenyClick = () => {
         toggleAlertDialog(false);
-        if (onAlertAffirmClick) {
+        if (onAlertDenyClick) {
             onAlertDenyClick();
         }
     };
@@ -127,10 +139,11 @@ const SaveDialogComponent = props => {
                     {children}
                     {/* <POTable /> */}
                 </DialogContent>
-                <DialogActions>
+                <DialogActions classes={{ root: classes.root }}>
                     <Button
                         disabled={disableSaveButton}
                         autoFocus
+                        variant="contained"
                         onClick={onSaveButtonClick}
                         color="primary"
                     >

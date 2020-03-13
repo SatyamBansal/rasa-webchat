@@ -11,6 +11,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import axios from "network";
 import moment from "moment";
 import MomentUtils from "@date-io/moment";
+import AddIcon from "@material-ui/icons/Add";
+
 import { useDispatch, useSelector } from "react-redux";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import Select from "react-select";
@@ -23,6 +25,19 @@ import { addDeliveryData } from "actions";
 //         paddingBottom: "12px"
 //     }
 // });
+const useStyles = makeStyles(theme => ({
+    numInput: {
+        "& .MuiOutlinedInput-root": {
+            backgroundColor: "white"
+        },
+        "& label": {
+            color: "grey"
+        },
+        "& fieldset": {
+            borderColor: "#696161"
+        }
+    }
+}));
 const currentDate = () => moment();
 
 function Alert(props) {
@@ -33,6 +48,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const DeliveryForm = props => {
     // Component States
+    const classes = useStyles();
     const [date, setDate] = useState(currentDate());
     const [quantity, setQuantity] = useState("");
     const [location, setLocation] = useState(null);
@@ -184,11 +200,24 @@ const DeliveryForm = props => {
                                 fontFamily: "Roboto"
                             })
                         }}
+                        theme={theme => ({
+                            ...theme,
+                            colors: {
+                                ...theme.colors,
+                                neutral30: "black",
+                                neutral20: "#696161",
+                                neutral50: "grey",
+                                primary: "#574ae2"
+                            }
+                        })}
                     />
                 </Grid>
                 <Grid item xs={2}>
                     <TextField
                         size="small"
+                        classes={{
+                            root: classes.numInput
+                        }}
                         type="number"
                         value={quantity}
                         id="outlined-basic"
@@ -198,30 +227,36 @@ const DeliveryForm = props => {
                         error={quantity == "" ? false : quantity <= 0}
                     />
                 </Grid>
-                <Grid item xs={2}>
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <DatePicker
-                            size="small"
-                            label="Delivery"
-                            format="DD/MMM/YYYY"
-                            value={date}
-                            // defaultValue={moment().toDate()}
-                            inputVariant="outlined"
-                            // value={selectedDate}
-                            onChange={handleDateChange}
-                        />
-                    </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={2}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth="true"
-                        disabled={!isDataValid(quantity, location)}
-                        onClick={submitDeliveryData}
-                    >
-                        ADD
-                    </Button>
+                <Grid item xs={4} container spacing={2}>
+                    <Grid item xs={8}>
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <DatePicker
+                                classes={{
+                                    root: classes.numInput
+                                }}
+                                size="small"
+                                label="Delivery"
+                                format="DD/MMM/YYYY"
+                                value={date}
+                                // defaultValue={moment().toDate()}
+                                inputVariant="outlined"
+                                // value={selectedDate}
+                                onChange={handleDateChange}
+                            />
+                        </MuiPickersUtilsProvider>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth="true"
+                            size="large"
+                            disabled={!isDataValid(quantity, location)}
+                            onClick={submitDeliveryData}
+                        >
+                            <AddIcon />
+                        </Button>
+                    </Grid>
                     <Snackbar
                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                         open={error}

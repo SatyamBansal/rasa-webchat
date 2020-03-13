@@ -1,5 +1,6 @@
 import React from "react";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import Box from "@material-ui/core/Box";
 
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
@@ -147,8 +148,9 @@ class IndentDetails extends React.Component {
 
           <hr /> */}
                 <DeliveryForm />
-
-                <DeliveryTable />
+                <Box mt={2}>
+                    <DeliveryTable />
+                </Box>
             </div>
         );
     }

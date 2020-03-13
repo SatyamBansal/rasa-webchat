@@ -72,6 +72,7 @@
 
 .messages-container {
     background-color: $chat-background;
+    background-image: linear-gradient(#e5e4ff, #c8caff);
     height: 50vh;
     max-height: 425px;
     overflow-y: auto;

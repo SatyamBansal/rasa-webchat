@@ -71,19 +71,6 @@ class QuickReply extends PureComponent {
             return <Message message={message} />;
         }
 
-        // return (
-        //     <div>
-        //         <ThemeProvider>
-        //             <Message>
-        //                 <MessageText>Select a Supplier</MessageText>
-        //                 <MessageButtons>
-        //                     <MessageButton primary label="Confirm" />
-        //                     <MessageButton label="Cancel" />
-        //                 </MessageButtons>
-        //             </Message>
-        //         </ThemeProvider>
-        //     </div>
-        // );
         return (
             <div className="quickReplies-container">
                 <Message message={message} />
@@ -116,7 +103,6 @@ class QuickReply extends PureComponent {
                         })}
                     </div>
                 )}
-     
             </div>
         );
     }

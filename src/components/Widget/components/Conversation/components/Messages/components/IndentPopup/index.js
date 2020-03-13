@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import axios from "network";
 import UomSelector from "./Components/UomSelector";
+import DescriptionIcon from "@material-ui/icons/Description";
 import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
 import {
     toggleInputDisabled,
@@ -70,6 +71,17 @@ const styles = theme => ({
     dialogStyles: {
         width: "90%",
         maxWidth: 720
+    },
+    numInput: {
+        "& .MuiOutlinedInput-root": {
+            backgroundColor: "white"
+        },
+        "& label": {
+            color: "grey"
+        },
+        "& fieldset": {
+            borderColor: "#696161"
+        }
     }
 });
 
@@ -501,6 +513,7 @@ class IndentPopup extends Component {
                         <Button
                             variant="contained"
                             color="primary"
+                            startIcon={<DescriptionIcon />}
                             onClick={() => this.openDialog()}
                         >
                             {this.props.message.get("text", "Popup")
@@ -508,194 +521,14 @@ class IndentPopup extends Component {
                                 : "Popup"}
                         </Button>
 
-                        <Dialog
-                            open={this.state.isDialogOpen}
-                            classes={{
-                                paper: this.props.classes.dialogStyles
-                            }}
-                        >
-                            <AlertDialog
-                                closeAlert={() => this.closeAlert()}
-                                showAlert={this.state.showAlert}
-                                discardPO={() => this.discardPO()}
-                            />
-                            <DialogTitle
-                                id="customized-dialog-title"
-                                onClose={() => this.handleClose()}
-                            >
-                                Item Detail
-                            </DialogTitle>
-                            <DialogContent dividers>
-                                <Grid container spacing={2} mb={2}>
-                                    <Grid item xs={12}>
-                                        <Selector
-                                            isDisabled={this.disableItemSelect(
-                                                this.props.deliveryData
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item container spacing={2} mb={2}>
-                                        <Grid item xs={6}>
-                                            {/* <Select
-                          isDisabled={this.state.uomSelector.disabled}
-                          className="basic-single"
-                          classNamePrefix="select"
-                          isSearchable
-                          onChange={this.handleUomSelect}
-                          isLoading={this.state.uomSelector.loading}
-                          placeholder="UOM"
-                          name="color2"
-                          options={this.state.uomSelector.options}
-                        /> */}
-                                            <UomSelector />
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <TextField
-                                                disabled={this.disableItemSelect(
-                                                    this.props.deliveryData
-                                                )}
-                                                size="small"
-                                                type="number"
-                                                value={this.props.qty}
-                                                id="outlined-basic"
-                                                label={
-                                                    this.showQuantityError(this.props.qty)
-                                                        ? "cannot be zero"
-                                                        : "Quantity"
-                                                }
-                                                error={this.showQuantityError(this.props.qty)}
-                                                onChange={this.handleQantityChange}
-                                                variant="outlined"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={3}>
-                                            <TextField
-                                                size="small"
-                                                type="number"
-                                                value={this.props.rate}
-                                                id="outlined-basic"
-                                                error={this.showQuantityError(this.props.rate)}
-                                                label={
-                                                    this.showQuantityError(this.props.rate)
-                                                        ? "cannot be zero"
-                                                        : "Rate"
-                                                }
-                                                onChange={this.handleRateChange}
-                                                variant="outlined"
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item container spacing={2} m={2}>
-                                        <Grid item xs={6}>
-                                            <Select
-                                                style={{ border: "1px solid red" }}
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                isSearchable
-                                                isLoading={this.state.activitySelector.loading}
-                                                name="color"
-                                                onChange={this.handleActivitySelect}
-                                                placeholder="Activity"
-                                                options={this.state.activitySelector.options}
-                                                styles={{
-                                                    menu: styles => ({ ...styles, zIndex: 2000 }),
-                                                    menuList: styles => ({
-                                                        ...styles,
-                                                        fontFamily: "Roboto"
-                                                    }),
-                                                    control: styles => ({
-                                                        ...styles,
-                                                        fontFamily: "Roboto"
-                                                    })
-                                                }}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Select
-                                                className="basic-single"
-                                                classNamePrefix="select"
-                                                isSearchable
-                                                onChange={this.handleSupplierSelect}
-                                                isLoading={this.state.supplierSelector.loading}
-                                                placeholder="Supplier"
-                                                name="color2"
-                                                styles={{
-                                                    menu: styles => ({ ...styles, zIndex: 2000 }),
-                                                    menuList: styles => ({
-                                                        ...styles,
-                                                        fontFamily: "Roboto"
-                                                    }),
-                                                    control: styles => ({
-                                                        ...styles,
-                                                        fontFamily: "Roboto"
-                                                    })
-                                                }}
-                                                options={this.state.supplierSelector.options}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-
-                                <IndentDetails />
-
-                                {/* <selectuom />
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Outlined"
-                                    variant="outlined"
-                                />
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Outlined"
-                                    variant="outlined"
-                                />
-                                <select>Supplier</select>
-                                <select>Activity</select>
-
-                                <form>
-                                    <Date></Date>
-                                    <select>delivery location</select>
-                                    <button>Add</button>
-                                </form>
-
-                                <Table></Table> */}
-                            </DialogContent>
-                            {/* <Button variant="contained" color="secondary" onClick={() => this.discardPO()}>
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => this.savePO()}>
-                Submit
-              </Button> */}
-                            <DialogActions>
-                                <Button
-                                    disabled={!this.isDataValid(this.props.qty, this.props.rate)}
-                                    autoFocus
-                                    onClick={() => {
-                                        this.saveChanges();
-                                    }}
-                                    color="primary"
-                                >
-                                    Save
-                                </Button>
-                            </DialogActions>
-                            <Snackbar
-                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                                open={this.state.error}
-                                autoHideDuration={6000}
-                                onClose={this.handleSnackBarClose}
-                            >
-                                <Alert onClose={this.handleSnackBarClose} severity="error">
-                                    {this.state.errorMessage}
-                                </Alert>
-                            </Snackbar>
-                        </Dialog>
-
                         <SaveDialogComponent
-                            showDialog={false}
+                            showDialog={this.state.isDialogOpen}
                             showAlertDialog={this.state.showAlert}
                             title="Item Detail"
-                            onAlertAffirmClick={this.handleAlertAffirmClick}
-                            onAlertDenyClick={this.handleAlertDenyClick}
+                            onAlertAffirmClick={() => {
+                                this.discardPO();
+                            }}
+                            onAlertDenyClick={this.handleAlertAffirmClick}
                             // alertDenyText: PropTypes.string,
                             // alertAffirmText: PropTypes.string,
                             // alertDialogTitle: PropTypes.string,
@@ -733,6 +566,9 @@ class IndentPopup extends Component {
                                             error={this.showQuantityError(this.props.qty)}
                                             onChange={this.handleQantityChange}
                                             variant="outlined"
+                                            classes={{
+                                                root: this.props.classes.numInput
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -749,6 +585,9 @@ class IndentPopup extends Component {
                                             }
                                             onChange={this.handleRateChange}
                                             variant="outlined"
+                                            classes={{
+                                                root: this.props.classes.numInput
+                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -775,6 +614,16 @@ class IndentPopup extends Component {
                                                     fontFamily: "Roboto"
                                                 })
                                             }}
+                                            theme={theme => ({
+                                                ...theme,
+                                                colors: {
+                                                    ...theme.colors,
+                                                    neutral30: "black",
+                                                    neutral20: "#696161",
+                                                    neutral50: "grey",
+                                                    primary: "#574ae2"
+                                                }
+                                            })}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
@@ -797,6 +646,16 @@ class IndentPopup extends Component {
                                                     fontFamily: "Roboto"
                                                 })
                                             }}
+                                            theme={theme => ({
+                                                ...theme,
+                                                colors: {
+                                                    ...theme.colors,
+                                                    neutral30: "black",
+                                                    neutral20: "#696161",
+                                                    neutral50: "grey",
+                                                    primary: "#574ae2"
+                                                }
+                                            })}
                                             options={this.state.supplierSelector.options}
                                         />
                                     </Grid>

@@ -22,7 +22,7 @@ module.exports = {
         extensions: [".js", ".jsx"]
     },
     mode: "development",
-    devtool: "eval-source-map",
+    devtool: "source-map",
     module: {
         rules: [
             { parser: { amd: false } },

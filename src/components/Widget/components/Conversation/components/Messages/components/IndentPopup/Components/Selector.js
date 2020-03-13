@@ -12,6 +12,32 @@ import { addItem } from "actions";
 
 import axios from "network";
 
+const customStyles = {
+    control: (provided, state) => {
+        console.log("STATE OBJECT : ", state);
+        return {
+            ...provided,
+            fontFamily: "Roboto",
+            color: state.isDisabled ? "grey" : "#696161",
+            borderColor: "#696161"
+        };
+    },
+    placeholder: (provided, state) => ({
+        ...provided,
+        color: state.isDisabled ? "grey" : "#696161"
+    }),
+
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+
+        color: "#696161"
+    }),
+    indicatorSeparator: (provided, state) => ({
+        ...provided,
+        backgroundColor: "#696161"
+    })
+};
+
 const colourOptions = [
     { value: "ocean", label: "Ocean", color: "#00B8D9", isFixed: true },
     { value: "blue", label: "Blue", color: "#0052CC" },
@@ -266,8 +292,19 @@ class Selector extends React.Component {
                             control: styles => ({
                                 ...styles,
                                 fontFamily: "Roboto"
-                            })
+                            }),
+                            ...customStyles
                         }}
+                        theme={theme => ({
+                            ...theme,
+                            colors: {
+                                ...theme.colors,
+                                neutral30: "black",
+                                neutral20: "#696161",
+                                neutral50: "grey",
+                                primary: "#574ae2"
+                            }
+                        })}
                         openMenuOnClick
                         // onInputChange={this.handleInputChange}
                         onFocus={this.handleFocus}

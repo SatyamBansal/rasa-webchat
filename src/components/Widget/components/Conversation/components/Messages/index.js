@@ -203,8 +203,8 @@ class Messages extends Component {
                         height: "120px",
                         marginLeft: "12px",
                         marginBottom: "16px",
-                        marginTop: "16px"
-                        // margin: "16px auto"
+                        marginTop: "16px",
+                        margin: "16px auto"
                     }}
                 >
                     <Box display="flex" flexDirection="row">

@@ -5,6 +5,36 @@ import Select from "react-select";
 import { changeUom } from "actions";
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const customStyles = {
+    control: (provided, state) => {
+        console.log("STATE OBJECT : ", state);
+        return {
+            ...provided,
+            fontFamily: "Roboto",
+
+            borderColor: state.isDisabled ? "grey" : "#696161"
+        };
+    },
+    placeholder: (provided, state) => {
+        console.log("STATE UOM ", state);
+        return {
+            ...provided,
+            color: state.isDisabled ? "grey" : "#696161"
+        };
+    },
+
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+
+        color: "#696161"
+    }),
+    indicatorSeparator: (provided, state) => ({
+        ...provided,
+        backgroundColor: "#696161"
+    })
+};
+
 const UomSelector = props => {
     const [options, setOptions] = useState([]);
     const [disable, toggleDisable] = useState(true);
@@ -85,8 +115,19 @@ const UomSelector = props => {
                 control: styles => ({
                     ...styles,
                     fontFamily: "Roboto"
-                })
+                }),
+                ...customStyles
             }}
+            theme={theme => ({
+                ...theme,
+                colors: {
+                    ...theme.colors,
+                    neutral30: "black",
+                    neutral20: "#696161",
+                    neutral50: "grey",
+                    primary: "#574ae2"
+                }
+            })}
         />
     );
 };
