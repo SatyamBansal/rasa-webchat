@@ -20,11 +20,12 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
-import POTable from "./Components/POTable";
+import ItemTable from "./Components/ItemTable";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import "./styles.scss";
 import { compareAsc, format } from "date-fns";
 import { UI_MESSAGES } from "../../../../../../../../constants";
+import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
 
 const styles = theme => ({
     root: {
@@ -308,46 +309,32 @@ class ConfirmationPopup extends Component {
                         >
                             {this.props.message.get("text", "Fill PO")}
                         </Button>
-
-                        <Dialog open={this.state.isDialogOpen} maxWidth="lg">
-                            <AlertDialog
-                                closeAlert={() => this.closeAlert()}
-                                showAlert={this.state.showAlert}
-                                discardPO={() => this.discardPO()}
-                            />
-                            <DialogTitle
-                                id="customized-dialog-title"
-                                onClose={() => this.handleClose()}
-                            >
-                                Confimation
-                            </DialogTitle>
-                            <DialogContent dividers>
-                                <POTable />
-                            </DialogContent>
-                            {/* <Button variant="contained" color="secondary" onClick={() => this.discardPO()}>
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => this.savePO()}>
-                Submit
-              </Button> */}
-                            <DialogActions>
-                                <Button
-                                    disabled={
-                                        !this.isDataValid(
-                                            this.props.selectedOrdersId,
-                                            this.props.orders
-                                        )
-                                    }
-                                    autoFocus
-                                    onClick={() => {
-                                        this.saveChanges();
-                                    }}
-                                    color="primary"
-                                >
-                                    {this.props.selectedOrdersId.length ? "Change" : "Save"}
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
+                        <SaveDialogComponent
+                            showDialog={this.state.isDialogOpen}
+                            showAlertDialog={this.state.showAlert}
+                            title={`Confimation`}
+                            onAlertAffirmClick={() => {
+                                this.discardPO();
+                            }}
+                            onAlertDenyClick={this.handleAlertAffirmClick}
+                            // alertDenyText: PropTypes.string,
+                            // alertAffirmText: PropTypes.string,
+                            // alertDialogTitle: PropTypes.string,
+                            // alertContentText: PropTypes.string,
+                            // onSaveButtonClick: PropTypes.func,
+                            onSaveButtonClick={() => {
+                                this.saveChanges();
+                            }}
+                            saveButtonText={this.props.selectedOrdersId.length ? "Change" : "Save"}
+                            classes={{
+                                paper: this.props.classes.dialogStyles
+                            }}
+                            disableSaveButton={
+                                !this.isDataValid(this.props.selectedOrdersId, this.props.orders)
+                            }
+                        >
+                            <ItemTable />
+                        </SaveDialogComponent>
                     </div>
                 )}
             </div>

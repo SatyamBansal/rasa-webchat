@@ -122,3 +122,7 @@ $roboto: "Roboto", serif;
     justify-content: center;
     align-items: center;
 }
+
+svg.MuiSvgIcon-root {
+    background-color: transparent !important;
+}

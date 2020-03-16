@@ -199,7 +199,12 @@ const EnhancedTableToolbar = props => {
                     {numSelected} selected
                 </Typography>
             ) : (
-                <Typography className={classes.title} variant="h6" id="tableTitle">
+                <Typography
+                    className={classes.title}
+                    style={{ color: "white" }}
+                    variant="h6"
+                    id="tableTitle"
+                >
                     Delivery Details
                 </Typography>
             )}

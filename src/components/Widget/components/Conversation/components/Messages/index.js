@@ -179,7 +179,7 @@ class Messages extends Component {
                     <Box />
                     <CardContent>
                         <Typography
-                            style={{ fontWeight: "bold" }}
+                            style={{ fontWeight: "bold", fontSize: "1.19rem" }}
                             align="center"
                             variant="subtitle2"
                             gutterBottom
@@ -217,7 +217,7 @@ class Messages extends Component {
                         <Box pt={3}>
                             <CardContent>
                                 <Typography
-                                    style={{ fontWeight: "bold" }}
+                                    style={{ fontWeight: "bold", fontSize: "14px" }}
                                     align="left"
                                     variant="body2"
                                     gutterBottom

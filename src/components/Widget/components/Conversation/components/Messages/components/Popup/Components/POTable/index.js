@@ -131,8 +131,10 @@ import DateFnsUtils from "@date-io/date-fns";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white
+        backgroundColor: "#7065E6",
+        color: theme.palette.common.white,
+        paddingTop: "12px",
+        paddingBottom: "12px"
     },
     body: {
         fontSize: 14
@@ -221,11 +223,13 @@ function EnhancedTableHead(props) {
                 {headCells.map(headCell => (
                     <StyledTableCell
                         key={headCell.id}
-                        align={headCell.numeric ? "right" : "left"}
+                        // align={headCell.numeric ? "right" : "left"}
+                        align="center"
                         padding={headCell.disablePadding ? "none" : "default"}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
-                        <TableSortLabel
+                        {headCell.label}
+                        {/* <TableSortLabel
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : "asc"}
                             onClick={createSortHandler(headCell.id)}
@@ -236,7 +240,7 @@ function EnhancedTableHead(props) {
                                     {order === "desc" ? "sorted descending" : "sorted ascending"}
                                 </span>
                             ) : null}
-                        </TableSortLabel>
+                        </TableSortLabel> */}
                     </StyledTableCell>
                 ))}
             </TableRow>
@@ -470,7 +474,7 @@ export default function EnhancedTable() {
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"
-                        size={dense ? "small" : "medium"}
+                        size={"small"}
                         aria-label="enhanced table"
                     >
                         <EnhancedTableHead
@@ -499,7 +503,7 @@ export default function EnhancedTable() {
                                             key={row.INDENT_DT_ID}
                                             selected={isItemSelected}
                                         >
-                                            <TableCell padding="checkbox">
+                                            <TableCell padding="checkbox" style={{ width: "5%" }}>
                                                 <Checkbox
                                                     checked={isItemSelected}
                                                     // onClick={event => handleClick(event, row.INDENT_DT_ID, isItemSelected)}
@@ -507,23 +511,30 @@ export default function EnhancedTable() {
                                                     inputProps={{ "aria-labelledby": labelId }}
                                                 />
                                             </TableCell>
-                                            <TableCell id={labelId} scope="row" padding="none">
+                                            <TableCell
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
+                                                align="center"
+                                                style={{ width: "15%" }}
+                                            >
                                                 {row.ITEM_DESC}
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center" style={{ width: "20%" }}>
                                                 {row.JOB_DESCRIPTION}
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center" style={{ width: "10%" }}>
                                                 {row.UOM_DESCRIPTION}
                                             </TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="center" style={{ width: "10%" }}>
                                                 {row.BALANCE_QUANTITY}
                                             </TableCell>
 
-                                            <TableCell align="right">
+                                            <TableCell align="center" style={{ width: "10%" }}>
                                                 <TextField
                                                     custom="valid"
                                                     variant="outlined"
+                                                    size="small"
                                                     label={
                                                         showQuantityError(
                                                             isItemSelected,
@@ -554,10 +565,18 @@ export default function EnhancedTable() {
                                                 />
                                             </TableCell>
 
-                                            <TableCell align="right">
+                                            <TableCell
+                                                align="center"
+                                                style={{
+                                                    width: "10%",
+                                                    paddingBottom: "16px",
+                                                    paddingTop: "16px"
+                                                }}
+                                            >
                                                 <TextField
                                                     variant="outlined"
                                                     type="number"
+                                                    size="small"
                                                     defaultValue={row.RATE}
                                                     onChange={e => {
                                                         inputChanged(e, row.INDENT_DT_ID, "RATE");
@@ -565,22 +584,20 @@ export default function EnhancedTable() {
                                                     error={showRateError(isItemSelected, row.RATE)}
                                                     label={
                                                         showRateError(isItemSelected, row.RATE) &&
-                                                        (row.RATE < 0
-                                                            ? "cannot be negative"
-                                                            : "rate cannot be zero")
+                                                        (row.RATE < 0 ? "rate <= 0" : "rate <= 0")
                                                     }
                                                     inputProps={{ "aria-label": "rate" }}
                                                 />
                                             </TableCell>
 
-                                            <TableCell align="right">
+                                            <TableCell align="center" style={{ width: "10%" }}>
                                                 {row.HSN_CODE__TEXT}
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell style={{ width: "10%" }}>
                                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                     <DatePicker
                                                         format="dd/MMM/yyyy"
-                                                        minDateMessage="shoud be greater than current date"
+                                                        minDateMessage=" < current date"
                                                         minDate={
                                                             isItemSelected
                                                                 ? format(new Date(), "dd/MMM/yyyy")
@@ -606,8 +623,8 @@ export default function EnhancedTable() {
                                     );
                                 })}
                             {emptyRows > 0 && (
-                                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                    <TableCell colSpan={6} />
+                                <TableRow style={{ height: 72 * emptyRows }}>
+                                    <TableCell colSpan={9} />
                                 </TableRow>
                             )}
                         </TableBody>

@@ -534,6 +534,9 @@ class IndentPopup extends Component {
                             // alertDialogTitle: PropTypes.string,
                             // alertContentText: PropTypes.string,
                             // onSaveButtonClick: PropTypes.func,
+                            onSaveButtonClick={() => {
+                                this.saveChanges();
+                            }}
                             saveButtonText="Submit"
                             classes={{
                                 paper: this.props.classes.dialogStyles
@@ -663,6 +666,16 @@ class IndentPopup extends Component {
                             </Grid>
 
                             <IndentDetails />
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={this.state.error}
+                                autoHideDuration={6000}
+                                onClose={this.handleSnackBarClose}
+                            >
+                                <Alert onClose={this.handleSnackBarClose} severity="error">
+                                    {this.state.errorMessage}
+                                </Alert>
+                            </Snackbar>
                         </SaveDialogComponent>
                     </div>
                 )}

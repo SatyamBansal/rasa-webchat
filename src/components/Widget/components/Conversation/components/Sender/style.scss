@@ -12,6 +12,9 @@
     background-color: $chat-background;
     .sender {
         margin-bottom: 8px;
+        & form {
+            padding-top: 0px;
+        }
     }
 
     .new-message {
@@ -27,6 +30,10 @@
         &:focus {
             outline: none;
         }
+    }
+
+    input.new-message {
+        border: 0 !important;
     }
 
     .send {

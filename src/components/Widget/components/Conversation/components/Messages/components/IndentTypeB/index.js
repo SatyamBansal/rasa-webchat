@@ -25,6 +25,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import "./styles.scss";
 import { compareAsc, format } from "date-fns";
 import { UI_MESSAGES } from "../../../../../../../../constants";
+import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
 
 const styles = theme => ({
     root: {
@@ -291,51 +292,32 @@ class IndentTypeB extends Component {
                             ITEM DETAILS
                         </Button>
 
-                        <Dialog
-                            open={this.state.isDialogOpen}
+                        <SaveDialogComponent
+                            showDialog={this.state.isDialogOpen}
+                            showAlertDialog={this.state.showAlert}
+                            title={`Fill Indent Details`}
+                            onAlertAffirmClick={() => {
+                                this.discardPO();
+                            }}
+                            onAlertDenyClick={this.handleAlertAffirmClick}
+                            // alertDenyText: PropTypes.string,
+                            // alertAffirmText: PropTypes.string,
+                            // alertDialogTitle: PropTypes.string,
+                            // alertContentText: PropTypes.string,
+                            // onSaveButtonClick: PropTypes.func,
+                            onSaveButtonClick={() => {
+                                this.saveChanges();
+                            }}
+                            saveButtonText={this.props.selectedOrdersId.length ? "Change" : "Save"}
                             classes={{
                                 paper: this.props.classes.dialogStyles
                             }}
-                            maxWidth="lg"
+                            disableSaveButton={
+                                !this.isDataValid(this.props.selectedOrdersId, this.props.orders)
+                            }
                         >
-                            <AlertDialog
-                                closeAlert={() => this.closeAlert()}
-                                showAlert={this.state.showAlert}
-                                discardPO={() => this.discardPO()}
-                            />
-                            <DialogTitle
-                                id="customized-dialog-title"
-                                onClose={() => this.handleClose()}
-                            >
-                                Fill Indent Details
-                            </DialogTitle>
-                            <DialogContent dividers>
-                                <POTable />
-                            </DialogContent>
-                            {/* <Button variant="contained" color="secondary" onClick={() => this.discardPO()}>
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => this.savePO()}>
-                Submit
-              </Button> */}
-                            <DialogActions>
-                                <Button
-                                    disabled={
-                                        !this.isDataValid(
-                                            this.props.selectedOrdersId,
-                                            this.props.orders
-                                        )
-                                    }
-                                    autoFocus
-                                    onClick={() => {
-                                        this.saveChanges();
-                                    }}
-                                    color="primary"
-                                >
-                                    Save
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
+                            <POTable />
+                        </SaveDialogComponent>
                     </div>
                 )}
             </div>

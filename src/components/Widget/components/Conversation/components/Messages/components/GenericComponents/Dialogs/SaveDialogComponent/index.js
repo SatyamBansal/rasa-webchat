@@ -42,8 +42,7 @@ const titleStyles = makeStyles(theme => ({
         paddingBottom: 8,
         paddingRight: 8,
         paddingLeft: 16,
-        backgroundColor: theme.palette.primary.main,
-        color: "white"
+        backgroundColor: theme.palette.primary.main
     },
     iconButton: {
         color: "white"
@@ -71,11 +70,13 @@ const DialogTitle = props => {
         <MuiDialogTitle disableTypography className={classes.root} {...other}>
             <Box display="flex" alignItems="center">
                 <Box flexGrow={1}>
-                    <Typography variant="h6">{children}</Typography>
+                    <Typography variant="h6" style={{ color: "white" }}>
+                        {children}
+                    </Typography>
                 </Box>
                 <Box>
                     <IconButton aria-label="close" className={classes.iconButton} onClick={onClose}>
-                        <CloseIcon />
+                        <CloseIcon styles={{ backgroundColor: "transparent !important" }} />
                     </IconButton>
                 </Box>
             </Box>

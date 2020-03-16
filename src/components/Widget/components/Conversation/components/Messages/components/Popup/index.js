@@ -322,10 +322,16 @@ class Popup extends Component {
                             // alertDialogTitle: PropTypes.string,
                             // alertContentText: PropTypes.string,
                             // onSaveButtonClick: PropTypes.func,
+                            onSaveButtonClick={() => {
+                                this.saveChanges();
+                            }}
                             saveButtonText="Submit"
                             classes={{
                                 paper: this.props.classes.dialogStyles
                             }}
+                            disableSaveButton={
+                                !this.isDataValid(this.props.selectedOrdersId, this.props.orders)
+                            }
                         >
                             <POTable />
                         </SaveDialogComponent>

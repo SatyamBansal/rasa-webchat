@@ -143,7 +143,7 @@ import axios from "network";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: "#7065E6",
         color: theme.palette.common.white
     },
     body: {
@@ -221,7 +221,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                <StyledTableCell padding="checkbox">
+                <StyledTableCell padding="checkbox" align="center">
                     <Checkbox
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={numSelected === rowCount}
@@ -302,7 +302,7 @@ const EnhancedTableToolbar = props => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle">
-                    Orders
+                    Items
                 </Typography>
             )}
         </Toolbar>
@@ -648,11 +648,11 @@ export default function EnhancedTable() {
                                                 scope="row"
                                                 padding="none"
                                                 align="left"
-                                                style={{ width: "20%" }}
+                                                style={{ width: "30%" }}
                                             >
                                                 {row.ITEM_NAME}
                                             </TableCell>
-                                            <TableCell align="left" style={{ width: "10%" }}>
+                                            <TableCell align="left" style={{ width: "5%" }}>
                                                 {row.UOM_CODE}
                                             </TableCell>
                                             <TableCell
@@ -666,10 +666,11 @@ export default function EnhancedTable() {
                                             <TableCell
                                                 align="right"
                                                 align="center"
-                                                style={{ width: "15%" }}
+                                                style={{ width: "10%" }}
                                             >
                                                 <TextField
                                                     custom="valid"
+                                                    size="small"
                                                     variant="outlined"
                                                     type="number"
                                                     error={isItemSelected && row.QUANTITY <= 0}
@@ -688,66 +689,64 @@ export default function EnhancedTable() {
                                                 {row.RATE}
                                             </TableCell>
                                             <TableCell align="center" style={{ width: "15%" }}>
-                                                <FormControl
+                                                <TextField
+                                                    fullWidth
+                                                    select
+                                                    displayEmpty
+                                                    style={{ maxWidth: "100%" }}
+                                                    size="small"
                                                     variant="outlined"
-                                                    className={classes.formControl}
-                                                    style={{ width: "100%" }}
+                                                    autoWidth={false}
+                                                    labelId="demo-simple-select-outlined-label"
+                                                    id="demo-simple-select-outlined"
+                                                    value={row.ACTIVITY}
+                                                    displayEmpty
+                                                    onChange={event => {
+                                                        handleActivityChange(
+                                                            row.PD_ITEM_DT_ID,
+                                                            event.target.value
+                                                        );
+                                                    }}
                                                 >
-                                                    <Select
-                                                        autoWidth={false}
-                                                        labelId="demo-simple-select-outlined-label"
-                                                        id="demo-simple-select-outlined"
-                                                        value={row.ACTIVITY}
-                                                        displayEmpty
-                                                        onChange={event => {
-                                                            handleActivityChange(
-                                                                row.PD_ITEM_DT_ID,
-                                                                event.target.value
-                                                            );
-                                                        }}
-                                                    >
-                                                        <MenuItem value="">
-                                                            <em>None</em>
-                                                        </MenuItem>
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
 
-                                                        {activities.map(item => (
-                                                            <MenuItem value={item.value}>
-                                                                <em>{item.label}</em>
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
+                                                    {activities.map(item => (
+                                                        <MenuItem value={item.value}>
+                                                            <em>{item.label}</em>
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
                                             </TableCell>
 
-                                            <TableCell align="center" style={{ width: "25%" }}>
-                                                <FormControl
+                                            <TableCell align="center" style={{ width: "15%" }}>
+                                                <TextField
+                                                    fullWidth
+                                                    select
+                                                    displayEmpty
+                                                    size="small"
                                                     variant="outlined"
-                                                    className={classes.formControl}
-                                                    style={{ width: "100%" }}
+                                                    autoWidth={false}
+                                                    labelId="demo-simple-select-outlined-label"
+                                                    id="demo-simple-select-outlined"
+                                                    value={row.SUPPLIER}
+                                                    onChange={event => {
+                                                        handleSupplierChange(
+                                                            row.PD_ITEM_DT_ID,
+                                                            event.target.value
+                                                        );
+                                                    }}
                                                 >
-                                                    <Select
-                                                        displayEmpty
-                                                        autoWidth={false}
-                                                        labelId="demo-simple-select-outlined-label"
-                                                        id="demo-simple-select-outlined"
-                                                        value={row.SUPPLIER}
-                                                        onChange={event => {
-                                                            handleSupplierChange(
-                                                                row.PD_ITEM_DT_ID,
-                                                                event.target.value
-                                                            );
-                                                        }}
-                                                    >
-                                                        <MenuItem value="">
-                                                            <em>None</em>
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    {suppliers.map(item => (
+                                                        <MenuItem value={item.value}>
+                                                            <em>{item.label}</em>
                                                         </MenuItem>
-                                                        {suppliers.map(item => (
-                                                            <MenuItem value={item.value}>
-                                                                <em>{item.label}</em>
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
+                                                    ))}
+                                                </TextField>
                                             </TableCell>
 
                                             {/* <TableCell align="right">
@@ -836,8 +835,8 @@ export default function EnhancedTable() {
                                     );
                                 })}
                             {emptyRows > 0 && (
-                                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                    <TableCell colSpan={6} />
+                                <TableRow style={{ height: 72 * emptyRows }}>
+                                    <TableCell colSpan={8} />
                                 </TableRow>
                             )}
                         </TableBody>
