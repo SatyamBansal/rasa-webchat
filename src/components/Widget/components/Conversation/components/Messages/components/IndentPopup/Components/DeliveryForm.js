@@ -234,6 +234,7 @@ const DeliveryForm = props => {
                                 classes={{
                                     root: classes.numInput
                                 }}
+                                minDate={moment.now()}
                                 size="small"
                                 label="Delivery"
                                 format="DD/MMM/YYYY"

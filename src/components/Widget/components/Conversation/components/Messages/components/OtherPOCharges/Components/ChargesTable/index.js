@@ -131,8 +131,8 @@ import DateFnsUtils from "@date-io/date-fns";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
-        backgroundColor: "#7065E6",
-        color: theme.palette.common.white,
+        backgroundColor: theme.palette.primary.light,
+        color: theme.palette.primary.contrastText,
         paddingTop: "8px",
         paddingBottom: "8px"
     },

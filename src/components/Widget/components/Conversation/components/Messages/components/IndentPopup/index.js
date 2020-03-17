@@ -5,6 +5,8 @@ import axios from "network";
 import UomSelector from "./Components/UomSelector";
 import DescriptionIcon from "@material-ui/icons/Description";
 import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
     toggleInputDisabled,
     changeInputFieldHint,
@@ -19,7 +21,6 @@ import {
 } from "actions";
 
 import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
 
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -514,6 +515,7 @@ class IndentPopup extends Component {
                             variant="contained"
                             color="primary"
                             startIcon={<DescriptionIcon />}
+                            style={{ marginTop: "8px" }}
                             onClick={() => this.openDialog()}
                         >
                             {this.props.message.get("text", "Popup")
@@ -624,7 +626,7 @@ class IndentPopup extends Component {
                                                     neutral30: "black",
                                                     neutral20: "#696161",
                                                     neutral50: "grey",
-                                                    primary: "#574ae2"
+                                                    primary: this.props.theme.palette.primary.main
                                                 }
                                             })}
                                         />
@@ -656,7 +658,7 @@ class IndentPopup extends Component {
                                                     neutral30: "black",
                                                     neutral20: "#696161",
                                                     neutral50: "grey",
-                                                    primary: "#574ae2"
+                                                    primary: this.props.theme.palette.primary.main
                                                 }
                                             })}
                                             options={this.state.supplierSelector.options}
@@ -694,6 +696,6 @@ const mapStateToProps = state => ({
     user: state.userData
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(IndentPopup));
+export default connect(mapStateToProps)(withStyles(styles)(withTheme(IndentPopup)));
 
 // // export default Popup

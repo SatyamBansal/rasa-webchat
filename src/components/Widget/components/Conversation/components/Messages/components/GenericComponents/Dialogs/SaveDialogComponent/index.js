@@ -6,7 +6,7 @@ import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -59,18 +59,19 @@ const DialogActions = withStyles(theme => ({
 const DialogContent = withStyles(theme => ({
     root: {
         padding: theme.spacing(2),
-        backgroundImage: "linear-gradient(#e5e4ff, #c8caff)"
+        backgroundImage: theme.backgroundGradient
     }
 }))(MuiDialogContent);
 
 const DialogTitle = props => {
     const { children, onClose, ...other } = props;
+    const theme = useTheme();
     const classes = titleStyles();
     return (
         <MuiDialogTitle disableTypography className={classes.root} {...other}>
             <Box display="flex" alignItems="center">
                 <Box flexGrow={1}>
-                    <Typography variant="h6" style={{ color: "white" }}>
+                    <Typography variant="h6" style={{ color: theme.palette.primary.contrastText }}>
                         {children}
                     </Typography>
                 </Box>

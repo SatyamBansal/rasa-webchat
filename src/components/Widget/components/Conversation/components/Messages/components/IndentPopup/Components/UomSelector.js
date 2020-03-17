@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "network";
 import Select from "react-select";
 import { changeUom } from "actions";
+import { useTheme } from "@material-ui/core/styles";
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -37,6 +38,7 @@ const customStyles = {
 
 const UomSelector = props => {
     const [options, setOptions] = useState([]);
+    const muiTheme = useTheme();
     const [disable, toggleDisable] = useState(true);
     const [isLoading, setLoading] = useState(false);
     const [selectInputValue, setSelectInputValue] = useState("");
@@ -125,7 +127,7 @@ const UomSelector = props => {
                     neutral30: "black",
                     neutral20: "#696161",
                     neutral50: "grey",
-                    primary: "#574ae2"
+                    primary: muiTheme.palette.primary.main
                 }
             })}
         />

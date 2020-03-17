@@ -143,7 +143,7 @@ import axios from "network";
 
 const StyledTableCell = withStyles(theme => ({
     head: {
-        backgroundColor: "#7065E6",
+        backgroundColor: theme.palette.primary.light,
         color: theme.palette.common.white
     },
     body: {

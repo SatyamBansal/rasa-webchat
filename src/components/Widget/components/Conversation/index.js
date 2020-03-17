@@ -21,7 +21,8 @@ const theme = createMuiTheme({
         //   // This is green.A700 as hex.
         //   main: '#11cb5f',
         // },
-    }
+    },
+    backgroundGradient: "linear-gradient(#e5e4ff, #c8caff)"
 });
 
 const Conversation = props => (

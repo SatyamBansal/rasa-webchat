@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { addItem } from "actions";
 
 import axios from "network";
+import { withTheme } from "@material-ui/core/styles";
 
 const customStyles = {
     control: (provided, state) => {
@@ -238,6 +239,8 @@ class Selector extends React.Component {
     };
     render() {
         console.log(this.props);
+        const muiTheme = this.props.theme;
+        console.log("Current Theme : ", muiTheme);
         return (
             <div>
                 <Breadcrumbs maxItems={3} aria-label="breadcrumb">
@@ -302,7 +305,7 @@ class Selector extends React.Component {
                                 neutral30: "black",
                                 neutral20: "#696161",
                                 neutral50: "grey",
-                                primary: "#574ae2"
+                                primary: muiTheme.palette.primary.main
                             }
                         })}
                         openMenuOnClick
@@ -328,4 +331,4 @@ const mapStateToProps = state => ({
     user: state.userData
 });
 
-export default connect(mapStateToProps)(Selector);
+export default connect(mapStateToProps)(withTheme(Selector));

@@ -26,6 +26,7 @@ import "./styles.scss";
 import { compareAsc, format } from "date-fns";
 import { UI_MESSAGES } from "../../../../../../../../constants";
 import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
+import DescriptionIcon from "@material-ui/icons/Description";
 
 const styles = theme => ({
     root: {
@@ -286,6 +287,8 @@ class IndentTypeB extends Component {
                         <Button
                             variant="contained"
                             color="primary"
+                            startIcon={<DescriptionIcon />}
+                            style={{ marginTop: "8px" }}
                             disabled={this.props.messageObj.get("isAbortTriggered")}
                             onClick={() => this.openDialog()}
                         >

@@ -22,6 +22,7 @@ import Button from "@material-ui/core/Button";
 import POTable from "./Components/POTable";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import "./styles.scss";
+import DescriptionIcon from "@material-ui/icons/Description";
 import { compareAsc, format } from "date-fns";
 import { UI_MESSAGES } from "../../../../../../../../constants";
 import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
@@ -305,6 +306,8 @@ class Popup extends Component {
                             variant="contained"
                             color="primary"
                             onClick={() => this.openDialog()}
+                            startIcon={<DescriptionIcon />}
+                            style={{ marginTop: "8px" }}
                         >
                             {this.props.message.get("text", "Fill PO")}
                         </Button>

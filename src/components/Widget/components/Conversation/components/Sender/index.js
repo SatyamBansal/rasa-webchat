@@ -12,6 +12,7 @@ import Box from "@material-ui/core/Box";
 
 import { loadCSS } from "fg-loadcss";
 import IconButton from "@material-ui/core/IconButton";
+import { withTheme } from "@material-ui/core/styles";
 
 class Sender extends React.Component {
     componentDidMount() {
@@ -71,7 +72,7 @@ class Sender extends React.Component {
                                         <Icon
                                             style={{
                                                 fontSize: 24,
-                                                color: "#574ae2"
+                                                color: this.props.theme.palette.primary.main
                                             }}
                                             className="fas fa-paper-plane"
                                         />
@@ -108,4 +109,4 @@ Sender.propTypes = {
     disabledInput: PropTypes.bool
 };
 
-export default connect(mapStateToProps)(Sender);
+export default connect(mapStateToProps)(withTheme(Sender));

@@ -25,6 +25,7 @@ import "./styles.scss";
 import { compareAsc, format } from "date-fns";
 import { UI_MESSAGES } from "../../../../../../../../constants";
 import SaveDialogComponent from "../GenericComponents/Dialogs/SaveDialogComponent";
+import DescriptionIcon from "@material-ui/icons/Description";
 
 const styles = theme => ({
     root: {
@@ -247,6 +248,8 @@ class OtherPOCharges extends Component {
                         <Button
                             variant="contained"
                             color="primary"
+                            startIcon={<DescriptionIcon />}
+                            style={{ marginTop: "8px" }}
                             onClick={() => this.openDialog()}
                         >
                             {this.props.message.get("text", "Fill PO")}
